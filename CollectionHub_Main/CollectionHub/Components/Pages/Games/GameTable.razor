@@ -1,0 +1,27 @@
+﻿<table class="table">
+    <tr style="font-weight:bold;">
+        <td>Title</td>
+        <td>Status</td>
+        <td>Rating</td>
+        <td>Notes</td>
+    </tr>
+    @foreach (var game in Games)
+    {
+        <tr>
+            <td>@game.Title</td>
+            <td>@game.Status</td>
+            <td>@game.Rating</td>
+            <td>@game.Notes</td>
+            <button class="btn btn-danger" @onclick="@(() => OnDelete.InvokeAsync(game))">Delete</button>
+        </tr>
+    }
+</table>
+
+@code {
+
+    [Parameter]
+    public IReadOnlyList<Game> Games { get; set; } = [];
+
+    [Parameter]
+    public EventCallback<Game> OnDelete { get; set; }
+}
