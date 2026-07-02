@@ -51,11 +51,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Tiz\\source\\repos\\CollectionHub\\CollectionHub\\CollectionHub.csproj",
+      "projectUniqueName": "C:\\Users\\Tiz\\source\\repos\\Mathoelz\\CollectionHub\\CollectionHub_Main\\CollectionHub\\CollectionHub.csproj",
       "projectName": "CollectionHub",
-      "projectPath": "C:\\Users\\Tiz\\source\\repos\\CollectionHub\\CollectionHub\\CollectionHub.csproj",
+      "projectPath": "C:\\Users\\Tiz\\source\\repos\\Mathoelz\\CollectionHub\\CollectionHub_Main\\CollectionHub\\CollectionHub.csproj",
       "packagesPath": "C:\\Users\\Tiz\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Tiz\\source\\repos\\CollectionHub\\CollectionHub\\obj\\",
+      "outputPath": "C:\\Users\\Tiz\\source\\repos\\Mathoelz\\CollectionHub\\CollectionHub_Main\\CollectionHub\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
