@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "bbEeaDXuScE=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Tiz\\source\\repos\\CollectionHub\\CollectionHub\\CollectionHub.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Tiz\\.nuget\\packages\\microsoft.aspnetcore.app.internal.assets\\10.0.8\\microsoft.aspnetcore.app.internal.assets.10.0.8.nupkg.sha512"
+  ],
+  "logs": []
+}
