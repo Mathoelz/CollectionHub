@@ -1,0 +1,124 @@
+﻿@page "/"
+
+<h3>Games</h3>
+
+<table class="table">
+    <tr style="font-weight:bold;">
+        <td>Title</td>
+        <td>Status</td>
+        <td>Rating</td>
+        <td>Notes</td>
+    </tr>
+    @foreach (var game in _games)
+    {
+        <tr>
+            <td>@game.Title</td>
+            <td>@game.Status</td>
+            <td>@game.Rating</td>
+            <td>@game.Notes</td>
+            <button class="btn btn-danger" @onclick="@(() => DeleteGame(game))">Delete</button>
+        </tr>
+    }
+</table>
+
+<h3>Insert new game</h3>
+
+<table class="table">
+    <tr style="font-weight:bold">
+        <td>Title</td>
+        <td>Status</td>
+        <td>Rating</td>
+        <td>Notes</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <InputText @bind-Value="_newName" />
+        </td>
+        <td>
+            <InputSelect @bind-Value="_newStatus">
+                @foreach (var status in Enum.GetValues<CollectionStatus>())
+                {
+                    <option value="@status">@status</option>
+                }
+            </InputSelect>
+        </td>
+        <td>
+            <InputSelect @bind-Value="_newRating">
+                @for (int i = 1; i <= 10; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </InputSelect>
+        </td>
+        <td>
+            <InputText @bind-Value="_newNotes" />
+        </td>
+        <td>
+            <button class="btn btn-primary" @onclick="AddGame">Add</button>
+        </td>
+    </tr>
+</table>
+
+
+
+@code {
+
+    private string? _newName;
+    private CollectionStatus _newStatus = CollectionStatus.Backlog;
+    private int? _newRating = 1;
+    private string? _newNotes;
+
+    private void DeleteGame(Game game)
+    {
+        _games.Remove(game);
+    }
+
+    private void AddGame()
+    {
+        _games.Add(new Game
+        {
+            Id = Guid.NewGuid(),
+            Title = _newName,
+            Status = _newStatus,
+            Rating = _newRating,
+            Notes = _newNotes
+        });
+
+        _newName = string.Empty;
+        _newStatus = CollectionStatus.Backlog;
+        _newRating = 1;
+        _newNotes = string.Empty;
+    }
+
+    private readonly List<Game> _games =
+    [
+        new()
+        {
+            Id = Guid.NewGuid(),
+            Title = "Clair Obscur: Expedition 33",
+            Status = CollectionStatus.Playing,
+            Rating = 10,
+            Notes = "Absolutely amazing so far."
+        },
+
+        new()
+        {
+            Id = Guid.NewGuid(),
+            Title = "Persona 5 Royal",
+            Status = CollectionStatus.Completed,
+            Rating = 10,
+            Notes = "One of my all-time favorites."
+        },
+
+        new()
+        {
+            Id = Guid.NewGuid(),
+            Title = "Hollow Knight",
+            Status = CollectionStatus.Backlog,
+            Rating = null,
+            Notes = "Need to finally start it."
+        }
+    ];
+
+}

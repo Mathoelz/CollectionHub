@@ -1,0 +1,55 @@
+﻿@page "/anime"
+
+<h3>Animes</h3>
+
+<table>
+    <tr style="font-weight:bold;">
+        <td>Title</td>
+        <td>Status</td>
+        <td>Rating</td>
+        <td>Notes</td>
+    </tr>
+        @foreach (var anime in _anime)
+        {
+            <tr>
+                <td>@anime.Title</td>
+                <td>@anime.Status</td>
+                <td>@anime.Rating</td>
+                <td>@anime.Notes</td>
+            </tr>
+        }
+</table>
+
+@code {
+    
+    private readonly List<Anime> _anime =
+    [
+        new()
+        {
+            Id = Guid.NewGuid(),
+            Title = "Frieren: Beyond Journey's End",
+            Status = CollectionStatus.Completed,
+            Rating = 10,
+            Notes = "Beautiful storytelling."
+        },
+
+        new()
+        {
+            Id = Guid.NewGuid(),
+            Title = "Vinland Saga",
+            Status = CollectionStatus.Playing,
+            Rating = 9,
+            Notes = "Currently watching Season 2."
+        },
+
+        new()
+        {
+            Id = Guid.NewGuid(),
+            Title = "Steins;Gate",
+            Status = CollectionStatus.Backlog,
+            Rating = null,
+            Notes = "Everyone recommends it."
+        }
+    ];
+
+}

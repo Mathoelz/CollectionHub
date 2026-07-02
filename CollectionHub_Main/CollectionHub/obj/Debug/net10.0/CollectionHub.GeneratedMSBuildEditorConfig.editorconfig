@@ -27,12 +27,20 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Tiz/Documents/GitHub/CollectionHub/CollectionHub_Main/CollectionHub/Components/Pages/Animes/Animes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBbmltZXNcQW5pbWVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Tiz/Documents/GitHub/CollectionHub/CollectionHub_Main/CollectionHub/Components/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb3VudGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Tiz/Documents/GitHub/CollectionHub/CollectionHub_Main/CollectionHub/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Tiz/Documents/GitHub/CollectionHub/CollectionHub_Main/CollectionHub/Components/Pages/Games/Games.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xHYW1lc1xHYW1lcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Tiz/Documents/GitHub/CollectionHub/CollectionHub_Main/CollectionHub/Components/Pages/Home.razor]
