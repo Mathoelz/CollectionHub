@@ -1,0 +1,58 @@
+﻿<h3>Insert new anime</h3>
+
+<table class="table">
+    <tr style="font-weight:bold">
+        <td>Title</td>
+        <td>Status</td>
+        <td>Rating</td>
+        <td>Notes</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <InputText @bind-Value="_anime.Title" />
+        </td>
+        <td>
+            <InputSelect @bind-Value="_anime.Status">
+                @foreach (var status in Enum.GetValues<CollectionStatus>())
+                {
+                    <option value="@status">@status</option>
+                }
+            </InputSelect>
+        </td>
+        <td>
+            <InputSelect @bind-Value="_anime.Rating">
+                @for (int i = 1; i <= 10; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </InputSelect>
+        </td>
+        <td>
+            <InputText @bind-Value="_anime.Notes" />
+        </td>
+        <td>
+            <button class="btn btn-primary" @onclick="AddAnime">Add</button>
+        </td>
+    </tr>
+</table>
+
+@code {
+
+    private Anime _anime = new();
+
+    [Parameter]
+    public EventCallback<Anime> OnAdd { get; set; }
+
+    private async Task AddAnime()
+    {
+        _anime.Id = Guid.NewGuid();
+
+        await OnAdd.InvokeAsync(_anime);
+        _anime = new Anime
+        {
+            Status = CollectionStatus.Backlog,
+            Rating = 1
+        };
+    }
+}

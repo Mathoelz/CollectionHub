@@ -7,21 +7,56 @@
     </tr>
     @foreach (var game in Games)
     {
-        <tr>
-            <td>@game.Title</td>
-            <td>@game.Status</td>
-            <td>@game.Rating</td>
-            <td>@game.Notes</td>
-            <button class="btn btn-danger" @onclick="@(() => OnDelete.InvokeAsync(game))">Delete</button>
-        </tr>
+        if(isEditing && game.Id == editingGameId)
+        {
+            <GameForm isEditing="true" OnCancel="StopEditing" Game="game" OnSubmit="SubmitGame" />
+        }
+        else
+        {
+            <tr>
+                <td>@game.Title</td>
+                <td>@game.Status</td>
+                <td>@game.Rating</td>
+                <td>@game.Notes</td>
+                <button class="btn btn-danger" @onclick="@(() => OnDelete.InvokeAsync(game))">Delete</button>
+                <button class="btn btn-primary" @onclick="@(() => StartEditing(game))">Edit</button>
+            </tr>
+        }      
     }
 </table>
 
 @code {
+
+    private bool isEditing = false;
+    private Guid editingGameId;
 
     [Parameter]
     public IReadOnlyList<Game> Games { get; set; } = [];
 
     [Parameter]
     public EventCallback<Game> OnDelete { get; set; }
+
+    [Parameter]
+    public EventCallback<Game> OnEdit { get; set; }
+
+    [Parameter]
+    public EventCallback<Game> OnSubmit { get; set; }
+
+    private void StartEditing(Game game)
+    {
+        isEditing = true;
+        editingGameId = game.Id;
+    }
+
+    private void StopEditing()
+    {
+        isEditing = false;
+        editingGameId = Guid.Empty;
+    }
+
+    private async Task SubmitGame(Game game)
+    {
+        await OnSubmit.InvokeAsync(game);
+        StopEditing();
+    }
 }

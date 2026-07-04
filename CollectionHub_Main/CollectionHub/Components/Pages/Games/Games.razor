@@ -4,9 +4,9 @@
 
 <h3>Games</h3>
 
-<GameTable Games="gameService.GetAll()" OnDelete="DeleteGame"/>
+<GameTable Games="gameService.GetAll()" OnDelete="DeleteGame" OnEdit="EditGame" OnSubmit="SubmitGame"/>
 
-<GameForm OnAdd="AddGame" />
+<GameForm OnSubmit="AddGame" Game="new()"/>
 
 
 @code {
@@ -24,4 +24,13 @@
         gameService.Add(game);
     }
 
+    private void EditGame(Game game)
+    {
+        gameService.Edit(game);
+    }
+
+    private void SubmitGame(Game game)
+    {
+        gameService.Update(game);
+    }
 }

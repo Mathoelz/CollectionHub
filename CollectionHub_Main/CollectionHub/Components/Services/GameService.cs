@@ -53,5 +53,31 @@
         {
             _games.Remove(game);
         }
+
+        public void Update(Game game)
+        {
+            var existingGame = _games.FirstOrDefault(g => g.Id == game.Id);
+            if (existingGame != null)
+            {
+                existingGame.Title = game.Title;
+                existingGame.Status = game.Status;
+                existingGame.Rating = game.Rating;
+                existingGame.Notes = game.Notes;
+            }
+        }
+        
+        public Game Edit(Game game)
+        {
+            Game editGame = new()
+            {
+                Id = game.Id,
+                Title = game.Title,
+                Status = game.Status,
+                Rating = game.Rating,
+                Notes = game.Notes
+            };
+
+            return editGame;
+        }
     }
 }
