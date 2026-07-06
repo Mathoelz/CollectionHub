@@ -47,6 +47,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Tiz/Documents/GitHub/CollectionHub/CollectionHub_Main/CollectionHub/Components/Pages/Games/GameEditRow.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xHYW1lc1xHYW1lRWRpdFJvdy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Tiz/Documents/GitHub/CollectionHub/CollectionHub_Main/CollectionHub/Components/Pages/Games/GameForm.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xHYW1lc1xHYW1lRm9ybS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

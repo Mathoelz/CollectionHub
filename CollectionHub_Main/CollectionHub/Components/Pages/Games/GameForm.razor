@@ -3,52 +3,60 @@
     <h3>Insert new game</h3>
 }
 
-<table class="table">
-    <tr style="font-weight:bold">
-        <td>Title</td>
-        <td>Status</td>
-        <td>Rating</td>
-        <td>Notes</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>
-            <InputText @bind-Value="Game.Title" />
-        </td>
-        <td>
-            <InputSelect @bind-Value="Game.Status">
-                @foreach (var status in Enum.GetValues<CollectionStatus>())
-                {
-                    <option value="@status">@status</option>
-                }
-            </InputSelect>
-        </td>
-        <td>
-            <InputSelect @bind-Value="Game.Rating">
-                @for (int i = 1; i <= 10; i++)
-                {
-                    <option value="@i">@i</option>
-                }
-            </InputSelect>
-        </td>
-        <td>
-            <InputText @bind-Value="Game.Notes" />
-        </td>
-        @if (isEditing)
-        {
+<EditForm Model="Game" OnValidSubmit="SubmitGame">
+
+    <DataAnnotationsValidator />
+
+    <table class="table">
+        <tr style="font-weight:bold">
+            <td>Title</td>
+            <td>Status</td>
+            <td>Rating</td>
+            <td>Notes</td>
+            <td></td>
+        </tr>
+        <tr>
             <td>
-                <button class="btn btn-primary" @onclick="OnCancel">Cancel</button>
-                <button class="btn btn-primary" @onclick="SubmitGame">Update</button>
+                <InputText class="form-control" @bind-Value="Game.Title" />
+                <ValidationMessage For="@(() => Game.Title)" />
             </td>
-        }
-        else
-        {
             <td>
-                <button class="btn btn-primary" @onclick="SubmitGame">Add</button>
+                <InputSelect class="form-select" @bind-Value="Game.Status">
+                    @foreach (var status in Enum.GetValues<CollectionStatus>())
+                    {
+                        <option value="@status">@status</option>
+                    }
+                </InputSelect>
             </td>
-        }
-    </tr>
-</table>
+            <td>
+                <InputSelect class="form-select" @bind-Value="Game.Rating">
+                    @for (int i = 1; i <= 10; i++)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </InputSelect>
+            </td>
+            <td>
+                <InputText class="form-control" @bind-Value="Game.Notes" />
+                <ValidationMessage For="@(() => Game.Notes)" />
+            </td>
+            @if (isEditing)
+            {
+                <td>
+                    <button class="btn btn-primary" @onclick="OnCancel">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Update</button>
+                </td>
+            }
+            else
+            {
+                <td>
+                    <button class="btn btn-primary" type="submit">Add</button>
+                </td>
+            }
+        </tr>
+    </table>
+
+</EditForm>
 
 @code {
 

@@ -1,0 +1,80 @@
+﻿
+<tr>
+    <td>
+        <InputText class="form-control" @bind-Value="Game.Title" />
+    </td>
+    <td>
+        <InputSelect class="form-select" @bind-Value="Game.Status">
+            @foreach (var status in Enum.GetValues<CollectionStatus>())
+            {
+                <option value="@status">@status</option>
+            }
+        </InputSelect>
+    </td>
+    <td>
+        <InputSelect class="form-select" @bind-Value="Game.Rating">
+            @for (int i = 1; i <= 10; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </InputSelect>
+    </td>
+    <td>
+        <InputText class="form-control" @bind-Value="Game.Notes" />
+    </td>
+    @if (isEditing)
+    {
+        <td>
+            <button class="btn btn-primary" @onclick="OnCancel">Cancel</button>
+            <button class="btn btn-primary" @onclick="SubmitGame">Update</button>
+        </td>
+    }
+    else
+    {
+        <td>
+            <button class="btn btn-primary" @onclick="SubmitGame">Add</button>
+        </td>
+    }
+</tr>
+
+
+@code {
+
+    [Parameter]
+    public bool isEditing { get; set; } = false;
+
+    [Parameter]
+    public EventCallback<Game> OnSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public Game Game { get; set; } = default!;
+
+    private async Task AddGame()
+    {
+        Game.Id = Guid.NewGuid();
+
+        await OnSubmit.InvokeAsync(Game);
+        Game = new Game
+        {
+            Status = CollectionStatus.Backlog,
+            Rating = 1
+        };
+    }
+
+    private async Task SubmitGame()
+    {
+        if (Game.Id != Guid.Empty)
+        {
+            await OnSubmit.InvokeAsync(Game);
+        }
+        else
+        {
+            await AddGame();
+        }
+    }
+
+}
+

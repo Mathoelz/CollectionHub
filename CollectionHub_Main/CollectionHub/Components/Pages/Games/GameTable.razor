@@ -9,7 +9,20 @@
     {
         if(isEditing && game.Id == editingGameId)
         {
-            <GameForm isEditing="true" OnCancel="StopEditing" Game="game" OnSubmit="SubmitGame" />
+            <GameEditRow isEditing="true" OnCancel="StopEditing" Game="game" OnSubmit="SubmitGame" />
+        }
+        else if(game.Id == deleteGameId)
+        {
+            <tr>
+                <td colspan="5">
+                    <div class="alert alert-danger" role="alert">
+                        Are you sure you want to delete <strong>@game.Title</strong>?
+                        <button class="btn btn-danger" @onclick="@(() => OnDelete.InvokeAsync(game))">Yes</button>
+                        <button class="btn btn-secondary" @onclick="@(() => deleteGameId = Guid.Empty)">No</button>
+                    </div>
+                </td>
+            </tr>
+            
         }
         else
         {
@@ -18,7 +31,7 @@
                 <td>@game.Status</td>
                 <td>@game.Rating</td>
                 <td>@game.Notes</td>
-                <button class="btn btn-danger" @onclick="@(() => OnDelete.InvokeAsync(game))">Delete</button>
+                <button class="btn btn-danger" @onclick="@(() => FlagGameForDeletion(game))">Delete</button>
                 <button class="btn btn-primary" @onclick="@(() => StartEditing(game))">Edit</button>
             </tr>
         }      
@@ -29,6 +42,7 @@
 
     private bool isEditing = false;
     private Guid editingGameId;
+    private Guid deleteGameId;
 
     [Parameter]
     public IReadOnlyList<Game> Games { get; set; } = [];
@@ -42,8 +56,18 @@
     [Parameter]
     public EventCallback<Game> OnSubmit { get; set; }
 
+    private void FlagGameForDeletion(Game game)
+    {
+        isEditing = false;
+        editingGameId = Guid.Empty;
+
+        deleteGameId = game.Id;
+    }
+
     private void StartEditing(Game game)
     {
+        deleteGameId = Guid.Empty;
+
         isEditing = true;
         editingGameId = game.Id;
     }
