@@ -4,8 +4,9 @@ using CollectionHub.Components.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddSingleton<IGameService, GameService>();
-builder.Services.AddSingleton<IAnimeService, AnimeService>();
+builder.Services.AddHttpClient<HelloApiService>();
+builder.Services.AddHttpClient<IGameService, GameApiService>();
+builder.Services.AddSingleton<IAnimeService, AnimeApiService>();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 

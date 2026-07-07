@@ -1,3 +1,9 @@
 <Solution>
-  <Project Path="CollectionHub/CollectionHub.csproj" />
+  <Project Path="../CollectionHub_AzureFunc/AzureCollecionHub/AzureCollecionHub/CollectionHub.Functions.csproj">
+    <BuildDependency Project="../CollectionHub_Shared/CollectionHub.Shared/CollectionHub.Shared/CollectionHub.Shared.csproj" />
+  </Project>
+  <Project Path="../CollectionHub_Shared/CollectionHub.Shared/CollectionHub.Shared/CollectionHub.Shared.csproj" />
+  <Project Path="CollectionHub/CollectionHub.csproj">
+    <BuildDependency Project="../CollectionHub_Shared/CollectionHub.Shared/CollectionHub.Shared/CollectionHub.Shared.csproj" />
+  </Project>
 </Solution>

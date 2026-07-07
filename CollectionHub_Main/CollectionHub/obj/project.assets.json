@@ -11,6 +11,16 @@
         "buildMultiTargeting": {
           "buildMultiTargeting/Microsoft.AspNetCore.App.Internal.Assets.targets": {}
         }
+      },
+      "CollectionHub.Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/CollectionHub.Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CollectionHub.Shared.dll": {}
+        }
       }
     }
   },
@@ -37,10 +47,16 @@
         "microsoft.aspnetcore.app.internal.assets.10.0.9.nupkg.sha512",
         "microsoft.aspnetcore.app.internal.assets.nuspec"
       ]
+    },
+    "CollectionHub.Shared/1.0.0": {
+      "type": "project",
+      "path": "../../CollectionHub_Shared/CollectionHub.Shared/CollectionHub.Shared/CollectionHub.Shared.csproj",
+      "msbuildProject": "../../CollectionHub_Shared/CollectionHub.Shared/CollectionHub.Shared/CollectionHub.Shared.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
+      "CollectionHub.Shared >= 1.0.0",
       "Microsoft.AspNetCore.App.Internal.Assets >= 10.0.9"
     ]
   },
@@ -77,7 +93,11 @@
         "net10.0": {
           "framework": "net10.0",
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Shared\\CollectionHub.Shared\\CollectionHub.Shared\\CollectionHub.Shared.csproj": {
+              "projectPath": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Shared\\CollectionHub.Shared\\CollectionHub.Shared\\CollectionHub.Shared.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

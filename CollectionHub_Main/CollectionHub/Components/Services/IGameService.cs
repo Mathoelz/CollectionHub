@@ -1,11 +1,14 @@
-﻿namespace CollectionHub.Components.Services
+﻿using CollectionHub.Shared.Dtos;
+
+namespace CollectionHub.Components.Services
 {
     public interface IGameService
     {
-        IReadOnlyList<Game> GetAll();
-        void Add(Game game);
-        void Delete(Game game);
-        void Update(Game game);
-        Game Edit(Game game);
+        Task<List<GameDto>> GetGamesAsync();
+        IReadOnlyList<GameDto> GetAll();
+        void Add(GameDto game);
+        void Delete(GameDto game);
+        void Update(GameDto game);
+        GameDto Edit(GameDto game);
     }
 }

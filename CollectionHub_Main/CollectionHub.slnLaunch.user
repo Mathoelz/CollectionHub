@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Neues Profil",
+    "Projects": [
+      {
+        "Path": "CollectionHub\\CollectionHub.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

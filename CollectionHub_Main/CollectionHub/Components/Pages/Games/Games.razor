@@ -1,35 +1,43 @@
 ﻿@using CollectionHub.Components.Services
+@using CollectionHub.Shared.Dtos
 @page "/"
 
 
 <h3>Games</h3>
 
-<GameTable Games="gameService.GetAll()" OnDelete="DeleteGame" OnEdit="EditGame" OnSubmit="SubmitGame"/>
+<GameTable Games="games" OnDelete="DeleteGame" OnEdit="EditGame" OnSubmit="SubmitGame"/>
 
 <GameForm OnSubmit="AddGame" Game="new()"/>
 
 
 @code {
 
+    private List<GameDto> games = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        games = await gameService.GetGamesAsync();
+    }
+
     [Inject]
     public IGameService gameService { get; set; } = default!;
 
-    private void DeleteGame(Game game)
+    private void DeleteGame(GameDto game)
     {
         gameService.Delete(game);
     }
 
-    private void AddGame(Game game)
+    private void AddGame(GameDto game)
     {
         gameService.Add(game);
     }
 
-    private void EditGame(Game game)
+    private void EditGame(GameDto game)
     {
         gameService.Edit(game);
     }
 
-    private void SubmitGame(Game game)
+    private void SubmitGame(GameDto game)
     {
         gameService.Update(game);
     }

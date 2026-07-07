@@ -1,4 +1,6 @@
-﻿<table class="table">
+﻿@using CollectionHub.Shared.Dtos
+
+<table class="table">
     <tr style="font-weight:bold;">
         <td>Title</td>
         <td>Status</td>
@@ -45,18 +47,18 @@
     private Guid deleteGameId;
 
     [Parameter]
-    public IReadOnlyList<Game> Games { get; set; } = [];
+    public IReadOnlyList<GameDto> Games { get; set; } = [];
 
     [Parameter]
-    public EventCallback<Game> OnDelete { get; set; }
+    public EventCallback<GameDto> OnDelete { get; set; }
 
     [Parameter]
-    public EventCallback<Game> OnEdit { get; set; }
+    public EventCallback<GameDto> OnEdit { get; set; }
 
     [Parameter]
-    public EventCallback<Game> OnSubmit { get; set; }
+    public EventCallback<GameDto> OnSubmit { get; set; }
 
-    private void FlagGameForDeletion(Game game)
+    private void FlagGameForDeletion(GameDto game)
     {
         isEditing = false;
         editingGameId = Guid.Empty;
@@ -64,7 +66,7 @@
         deleteGameId = game.Id;
     }
 
-    private void StartEditing(Game game)
+    private void StartEditing(GameDto game)
     {
         deleteGameId = Guid.Empty;
 
@@ -78,7 +80,7 @@
         editingGameId = Guid.Empty;
     }
 
-    private async Task SubmitGame(Game game)
+    private async Task SubmitGame(GameDto game)
     {
         await OnSubmit.InvokeAsync(game);
         StopEditing();

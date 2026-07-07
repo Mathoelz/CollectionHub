@@ -1,10 +1,10 @@
 ﻿namespace CollectionHub.Components.Services
 {
-    public class AnimeService : IAnimeService
+    public class AnimeApiService : IAnimeService
     {
         private readonly List<Anime> _animes = new List<Anime>();
 
-        public AnimeService()
+        public AnimeApiService()
         {
             _animes = new List<Anime>
             {
