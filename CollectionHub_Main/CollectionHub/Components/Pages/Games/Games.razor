@@ -5,7 +5,7 @@
 
 <h3>Games</h3>
 
-<GameTable Games="games" OnDelete="DeleteGame" OnEdit="EditGame" OnSubmit="SubmitGame"/>
+<GameTable Games="games" OnDelete="DeleteGame" OnEdit="GetGame" OnSubmit="SubmitGame"/>
 
 <GameForm OnSubmit="AddGame" Game="new()"/>
 
@@ -16,29 +16,33 @@
 
     protected override async Task OnInitializedAsync()
     {
-        games = await gameService.GetGamesAsync();
+        games = await gameApiService.GetGamesAsync();
     }
 
     [Inject]
-    public IGameService gameService { get; set; } = default!;
+    public IGameApiService gameApiService { get; set; } = default!;
 
-    private void DeleteGame(GameDto game)
+    private async Task DeleteGame(GameDto game)
     {
-        gameService.Delete(game);
+        await gameApiService.DeleteGameAsync(game);
+        games = await gameApiService.GetGamesAsync();
     }
 
-    private void AddGame(GameDto game)
+    private async Task AddGame(GameDto game)
     {
-        gameService.Add(game);
+        await gameApiService.PostGameAsync(game);
+        games = await gameApiService.GetGamesAsync();
     }
 
-    private void EditGame(GameDto game)
+    private async Task GetGame(GameDto game)
     {
-        gameService.Edit(game);
+        await gameApiService.GetGameAsync(game);
+        games = await gameApiService.GetGamesAsync();
     }
 
-    private void SubmitGame(GameDto game)
+    private async Task SubmitGame(GameDto game)
     {
-        gameService.Update(game);
+        await gameApiService.UpdateGameAsync(game);
+        games = await gameApiService.GetGamesAsync();
     }
 }

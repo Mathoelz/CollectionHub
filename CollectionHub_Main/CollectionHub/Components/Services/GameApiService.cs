@@ -1,9 +1,10 @@
 ﻿using CollectionHub.Shared.Dtos;
+using System.Net;
 using System.Text.Json;
 
 namespace CollectionHub.Components.Services
 {
-    public class GameApiService: IGameService
+    public class GameApiService: IGameApiService
     {
         private readonly HttpClient _httpClient;
 
@@ -18,53 +19,48 @@ namespace CollectionHub.Components.Services
 
         }
 
-        public IReadOnlyList<GameDto> Games => _games;
-
-        public IReadOnlyList<GameDto> GetAll()
-        {
-            return _games;
-        }
-
-        public void Add(GameDto game)
-        {
-            _games.Add(game);
-        }
-
-        public void Delete(GameDto game) 
-        {
-            _games.Remove(game);
-        }
-
-        public void Update(GameDto game)
-        {
-            var existingGame = _games.FirstOrDefault(g => g.Id == game.Id);
-            if (existingGame != null)
-            {
-                existingGame.Title = game.Title;
-                existingGame.Status = game.Status;
-                existingGame.Rating = game.Rating;
-                existingGame.Notes = game.Notes;
-            }
-        }
-        
-        public GameDto Edit(GameDto game)
-        {
-            GameDto editGame = new()
-            {
-                Id = game.Id,
-                Title = game.Title,
-                Status = game.Status,
-                Rating = game.Rating,
-                Notes = game.Notes
-            };
-
-            return editGame;
-        }
-
         public async Task<List<GameDto>> GetGamesAsync()
         {
             return await _httpClient.GetFromJsonAsync<List<GameDto>>("api/GetGames")
                    ?? [];
+        }
+
+        public async Task<GameDto> PostGameAsync(GameDto game)
+        {
+            return await _httpClient.PostAsJsonAsync("api/PostGame", game)
+                .ContinueWith(async responseTask =>
+                {
+                    var response = await responseTask;
+                    response.EnsureSuccessStatusCode();
+                    return await response.Content.ReadFromJsonAsync<GameDto>();
+                }).Unwrap() ?? new GameDto();
+        }
+
+        public async Task<HttpStatusCode> DeleteGameAsync(GameDto game)
+        {
+            return await _httpClient.DeleteAsync($"api/DeleteGame/{game.Id}")
+                .ContinueWith(async responseTask =>
+                {
+                    var response = await responseTask;
+                    return response.StatusCode;
+                }).Unwrap();
+        }
+
+        public async Task<GameDto> UpdateGameAsync(GameDto game)
+        {
+            return await _httpClient.PutAsJsonAsync("api/UpdateGame", game)
+                .ContinueWith(async responseTask =>
+                {
+                    var response = await responseTask;
+                    response.EnsureSuccessStatusCode();
+                    return await response.Content.ReadFromJsonAsync<GameDto>();
+                }).Unwrap() ?? new GameDto();
+        }
+
+        public async Task<GameDto> GetGameAsync(GameDto game)
+        {
+            return await _httpClient.GetFromJsonAsync<GameDto>($"api/GetGame/{game.Id}")
+                   ?? new GameDto();
         }
     }
 }

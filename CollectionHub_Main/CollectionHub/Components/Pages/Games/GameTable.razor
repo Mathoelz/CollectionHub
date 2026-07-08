@@ -19,7 +19,7 @@
                 <td colspan="5">
                     <div class="alert alert-danger" role="alert">
                         Are you sure you want to delete <strong>@game.Title</strong>?
-                        <button class="btn btn-danger" @onclick="@(() => OnDelete.InvokeAsync(game))">Yes</button>
+                        <button class="btn btn-danger" @onclick="@(() => DeleteGame(game))">Yes</button>
                         <button class="btn btn-secondary" @onclick="@(() => deleteGameId = Guid.Empty)">No</button>
                     </div>
                 </td>
@@ -84,5 +84,11 @@
     {
         await OnSubmit.InvokeAsync(game);
         StopEditing();
+    }
+
+    private async Task DeleteGame(GameDto game)
+    {
+        await OnDelete.InvokeAsync(game);
+        deleteGameId = Guid.Empty;
     }
 }

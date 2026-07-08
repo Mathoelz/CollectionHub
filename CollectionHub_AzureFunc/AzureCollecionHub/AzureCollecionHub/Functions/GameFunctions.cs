@@ -1,8 +1,11 @@
-﻿using CollectionHub.Shared.Dtos;
+﻿using CollectionHub.Functions.Services;
+using CollectionHub.Shared.Dtos;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 
 namespace CollectionHub.Functions.Functions
@@ -10,10 +13,12 @@ namespace CollectionHub.Functions.Functions
     public class GameFunctions
     {
         private readonly ILogger<GameFunctions> _logger;
+        private readonly IGameService _gameService;
 
-        public GameFunctions(ILogger<GameFunctions> logger)
+        public GameFunctions(ILogger<GameFunctions> logger, IGameService gameService)
         {
             _logger = logger;
+            _gameService = gameService;
         }
 
         [Function("GetGames")]
@@ -21,73 +26,62 @@ namespace CollectionHub.Functions.Functions
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            List<GameDto> _games =
-                [
-                new()
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "Persona 5 Royal",
-                    Status = CollectionStatus.Completed,
-                    Rating = 10,
-                    Notes = "One of my all-time favorites."
-                },
+            return new OkObjectResult(_gameService.GetAll());
+        }
 
-                new()
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "The Legend of Zelda: Tears of the Kingdom",
-                    Status = CollectionStatus.Completed,
-                    Rating = 10,
-                    Notes = "Fantastic exploration and gameplay."
-                },
+        [Function("GetGame")]
+        public IActionResult GetGame([HttpTrigger(AuthorizationLevel.Function, "get", Route = "GetGame/{gameId}")] HttpRequest req, Guid gameId)
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
+            // Here you would typically retrieve the game from a database or in-memory collection using the gameId.
+            // For this example, we'll just create a dummy game and return it.
+            return new OkObjectResult(_gameService.GetById(gameId));
+        }
 
-                new()
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "NieR: Automata",
-                    Status = CollectionStatus.Completed,
-                    Rating = 10,
-                    Notes = "Amazing story and soundtrack."
-                },
+        [Function("PostGames")]
+        public async Task<IActionResult> PostGame([HttpTrigger(AuthorizationLevel.Function, "post", Route = "PostGame")] HttpRequest req)
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
+            GameDto newGame = await req.ReadFromJsonAsync<GameDto>();
+            // Here you would typically save the new game to a database or in-memory collection.
+            // For this example, we'll just log the new game and return it.
+            if(newGame != null)
+            {
+                _gameService.Add(newGame);
+                _logger.LogInformation($"New game added: {newGame.Title}");
+            }
 
-                new()
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "Clair Obscur: Expedition 33",
-                    Status = CollectionStatus.Playing,
-                    Rating = 10,
-                    Notes = "Absolutely amazing so far."
-                },
+            return new OkObjectResult(newGame);
+        }
 
-                new()
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "Hollow Knight",
-                    Status = CollectionStatus.Backlog,
-                    Rating = null,
-                    Notes = "Need to finally start it."
-                },
+        [Function("UpdateGames")]
+        public async Task<IActionResult> UpdateGame([HttpTrigger(AuthorizationLevel.Function, "put", Route = "UpdateGame")] HttpRequest req)
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
+            GameDto updatedGame = await req.ReadFromJsonAsync<GameDto>();
+            // Here you would typically update the game in a database or in-memory collection.
+            // For this example, we'll just log the updated game and return it.
+            if(updatedGame != null)
+            {
+                _gameService.Update(updatedGame);
+                _logger.LogInformation($"Game updated: {updatedGame.Title}");
+            }
+            _gameService.Update(updatedGame);
+            _logger.LogInformation($"Game updated: {updatedGame.Title}");
+            return new OkObjectResult(updatedGame);
+        }
 
-                new()
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "Metaphor: ReFantazio",
-                    Status = CollectionStatus.Backlog,
-                    Rating = null,
-                    Notes = "Looking forward to playing it."
-                },
+        [Function("DeleteGames")]
+        public async Task<IActionResult> DeleteGame([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "DeleteGame/{gameId}")] HttpRequest req, Guid gameId)
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
+            // Here you would typically delete the game from a database or in-memory collection.
+            // For this example, we'll just log the deleted game and return a success message.
 
-                new()
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "Elden Ring",
-                    Status = CollectionStatus.Backlog,
-                    Rating = null,
-                    Notes = "Still waiting for the right moment."
-                }
-            ];
-
-            return new OkObjectResult(_games);
+            _gameService.Delete(gameId);
+            _logger.LogInformation($"Game deleted: {gameId}");
+            
+            return new OkObjectResult($"Game '{gameId}' deleted successfully.");
         }
     }
 }

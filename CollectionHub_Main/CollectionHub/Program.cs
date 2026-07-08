@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddHttpClient<HelloApiService>();
-builder.Services.AddHttpClient<IGameService, GameApiService>();
+builder.Services.AddHttpClient<IGameApiService, GameApiService>();
 builder.Services.AddSingleton<IAnimeService, AnimeApiService>();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
