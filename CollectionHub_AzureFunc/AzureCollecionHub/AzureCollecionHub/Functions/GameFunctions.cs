@@ -22,7 +22,7 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("GetGames")]
-        public IActionResult GetGames([HttpTrigger(AuthorizationLevel.Function, "get", Route = "GetGames")] HttpRequest req)
+        public IActionResult GetGames([HttpTrigger(AuthorizationLevel.Function, "get", Route = "games")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -30,7 +30,7 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("GetGame")]
-        public IActionResult GetGame([HttpTrigger(AuthorizationLevel.Function, "get", Route = "GetGame/{gameId}")] HttpRequest req, Guid gameId)
+        public IActionResult GetGame([HttpTrigger(AuthorizationLevel.Function, "get", Route = "games/{gameId}")] HttpRequest req, Guid gameId)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             // Here you would typically retrieve the game from a database or in-memory collection using the gameId.
@@ -39,7 +39,7 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("PostGames")]
-        public async Task<IActionResult> PostGame([HttpTrigger(AuthorizationLevel.Function, "post", Route = "PostGame")] HttpRequest req)
+        public async Task<IActionResult> PostGame([HttpTrigger(AuthorizationLevel.Function, "post", Route = "games")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             GameDto newGame = await req.ReadFromJsonAsync<GameDto>();
@@ -55,7 +55,7 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("UpdateGames")]
-        public async Task<IActionResult> UpdateGame([HttpTrigger(AuthorizationLevel.Function, "put", Route = "UpdateGame")] HttpRequest req)
+        public async Task<IActionResult> UpdateGame([HttpTrigger(AuthorizationLevel.Function, "put", Route = "games")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             GameDto updatedGame = await req.ReadFromJsonAsync<GameDto>();
@@ -72,7 +72,7 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("DeleteGames")]
-        public async Task<IActionResult> DeleteGame([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "DeleteGame/{gameId}")] HttpRequest req, Guid gameId)
+        public async Task<IActionResult> DeleteGame([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "games/{gameId}")] HttpRequest req, Guid gameId)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             // Here you would typically delete the game from a database or in-memory collection.

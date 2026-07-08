@@ -2,7 +2,7 @@
 
 namespace CollectionHub.Functions.Services
 {
-    public class GameService : IGameService
+    public class LocalGameService : IGameService
     {
         private List<GameDto> _games =
         [
