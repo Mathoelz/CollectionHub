@@ -21,13 +21,13 @@ namespace CollectionHub.Components.Services
 
         public async Task<List<GameDto>> GetGamesAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<GameDto>>("api/GetGames")
+            return await _httpClient.GetFromJsonAsync<List<GameDto>>("api/games")
                    ?? [];
         }
 
         public async Task<GameDto> PostGameAsync(GameDto game)
         {
-            return await _httpClient.PostAsJsonAsync("api/PostGame", game)
+            return await _httpClient.PostAsJsonAsync("api/games", game)
                 .ContinueWith(async responseTask =>
                 {
                     var response = await responseTask;
@@ -38,7 +38,7 @@ namespace CollectionHub.Components.Services
 
         public async Task<HttpStatusCode> DeleteGameAsync(GameDto game)
         {
-            return await _httpClient.DeleteAsync($"api/DeleteGame/{game.Id}")
+            return await _httpClient.DeleteAsync($"api/games/{game.Id}")
                 .ContinueWith(async responseTask =>
                 {
                     var response = await responseTask;
@@ -48,7 +48,7 @@ namespace CollectionHub.Components.Services
 
         public async Task<GameDto> UpdateGameAsync(GameDto game)
         {
-            return await _httpClient.PutAsJsonAsync("api/UpdateGame", game)
+            return await _httpClient.PutAsJsonAsync("api/games", game)
                 .ContinueWith(async responseTask =>
                 {
                     var response = await responseTask;
@@ -59,7 +59,7 @@ namespace CollectionHub.Components.Services
 
         public async Task<GameDto> GetGameAsync(GameDto game)
         {
-            return await _httpClient.GetFromJsonAsync<GameDto>($"api/GetGame/{game.Id}")
+            return await _httpClient.GetFromJsonAsync<GameDto>($"api/games/{game.Id}")
                    ?? new GameDto();
         }
     }
