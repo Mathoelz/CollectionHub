@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<IGameService, LocalGameService>();
+builder.Services.AddSingleton<IGameService, CosmosDbGameService>();
 builder.ConfigureFunctionsWebApplication();
 
 // Application Insights isn't enabled by default. See https://aka.ms/AAt8mw4.

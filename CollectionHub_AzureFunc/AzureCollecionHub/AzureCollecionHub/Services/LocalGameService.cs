@@ -70,17 +70,17 @@ namespace CollectionHub.Functions.Services
                 }
     ];
 
-        public List<GameDto> GetAll()
+        public async Task<List<GameDto>> GetAll()
         {
             return _games;
         }
 
-        public GameDto GetById(Guid id)
+        public async Task<GameDto> GetById(Guid id)
         {
             return _games.FirstOrDefault(g => g.Id == id) ?? new GameDto();
         }
 
-        public void Update(GameDto game)
+        public async Task Update(GameDto game)
         {
             var existingGame = _games.FirstOrDefault(g => g.Id == game.Id);
             if (existingGame != null)
@@ -92,7 +92,7 @@ namespace CollectionHub.Functions.Services
             }
         }
 
-        public GameDto Edit(GameDto game)
+        public async Task<GameDto> Edit(GameDto game)
         {
             GameDto editGame = new()
             {
@@ -106,7 +106,7 @@ namespace CollectionHub.Functions.Services
             return editGame;
         }
 
-        public void Delete(Guid id)
+        public async Task Delete(Guid id)
         {
             var delete = _games.FirstOrDefault(g => g.Id == id);
 
@@ -114,7 +114,7 @@ namespace CollectionHub.Functions.Services
                 _games.Remove(delete);
         }
 
-        public void Add(GameDto game)
+        public async Task Add(GameDto game)
         {
             _games.Add(game);
         }

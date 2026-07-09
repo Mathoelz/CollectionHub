@@ -9,11 +9,11 @@ namespace CollectionHub.Functions.Services
 {
     public interface IGameService
     {
-        public List<GameDto> GetAll();
-        public GameDto GetById(Guid id);
-        public void Update(GameDto game);
-        public GameDto Edit(GameDto game);
-        public void Delete(Guid id);
-        public void Add(GameDto game);
+        public Task<List<GameDto>> GetAll();
+        public Task<GameDto> GetById(Guid id);
+        public Task Update(GameDto game);
+        public Task<GameDto> Edit(GameDto game);
+        public Task Delete(Guid id);
+        public Task Add(GameDto game);
     }
 }

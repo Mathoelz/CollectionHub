@@ -22,20 +22,20 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("GetGames")]
-        public IActionResult GetGames([HttpTrigger(AuthorizationLevel.Function, "get", Route = "games")] HttpRequest req)
+        public async Task<IActionResult> GetGames([HttpTrigger(AuthorizationLevel.Function, "get", Route = "games")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            return new OkObjectResult(_gameService.GetAll());
+            return new OkObjectResult(await _gameService.GetAll());
         }
 
         [Function("GetGame")]
-        public IActionResult GetGame([HttpTrigger(AuthorizationLevel.Function, "get", Route = "games/{gameId}")] HttpRequest req, Guid gameId)
+        public async Task<IActionResult> GetGame([HttpTrigger(AuthorizationLevel.Function, "get", Route = "games/{gameId}")] HttpRequest req, Guid gameId)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             // Here you would typically retrieve the game from a database or in-memory collection using the gameId.
             // For this example, we'll just create a dummy game and return it.
-            return new OkObjectResult(_gameService.GetById(gameId));
+            return new OkObjectResult(await _gameService.GetById(gameId));
         }
 
         [Function("PostGames")]
@@ -47,7 +47,7 @@ namespace CollectionHub.Functions.Functions
             // For this example, we'll just log the new game and return it.
             if(newGame != null)
             {
-                _gameService.Add(newGame);
+                await _gameService.Add(newGame);
                 _logger.LogInformation($"New game added: {newGame.Title}");
             }
 
@@ -63,11 +63,9 @@ namespace CollectionHub.Functions.Functions
             // For this example, we'll just log the updated game and return it.
             if(updatedGame != null)
             {
-                _gameService.Update(updatedGame);
+                await _gameService.Update(updatedGame);
                 _logger.LogInformation($"Game updated: {updatedGame.Title}");
             }
-            _gameService.Update(updatedGame);
-            _logger.LogInformation($"Game updated: {updatedGame.Title}");
             return new OkObjectResult(updatedGame);
         }
 
@@ -78,7 +76,7 @@ namespace CollectionHub.Functions.Functions
             // Here you would typically delete the game from a database or in-memory collection.
             // For this example, we'll just log the deleted game and return a success message.
 
-            _gameService.Delete(gameId);
+            await _gameService.Delete(gameId);
             _logger.LogInformation($"Game deleted: {gameId}");
             
             return new OkObjectResult($"Game '{gameId}' deleted successfully.");
