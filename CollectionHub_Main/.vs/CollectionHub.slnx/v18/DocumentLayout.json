@@ -3,27 +3,30 @@
   "WorkspaceRootPath": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A328787B-D0D2-64BF-4403-FD4FE67E0BAC}|..\\CollectionHub_Shared\\CollectionHub.Shared\\CollectionHub.Shared\\CollectionHub.Shared.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_shared\\collectionhub.shared\\collectionhub.shared\\dtos\\gamedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{935BA273-C6C4-D88A-4245-27A5B46A9138}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\services\\igdbservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{935BA273-C6C4-D88A-4245-27A5B46A9138}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\services\\cosmosdbgameservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{935BA273-C6C4-D88A-4245-27A5B46A9138}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A328787B-D0D2-64BF-4403-FD4FE67E0BAC}|..\\CollectionHub_Shared\\CollectionHub.Shared\\CollectionHub.Shared\\CollectionHub.Shared.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_shared\\collectionhub.shared\\collectionhub.shared\\dtos\\twitchauthdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{935BA273-C6C4-D88A-4245-27A5B46A9138}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\functions\\gamefunctions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{00D72A15-F378-B5E9-53C5-CD10D55D3BC4}|CollectionHub\\CollectionHub.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_main\\collectionhub\\components\\services\\gameapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{00D72A15-F378-B5E9-53C5-CD10D55D3BC4}|CollectionHub\\CollectionHub.csproj|solutionrelative:collectionhub\\components\\services\\gameapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A328787B-D0D2-64BF-4403-FD4FE67E0BAC}|..\\CollectionHub_Shared\\CollectionHub.Shared\\CollectionHub.Shared\\CollectionHub.Shared.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_shared\\collectionhub.shared\\collectionhub.shared\\dtos\\gamedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{935BA273-C6C4-D88A-4245-27A5B46A9138}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\local.settings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{00D72A15-F378-B5E9-53C5-CD10D55D3BC4}|CollectionHub\\CollectionHub.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_main\\collectionhub\\components\\pages\\games\\games.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{00D72A15-F378-B5E9-53C5-CD10D55D3BC4}|CollectionHub\\CollectionHub.csproj|solutionrelative:collectionhub\\components\\pages\\games\\games.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{935BA273-C6C4-D88A-4245-27A5B46A9138}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\services\\igameservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{935BA273-C6C4-D88A-4245-27A5B46A9138}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\functions\\gamefunctions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{00D72A15-F378-B5E9-53C5-CD10D55D3BC4}|CollectionHub\\CollectionHub.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_main\\collectionhub\\components\\pages\\games\\gameform.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -52,33 +55,46 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
+              "Title": "local.settings.json",
+              "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\local.settings.json",
+              "RelativeDocumentMoniker": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\local.settings.json",
+              "ToolTip": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\local.settings.json",
+              "RelativeToolTip": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\local.settings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-07-09T22:36:19.54Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "GameDto.cs",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Shared\\CollectionHub.Shared\\CollectionHub.Shared\\Dtos\\GameDto.cs",
               "RelativeDocumentMoniker": "..\\CollectionHub_Shared\\CollectionHub.Shared\\CollectionHub.Shared\\Dtos\\GameDto.cs",
               "ToolTip": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Shared\\CollectionHub.Shared\\CollectionHub.Shared\\Dtos\\GameDto.cs",
               "RelativeToolTip": "..\\CollectionHub_Shared\\CollectionHub.Shared\\CollectionHub.Shared\\Dtos\\GameDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAfAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-09T19:48:01.922Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "GameApiService.cs",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Components\\Services\\GameApiService.cs",
               "RelativeDocumentMoniker": "CollectionHub\\Components\\Services\\GameApiService.cs",
               "ToolTip": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Components\\Services\\GameApiService.cs",
               "RelativeToolTip": "CollectionHub\\Components\\Services\\GameApiService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAABHAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-09T18:37:27.036Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "Games.razor",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Components\\Pages\\Games\\Games.razor",
               "RelativeDocumentMoniker": "CollectionHub\\Components\\Pages\\Games\\Games.razor",
@@ -91,7 +107,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "LocalGameService.cs",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\LocalGameService.cs",
               "RelativeDocumentMoniker": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\LocalGameService.cs",
@@ -104,7 +120,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "GameTable.razor",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Components\\Pages\\Games\\GameTable.razor",
               "RelativeDocumentMoniker": "CollectionHub\\Components\\Pages\\Games\\GameTable.razor",
@@ -117,7 +133,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Program.cs",
               "RelativeDocumentMoniker": "CollectionHub\\Program.cs",
@@ -136,59 +152,59 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "IGameService.cs",
-              "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\IGameService.cs",
-              "RelativeDocumentMoniker": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\IGameService.cs",
-              "ToolTip": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\IGameService.cs",
-              "RelativeToolTip": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\IGameService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAATAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "TwitchAuthDto.cs",
+              "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Shared\\CollectionHub.Shared\\CollectionHub.Shared\\Dtos\\TwitchAuthDto.cs",
+              "RelativeDocumentMoniker": "..\\CollectionHub_Shared\\CollectionHub.Shared\\CollectionHub.Shared\\Dtos\\TwitchAuthDto.cs",
+              "ToolTip": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Shared\\CollectionHub.Shared\\CollectionHub.Shared\\Dtos\\TwitchAuthDto.cs",
+              "RelativeToolTip": "..\\CollectionHub_Shared\\CollectionHub.Shared\\CollectionHub.Shared\\Dtos\\TwitchAuthDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-09T18:11:01.532Z",
+              "WhenOpened": "2026-07-09T23:41:02.132Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
+              "Title": "IGdbService.cs",
+              "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\IGdbService.cs",
+              "RelativeDocumentMoniker": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\IGdbService.cs",
+              "ToolTip": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\IGdbService.cs",
+              "RelativeToolTip": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\IGdbService.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAkwEwAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-09T21:19:42.463Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "CosmosDbGameService.cs",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\CosmosDbGameService.cs",
               "RelativeDocumentMoniker": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\CosmosDbGameService.cs",
               "ToolTip": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\CosmosDbGameService.cs",
               "RelativeToolTip": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\CosmosDbGameService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAADcAAAAAAAAAAAAcwB8AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-09T17:18:34.946Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Program.cs",
-              "RelativeDocumentMoniker": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Program.cs",
-              "ToolTip": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Program.cs",
-              "RelativeToolTip": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA7AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-08T20:10:03.988Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 4,
               "Title": "GameFunctions.cs",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Functions\\GameFunctions.cs",
               "RelativeDocumentMoniker": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Functions\\GameFunctions.cs",
               "ToolTip": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Functions\\GameFunctions.cs",
               "RelativeToolTip": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Functions\\GameFunctions.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAxAAAAAAAAAA==",
+              "ViewState": "AgIAAC8AAAAAAAAAAAAIwFsAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-07T20:33:47.478Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "GameForm.razor",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Components\\Pages\\Games\\GameForm.razor",
               "RelativeDocumentMoniker": "CollectionHub\\Components\\Pages\\Games\\GameForm.razor",

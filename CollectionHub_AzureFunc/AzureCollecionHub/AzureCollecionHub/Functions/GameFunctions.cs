@@ -14,11 +14,13 @@ namespace CollectionHub.Functions.Functions
     {
         private readonly ILogger<GameFunctions> _logger;
         private readonly IGameService _gameService;
+        private readonly IGdbService _igdbService;
 
-        public GameFunctions(ILogger<GameFunctions> logger, IGameService gameService)
+        public GameFunctions(ILogger<GameFunctions> logger, IGameService gameService, IGdbService igdbService)
         {
             _logger = logger;
             _gameService = gameService;
+            _igdbService = igdbService;
         }
 
         [Function("GetGames")]
@@ -80,6 +82,14 @@ namespace CollectionHub.Functions.Functions
             _logger.LogInformation($"Game deleted: {gameId}");
             
             return new OkObjectResult($"Game '{gameId}' deleted successfully.");
+        }
+
+        [Function("SearchGames")]
+        public async Task<IActionResult> SearchGame([HttpTrigger(AuthorizationLevel.Function, "get", Route = "search/{gameId}")] HttpRequest req, Guid gameId)
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
+
+            return new OkObjectResult(null);
         }
     }
 }
