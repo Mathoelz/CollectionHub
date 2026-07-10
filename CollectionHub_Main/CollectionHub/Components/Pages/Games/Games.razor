@@ -5,12 +5,30 @@
 
 <h3>Games</h3>
 
+<input type="text" class="form-control search-input" placeholder="Search..." @bind-value="_searchText" @bind-value:event="oninput" />
+
+<button class="btn btn-primary" @onclick="@(() => SearchGames(_searchText))">Search</button>
+
+<table>   
+    @foreach (var game in _searchGames)
+    {    
+      <tr>
+        <td><span>@game.Name</span></td>
+        <td><button class="btn btn-primary" @onclick="@(() => AddTwitchGame(game))">Add Game</button></td>
+      </tr>  
+    }
+</table>
+
+
 <GameTable Games="games" OnDelete="DeleteGame" OnEdit="GetGame" OnSubmit="SubmitGame"/>
 
 <GameForm OnSubmit="AddGame" Game="new()"/>
 
 
 @code {
+
+    private string _searchText = "";
+    private List<IgdbGameDto> _searchGames = new();
 
     private List<GameDto> games = [];
 
@@ -26,6 +44,20 @@
     {
         await gameApiService.DeleteGameAsync(game);
         games = await gameApiService.GetGamesAsync();
+    }
+
+    private async Task AddTwitchGame(IgdbGameDto game)
+    {
+        var gameDto = new GameDto
+            {
+                Id = Guid.NewGuid(),
+                Title = game.Name,
+                Status = CollectionStatus.Backlog,
+                Rating = (int)Math.Round(game.Rating, 1),
+                Notes = game.Summary
+            };
+
+        await AddGame(gameDto);
     }
 
     private async Task AddGame(GameDto game)
@@ -44,5 +76,11 @@
     {
         await gameApiService.UpdateGameAsync(game);
         games = await gameApiService.GetGamesAsync();
+    }
+
+    private async Task SearchGames(string gameName)
+    {
+        _searchGames = await gameApiService.SearchGames(gameName);
+        await InvokeAsync(StateHasChanged);
     }
 }

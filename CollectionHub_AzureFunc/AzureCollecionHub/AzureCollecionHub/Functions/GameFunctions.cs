@@ -85,11 +85,11 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("SearchGames")]
-        public async Task<IActionResult> SearchGame([HttpTrigger(AuthorizationLevel.Function, "get", Route = "search/{gameId}")] HttpRequest req, Guid gameId)
+        public async Task<IActionResult> SearchGame([HttpTrigger(AuthorizationLevel.Function, "get", Route = "search/{gameName}")] HttpRequest req, string gameName)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
-
-            return new OkObjectResult(null);
+          
+            return new OkObjectResult(await _igdbService.SearchGamesAsync(gameName));
         }
     }
 }

@@ -45,17 +45,19 @@ namespace CollectionHub.Functions.Services
 
         private async Task EnsureTokenAsync()
         {
-            if (_twitchAuth.AccessToken == null || _twitchAuth.ExpiresIn <= 0)
+            if (string.IsNullOrWhiteSpace(_twitchAuth.AccessToken) || _twitchAuth.ExpiresIn <= 0)
             {
                 await RefreshTokenAsync();
             }
         }
 
-        public async Task SearchGameAsync(string search)
+        public async Task<List<IgdbGameDto>> SearchGamesAsync(string search)
         {
+            await EnsureTokenAsync();
+
             var query =
                 $"""
-                search {search};
+                search "{search}";
                 fields name, summary, cover, rating;
                 limit 10;
                 """;
@@ -67,6 +69,12 @@ namespace CollectionHub.Functions.Services
             );
 
             var response = await _httpClient.PostAsync("games", content);
+
+            response.EnsureSuccessStatusCode();
+
+            List<IgdbGameDto> games = await response.Content.ReadFromJsonAsync<List<IgdbGameDto>>();
+
+            return games;
         }
 
         public async Task GetCoverAsync(int id)
