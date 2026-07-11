@@ -17,5 +17,7 @@ namespace CollectionHub.Shared.Dtos
         public int CoverId { get; set; }
         [JsonPropertyName("rating")]
         public double Rating { get; set; }
+        [JsonPropertyName("first_release_date")]
+        public long FirstReleaseDate { get; set; }
     }
 }

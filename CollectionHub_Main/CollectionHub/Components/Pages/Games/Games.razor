@@ -54,7 +54,9 @@
                 Title = game.Name,
                 Status = CollectionStatus.Backlog,
                 Rating = (int)Math.Round(game.Rating, 1),
-                Notes = game.Summary
+                Notes = game.Summary,
+                FirstReleaseDate = DateTimeOffset.FromUnixTimeSeconds(game.FirstReleaseDate).ToString("dd.MM.yyyy"),
+                Cover = await gameApiService.SearchCover(game.CoverId)
             };
 
         await AddGame(gameDto);

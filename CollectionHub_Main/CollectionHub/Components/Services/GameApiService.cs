@@ -68,5 +68,11 @@ namespace CollectionHub.Components.Services
             return await _httpClient.GetFromJsonAsync<List<IgdbGameDto>>($"api/search/{gameName}")
                    ?? [];
         }
+
+        public async Task<IgdbCoverDto> SearchCover(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<IgdbCoverDto>($"api/covers/{id}")
+                   ?? new IgdbCoverDto();
+        }
     }
 }

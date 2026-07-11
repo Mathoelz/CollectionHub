@@ -58,7 +58,7 @@ namespace CollectionHub.Functions.Services
             var query =
                 $"""
                 search "{search}";
-                fields name, summary, cover, rating;
+                fields name, summary, cover, rating, first_release_date;
                 limit 10;
                 """;
 
@@ -77,26 +77,30 @@ namespace CollectionHub.Functions.Services
             return games;
         }
 
-        public async Task GetCoverAsync(int id)
+        public async Task<IgdbCoverDto> GetCoverAsync(int id)
         {
+            await EnsureTokenAsync();
 
-        }
+            var query =
+                $"""
+                fields url, image_id, height, width, game;
+                where id = {id};
+                """;
 
-        public async Task GetGameAsync(int id)
-        {
+            var content = new StringContent(
+                query,
+                Encoding.UTF8,
+                "text/plain"
+            );
 
-        }
+            var response = await _httpClient.PostAsync("covers", content);
 
-        private GameDto MapToGame()
-        {
-            return new GameDto
-            {
-                Id = Guid.NewGuid(),
-                Title = "Sample Game",
-                Status = CollectionStatus.Backlog,
-                Rating = 0,
-                Notes = "This is a sample game."
-            };
-        }
+            response.EnsureSuccessStatusCode();
+
+            List<IgdbCoverDto> covers = await response.Content.ReadFromJsonAsync<List<IgdbCoverDto>>();
+
+            return covers.FirstOrDefault();
+        }  
+
     }
 }

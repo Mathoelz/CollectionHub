@@ -2,9 +2,11 @@
 
 <table class="table">
     <tr style="font-weight:bold;">
+        <td></td>
         <td>Title</td>
         <td>Status</td>
         <td>Rating</td>
+        <td>First release date</td>
         <td>Notes</td>
     </tr>
     @foreach (var game in Games)
@@ -29,9 +31,11 @@
         else
         {
             <tr>
+                <td><img src="@(string.IsNullOrEmpty(game.Cover.Url) ? "" : "https:" + game.Cover.Url)" alt="@game.Title" style="width: 150px; height: auto;" /></td>
                 <td>@game.Title</td>
                 <td>@game.Status</td>
                 <td>@game.Rating</td>
+                <td>@game.FirstReleaseDate</td>
                 <td>@game.Notes</td>
                 <button class="btn btn-danger" @onclick="@(() => FlagGameForDeletion(game))">Delete</button>
                 <button class="btn btn-primary" @onclick="@(() => StartEditing(game))">Edit</button>

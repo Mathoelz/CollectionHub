@@ -91,5 +91,13 @@ namespace CollectionHub.Functions.Functions
           
             return new OkObjectResult(await _igdbService.SearchGamesAsync(gameName));
         }
+
+        [Function("SearchCovers")]
+        public async Task<IActionResult> SearchCovers([HttpTrigger(AuthorizationLevel.Function, "get", Route = "covers/{gameId}")] HttpRequest req, int gameId)
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
+
+            return new OkObjectResult(await _igdbService.GetCoverAsync(gameId));
+        }
     }
 }

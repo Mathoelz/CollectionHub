@@ -18,5 +18,7 @@ namespace CollectionHub.Shared.Dtos
         public int? Rating { get; set; }
 
         public string? Notes { get; set; }
+        public string? FirstReleaseDate { get; set; }
+        public IgdbCoverDto? Cover { get; set; } = new();
     }
 }
