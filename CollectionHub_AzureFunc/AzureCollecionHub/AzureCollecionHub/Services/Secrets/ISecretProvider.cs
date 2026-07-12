@@ -8,6 +8,8 @@ namespace CollectionHub.Functions.Services.Secrets
 {
     public interface ISecretProvider
     {
+        public Task InitializeAsync();
         public Task<string> GetSecretAsync(string secretName);
+        public string GetSecret(string secretName);
     }
 }

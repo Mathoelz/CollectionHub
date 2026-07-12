@@ -1,4 +1,6 @@
-﻿using CollectionHub.Shared.Dtos.Game;
+﻿using Azure.Security.KeyVault.Secrets;
+using CollectionHub.Functions.Services.Secrets;
+using CollectionHub.Shared.Dtos.Game;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,23 +14,27 @@ namespace CollectionHub.Functions.Services.Igdb
     public class IGdbService
     {
         private readonly HttpClient _httpClient;
-        private readonly string _twitchClientId = Environment.GetEnvironmentVariable("TwitchDeveloperClientId")!;
-        private readonly string _twitchClientSecret = Environment.GetEnvironmentVariable("TwitchDeveloperClientSecret")!;
+        private readonly ISecretProvider _secretClient;
         private readonly string _twitchGrantType = Environment.GetEnvironmentVariable("TwitchDeveloperGrantType")!;
         private const string _twitchAuthUrl = "https://id.twitch.tv/oauth2/token";
         private TwitchAuthDto _twitchAuth = new();
 
-        public IGdbService(HttpClient httpClient)
+        public IGdbService(HttpClient httpClient, ISecretProvider secretClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("https://api.igdb.com/v4/");   
+            _httpClient.BaseAddress = new Uri("https://api.igdb.com/v4/");
+
+            _secretClient = secretClient;
         }
 
         private async Task RefreshTokenAsync()
         {
+            var twitchClientId = await _secretClient.GetSecretAsync("TwitchDeveloperClientId");
+            var twitchClientSecret = await _secretClient.GetSecretAsync("TwitchDeveloperClientSecret");
+
             var authUrl =   $"{_twitchAuthUrl}" +
-                            $"?client_id={_twitchClientId}" +
-                            $"&client_secret={_twitchClientSecret}" +
+                            $"?client_id={twitchClientId}" +
+                            $"&client_secret={twitchClientSecret}" +
                             $"&grant_type={_twitchGrantType}";
 
             var response = await _httpClient.PostAsync(authUrl, null);
@@ -38,7 +44,7 @@ namespace CollectionHub.Functions.Services.Igdb
             _twitchAuth = await response.Content.ReadFromJsonAsync<TwitchAuthDto>();
 
             _httpClient.DefaultRequestHeaders.Clear();
-            _httpClient.DefaultRequestHeaders.Add("Client-ID", _twitchClientId);
+            _httpClient.DefaultRequestHeaders.Add("Client-ID", twitchClientId);
             _httpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", _twitchAuth.AccessToken);
         }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Azure.Security.KeyVault.Secrets;
+using CollectionHub.Functions.Services.Secrets;
 using CollectionHub.Shared.Dtos.Anime;
 using CollectionHub.Shared.Dtos.Game;
 using Microsoft.Azure.Cosmos;
@@ -11,16 +13,21 @@ namespace CollectionHub.Functions.Services.Cosmos
 {
     public class CosmosDbMediaService : IMediaService
     {
+        private ISecretProvider _secretClient;
+
         private string _endpoint = Environment.GetEnvironmentVariable("CosmosEndpoint")!; 
-        private string _key = Environment.GetEnvironmentVariable("CosmosKey")!;
 
         private List<GameDto> _games = new List<GameDto>();
 
         private CosmosClient _client { get; set; }
         private Container _container { get; set; }
 
-        public CosmosDbMediaService()
+        public CosmosDbMediaService(ISecretProvider secretClient)
         {
+            _secretClient = secretClient;
+
+            var _key = _secretClient.GetSecret("CosmosKey");
+
             _client = new CosmosClient(_endpoint, _key, new CosmosClientOptions
             {
                 SerializerOptions = new CosmosSerializationOptions
