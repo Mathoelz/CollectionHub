@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CollectionHub.Shared.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,7 @@ namespace CollectionHub.Shared.Dtos.Anime
         public int? Rating { get; set; }
 
         public string? Notes { get; set; }
+        public MediaType MediaType { get; set; } = MediaType.Anime;
 
     }
 }

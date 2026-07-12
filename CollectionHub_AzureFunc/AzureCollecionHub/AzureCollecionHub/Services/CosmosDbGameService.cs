@@ -31,9 +31,11 @@ namespace CollectionHub.Functions.Services
             _container = _client.GetContainer(Environment.GetEnvironmentVariable("CosmosDatabase"), Environment.GetEnvironmentVariable("CosmosContainer")); 
         }
 
+        #region Games
+
         public async Task<List<GameDto>> GetAll()
         {
-            QueryDefinition query = new QueryDefinition("SELECT * FROM c");
+            QueryDefinition query = new QueryDefinition("SELECT * FROM c WHERE c.mediaType = \"game\"");
 
             FeedIterator<GameDto> resultSet = _container.GetItemQueryIterator<GameDto>(query);
 
@@ -159,5 +161,7 @@ namespace CollectionHub.Functions.Services
                     Notes = "Still waiting for the right moment."
                 }
     ];
+
+        #endregion
     }
 }

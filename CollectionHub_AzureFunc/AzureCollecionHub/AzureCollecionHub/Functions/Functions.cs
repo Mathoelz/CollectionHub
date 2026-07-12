@@ -10,17 +10,19 @@ using System.Text.Json;
 
 namespace CollectionHub.Functions.Functions
 {
-    public class GameFunctions
+    public class Functions
     {
-        private readonly ILogger<GameFunctions> _logger;
+        private readonly ILogger<Functions> _logger;
         private readonly IGameService _gameService;
         private readonly IGdbService _igdbService;
+        private readonly JikanService _jikanService;
 
-        public GameFunctions(ILogger<GameFunctions> logger, IGameService gameService, IGdbService igdbService)
+        public Functions(ILogger<Functions> logger, IGameService gameService, IGdbService igdbService, JikanService jikanService)
         {
             _logger = logger;
             _gameService = gameService;
             _igdbService = igdbService;
+            _jikanService = jikanService;
         }
 
         [Function("GetGames")]
@@ -99,5 +101,7 @@ namespace CollectionHub.Functions.Functions
 
             return new OkObjectResult(await _igdbService.GetCoverAsync(gameId));
         }
+
+        
     }
 }

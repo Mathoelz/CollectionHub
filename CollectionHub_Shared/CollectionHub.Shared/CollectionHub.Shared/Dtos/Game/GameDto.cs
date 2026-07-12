@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CollectionHub.Shared.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,5 +21,6 @@ namespace CollectionHub.Shared.Dtos.Game
         public string? Notes { get; set; }
         public string? FirstReleaseDate { get; set; }
         public IgdbCoverDto? Cover { get; set; } = new();
+        public MediaType MediaType { get; set; } = MediaType.Game;
     }
 }
