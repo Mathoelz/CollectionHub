@@ -1,4 +1,7 @@
-﻿using CollectionHub.Functions.Services;
+﻿using Azure.Security.KeyVault.Secrets;
+using CollectionHub.Functions.Services.Anime;
+using CollectionHub.Functions.Services.Cosmos;
+using CollectionHub.Functions.Services.Igdb;
 using CollectionHub.Shared.Dtos.Anime;
 using CollectionHub.Shared.Dtos.Game;
 using Microsoft.AspNetCore.Components;

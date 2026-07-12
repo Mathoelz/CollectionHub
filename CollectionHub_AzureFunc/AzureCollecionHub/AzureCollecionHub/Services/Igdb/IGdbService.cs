@@ -7,7 +7,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CollectionHub.Functions.Services
+namespace CollectionHub.Functions.Services.Igdb
 {
     public class IGdbService
     {

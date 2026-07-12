@@ -7,7 +7,7 @@ using CollectionHub.Shared.Dtos.Anime;
 using CollectionHub.Shared.Dtos.Game;
 using Microsoft.Azure.Cosmos;
 
-namespace CollectionHub.Functions.Services
+namespace CollectionHub.Functions.Services.Cosmos
 {
     public class CosmosDbMediaService : IMediaService
     {

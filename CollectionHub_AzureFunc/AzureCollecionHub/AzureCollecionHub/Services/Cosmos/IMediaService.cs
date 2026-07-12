@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CollectionHub.Functions.Services
+namespace CollectionHub.Functions.Services.Cosmos
 {
     public interface IMediaService
     {

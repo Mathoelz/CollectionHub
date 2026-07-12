@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CollectionHub.Shared.Dtos.Anime;
 
-namespace CollectionHub.Functions.Services
+namespace CollectionHub.Functions.Services.Anime
 {
     public class JikanService
     {
