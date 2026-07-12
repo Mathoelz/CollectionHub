@@ -1,5 +1,5 @@
 ﻿using CollectionHub.Functions.Services;
-using CollectionHub.Shared.Dtos;
+using CollectionHub.Shared.Dtos.Game;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -85,7 +85,7 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("SearchGames")]
-        public async Task<IActionResult> SearchGame([HttpTrigger(AuthorizationLevel.Function, "get", Route = "search/{gameName}")] HttpRequest req, string gameName)
+        public async Task<IActionResult> SearchGame([HttpTrigger(AuthorizationLevel.Function, "get", Route = "games/search/{gameName}")] HttpRequest req, string gameName)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
           
@@ -93,7 +93,7 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("SearchCovers")]
-        public async Task<IActionResult> SearchCovers([HttpTrigger(AuthorizationLevel.Function, "get", Route = "covers/{gameId}")] HttpRequest req, int gameId)
+        public async Task<IActionResult> SearchCovers([HttpTrigger(AuthorizationLevel.Function, "get", Route = "games/covers/{gameId}")] HttpRequest req, int gameId)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 

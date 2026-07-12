@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace CollectionHub.Shared.Dtos
+namespace CollectionHub.Shared.Dtos.Game
 {
     public class TwitchAuthDto
     {

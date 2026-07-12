@@ -1,0 +1,64 @@
+﻿@using CollectionHub.Shared.Dtos.Game;
+@using CollectionHub.Components.Services;
+
+<table class="table">
+    <tr style="font-weight:bold;">
+        <td></td>
+        <td>Title</td>
+        <td>Rating</td>
+        <td>First release date</td>
+        <td>Notes</td>
+    </tr>
+    @foreach (var game in _games)
+    {
+        <tr>
+            <td><img src="@(string.IsNullOrEmpty(game.Cover.Url) ? "" : "https:" + game.Cover.Url)" alt="@game.Title" style="width: 150px; height: auto;" /></td>
+            <td>@game.Title</td>
+            <td>@game.Rating</td>
+            <td>@game.FirstReleaseDate</td>
+            <td>@game.Notes</td>
+            <td><button class="btn btn-primary" @onclick="@(() => OnAdd.InvokeAsync(game))">Add Game</button></td>
+        </tr>
+    }
+</table>
+
+
+@code {
+
+    [Inject]
+    public IGameApiService gameApiService { get; set; } = default!;
+
+    [Parameter]
+    public IReadOnlyList<IgdbGameDto> SearchGames { get; set; } = [];
+
+    [Parameter]
+    public EventCallback<GameDto> OnAdd { get; set; }
+
+    private List<GameDto> _games = new();
+    private string _searchText = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        foreach (var game in SearchGames)
+        {
+            var gameDto = await MapToGameDto(game);
+            _games.Add(gameDto);
+        }
+    }
+
+    private async Task<GameDto> MapToGameDto(IgdbGameDto dto)
+    {
+        var gameDto = new GameDto
+        {
+            Id = Guid.NewGuid(),
+            Title = string.IsNullOrWhiteSpace(dto.Name) ? "" : dto.Name,
+            Status = CollectionStatus.Backlog,
+            Rating = (int)Math.Round(dto.Rating, 1),
+            Notes = dto.Summary,
+            FirstReleaseDate = DateTimeOffset.FromUnixTimeSeconds(dto.FirstReleaseDate).ToString("dd.MM.yyyy"),
+            Cover = await gameApiService.SearchCover(dto.CoverId)
+        };
+
+        return gameDto;
+    }
+}

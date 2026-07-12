@@ -7,6 +7,7 @@ var builder = FunctionsApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<IGameService, CosmosDbGameService>();
 builder.Services.AddHttpClient<IGdbService>();
+builder.Services.AddHttpClient<JikanService>();
 builder.ConfigureFunctionsWebApplication();
 
 // Application Insights isn't enabled by default. See https://aka.ms/AAt8mw4.

@@ -1,4 +1,4 @@
-﻿using CollectionHub.Shared.Dtos;
+﻿using CollectionHub.Shared.Dtos.Game;
 
 namespace CollectionHub.Functions.Services
 {

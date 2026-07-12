@@ -1,4 +1,4 @@
-﻿using CollectionHub.Shared.Dtos;
+﻿using CollectionHub.Shared.Dtos.Game;
 using System.Net;
 using System.Text.Json;
 
@@ -65,13 +65,13 @@ namespace CollectionHub.Components.Services
 
         public async Task<List<IgdbGameDto>> SearchGames(string gameName)
         {
-            return await _httpClient.GetFromJsonAsync<List<IgdbGameDto>>($"api/search/{gameName}")
+            return await _httpClient.GetFromJsonAsync<List<IgdbGameDto>>($"api/games/search/{gameName}")
                    ?? [];
         }
 
         public async Task<IgdbCoverDto> SearchCover(int id)
         {
-            return await _httpClient.GetFromJsonAsync<IgdbCoverDto>($"api/covers/{id}")
+            return await _httpClient.GetFromJsonAsync<IgdbCoverDto>($"api/games/covers/{id}")
                    ?? new IgdbCoverDto();
         }
     }
