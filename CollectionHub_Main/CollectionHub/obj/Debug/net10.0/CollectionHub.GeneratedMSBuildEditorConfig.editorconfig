@@ -27,6 +27,10 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Tiz/Documents/GitHub/CollectionHub/CollectionHub_Main/CollectionHub/Components/Pages/Animes/AnimeEditRow.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBbmltZXNcQW5pbWVFZGl0Um93LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Tiz/Documents/GitHub/CollectionHub/CollectionHub_Main/CollectionHub/Components/Pages/Animes/AnimeForm.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBbmltZXNcQW5pbWVGb3JtLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 

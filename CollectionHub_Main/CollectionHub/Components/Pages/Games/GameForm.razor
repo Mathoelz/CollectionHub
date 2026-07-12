@@ -1,10 +1,5 @@
 ﻿@using CollectionHub.Shared.Dtos.Game
 
-@if(!isEditing)
-{
-    <h3>Insert new game</h3>
-}
-
 <EditForm Model="Game" OnValidSubmit="SubmitGame">
 
     <DataAnnotationsValidator />

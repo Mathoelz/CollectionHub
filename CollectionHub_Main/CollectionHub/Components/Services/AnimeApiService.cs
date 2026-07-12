@@ -48,25 +48,17 @@ namespace CollectionHub.Components.Services
         }
 
         public IReadOnlyList<Anime> Animes => _animes;
-        public IReadOnlyList<Anime> GetAll()
-        {
-            return _animes;
-        }
-
-        public void Add(Anime anime)
-        {
-            _animes.Add(anime);
-        }
-
-        public void Delete(Anime anime)
-        {
-            _animes.Remove(anime);
-        }
 
         public async Task<List<AnimeDto>> GetAnimesAsync()
         {
             return await _httpClient.GetFromJsonAsync<List<AnimeDto>>("api/animes")
                    ?? new List<AnimeDto>();
+        }
+
+        public async Task<AnimeDto> GetAnimeAsync(AnimeDto anime)
+        {
+            return await _httpClient.GetFromJsonAsync<AnimeDto>($"api/animes/{anime.Id}")
+                   ?? new AnimeDto();
         }
 
         public async Task<AnimeDto> PostAnimeAsync(AnimeDto anime)
@@ -101,9 +93,9 @@ namespace CollectionHub.Components.Services
                 }).Unwrap() ?? new AnimeDto();
         }
 
-        public async Task<List<AnimeDto>> SearchAnimesAsync(string name)
+        public async Task<List<JikanAnimeDto>> SearchAnimesAsync(string name)
         {
-            return await _httpClient.GetFromJsonAsync<List<AnimeDto>>($"api/animes/search/{name}")
+            return await _httpClient.GetFromJsonAsync<List<JikanAnimeDto>>($"api/animes/search/{name}")
                    ?? [];
         }
     }

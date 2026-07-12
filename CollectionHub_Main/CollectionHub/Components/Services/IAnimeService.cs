@@ -5,16 +5,11 @@ namespace CollectionHub.Components.Services
 {
     public interface IAnimeService
     {
-        IReadOnlyList<Anime> GetAll();
-
-        void Add(Anime anime);
-
-        void Delete(Anime anime);
-
         Task<AnimeDto> PostAnimeAsync(AnimeDto anime);
         Task<AnimeDto> UpdateAnimeAsync(AnimeDto anime);
         Task<List<AnimeDto>> GetAnimesAsync();
+        Task<AnimeDto> GetAnimeAsync(AnimeDto anime);
         Task<HttpStatusCode> DeleteAnimeAsync(AnimeDto anime);
-        Task<List<AnimeDto>> SearchAnimesAsync(string name);
+        Task<List<JikanAnimeDto>> SearchAnimesAsync(string name);
     }
 }

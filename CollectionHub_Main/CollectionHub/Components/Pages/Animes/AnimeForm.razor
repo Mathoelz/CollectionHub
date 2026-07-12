@@ -1,58 +1,98 @@
-﻿<h3>Insert new anime</h3>
+﻿@using CollectionHub.Shared.Dtos.Anime
 
-<table class="table">
-    <tr style="font-weight:bold">
-        <td>Title</td>
-        <td>Status</td>
-        <td>Rating</td>
-        <td>Notes</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>
-            <InputText @bind-Value="_anime.Title" />
-        </td>
-        <td>
-            <InputSelect @bind-Value="_anime.Status">
-                @foreach (var status in Enum.GetValues<CollectionStatus>())
-                {
-                    <option value="@status">@status</option>
-                }
-            </InputSelect>
-        </td>
-        <td>
-            <InputSelect @bind-Value="_anime.Rating">
-                @for (int i = 1; i <= 10; i++)
-                {
-                    <option value="@i">@i</option>
-                }
-            </InputSelect>
-        </td>
-        <td>
-            <InputText @bind-Value="_anime.Notes" />
-        </td>
-        <td>
-            <button class="btn btn-primary" @onclick="AddAnime">Add</button>
-        </td>
-    </tr>
-</table>
+<EditForm Model="Anime" OnValidSubmit="SubmitAnime">
+
+    <DataAnnotationsValidator />
+
+    <table class="table">
+        <tr style="font-weight:bold">
+            <td>Title</td>
+            <td>Status</td>
+            <td>Rating</td>
+            <td>Notes</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <InputText class="form-control" @bind-Value="Anime.Title" />
+                <ValidationMessage For="@(() => Anime.Title)" />
+            </td>
+            <td>
+                <InputSelect class="form-select" @bind-Value="Anime.Status">
+                    @foreach (var status in Enum.GetValues<CollectionStatus>())
+                    {
+                        <option value="@status">@status</option>
+                    }
+                </InputSelect>
+            </td>
+            <td>
+                <InputSelect class="form-select" @bind-Value="Anime.Rating">
+                    @for (int i = 1; i <= 10; i++)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </InputSelect>
+            </td>
+            <td>
+                <InputText class="form-control" @bind-Value="Anime.Notes" />
+                <ValidationMessage For="@(() => Anime.Notes)" />
+            </td>
+            @if (isEditing)
+            {
+                <td>
+                    <button class="btn btn-primary" @onclick="OnCancel">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Update</button>
+                </td>
+            }
+            else
+            {
+                <td>
+                    <button class="btn btn-primary" type="submit">Add</button>
+                </td>
+            }
+        </tr>
+    </table>
+
+</EditForm>
 
 @code {
 
-    private Anime _anime = new();
+    [Parameter]
+    public bool isEditing { get; set; }
 
     [Parameter]
-    public EventCallback<Anime> OnAdd { get; set; }
+    public EventCallback<AnimeDto> OnSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback<AnimeDto> OnAdd { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public AnimeDto Anime { get; set; } = default!;
 
     private async Task AddAnime()
     {
-        _anime.Id = Guid.NewGuid();
+        Anime.Id = Guid.NewGuid();
 
-        await OnAdd.InvokeAsync(_anime);
-        _anime = new Anime
+        await OnAdd.InvokeAsync(Anime);
+        Anime = new AnimeDto
         {
             Status = CollectionStatus.Backlog,
             Rating = 1
         };
+    }
+
+    private async Task SubmitAnime()
+    {
+        if(Anime.Id != Guid.Empty)
+        {
+            await OnSubmit.InvokeAsync(Anime);
+        }
+        else
+        {
+            await AddAnime();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CollectionHub.Functions.Services;
+using CollectionHub.Shared.Dtos.Anime;
 using CollectionHub.Shared.Dtos.Game;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
@@ -10,27 +11,29 @@ using System.Text.Json;
 
 namespace CollectionHub.Functions.Functions
 {
-    public class Functions
+    public class MediaFunctions
     {
-        private readonly ILogger<Functions> _logger;
-        private readonly IGameService _gameService;
+        private readonly ILogger<MediaFunctions> _logger;
+        private readonly IMediaService _mediaService;
         private readonly IGdbService _igdbService;
         private readonly JikanService _jikanService;
 
-        public Functions(ILogger<Functions> logger, IGameService gameService, IGdbService igdbService, JikanService jikanService)
+        public MediaFunctions(ILogger<MediaFunctions> logger, IMediaService mediaService, IGdbService igdbService, JikanService jikanService)
         {
             _logger = logger;
-            _gameService = gameService;
+            _mediaService = mediaService;
             _igdbService = igdbService;
             _jikanService = jikanService;
         }
+
+        #region Games
 
         [Function("GetGames")]
         public async Task<IActionResult> GetGames([HttpTrigger(AuthorizationLevel.Function, "get", Route = "games")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            return new OkObjectResult(await _gameService.GetAll());
+            return new OkObjectResult(await _mediaService.GetAllGames());
         }
 
         [Function("GetGame")]
@@ -39,7 +42,7 @@ namespace CollectionHub.Functions.Functions
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             // Here you would typically retrieve the game from a database or in-memory collection using the gameId.
             // For this example, we'll just create a dummy game and return it.
-            return new OkObjectResult(await _gameService.GetById(gameId));
+            return new OkObjectResult(await _mediaService.GetGameById(gameId));
         }
 
         [Function("PostGames")]
@@ -51,7 +54,7 @@ namespace CollectionHub.Functions.Functions
             // For this example, we'll just log the new game and return it.
             if(newGame != null)
             {
-                await _gameService.Add(newGame);
+                await _mediaService.AddGame(newGame);
                 _logger.LogInformation($"New game added: {newGame.Title}");
             }
 
@@ -67,7 +70,7 @@ namespace CollectionHub.Functions.Functions
             // For this example, we'll just log the updated game and return it.
             if(updatedGame != null)
             {
-                await _gameService.Update(updatedGame);
+                await _mediaService.UpdateGame(updatedGame);
                 _logger.LogInformation($"Game updated: {updatedGame.Title}");
             }
             return new OkObjectResult(updatedGame);
@@ -80,7 +83,7 @@ namespace CollectionHub.Functions.Functions
             // Here you would typically delete the game from a database or in-memory collection.
             // For this example, we'll just log the deleted game and return a success message.
 
-            await _gameService.Delete(gameId);
+            await _mediaService.DeleteItem(gameId);
             _logger.LogInformation($"Game deleted: {gameId}");
             
             return new OkObjectResult($"Game '{gameId}' deleted successfully.");
@@ -102,6 +105,66 @@ namespace CollectionHub.Functions.Functions
             return new OkObjectResult(await _igdbService.GetCoverAsync(gameId));
         }
 
-        
+        #endregion
+
+        #region Anime
+
+        [Function("GetAnimes")]
+        public async Task<IActionResult> GetAnimes([HttpTrigger(AuthorizationLevel.Function, "get", Route = "animes")] HttpRequest req)
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
+            return new OkObjectResult(await _mediaService.GetAllAnimes());
+        }
+
+        [Function("GetAnime")]
+        public async Task<IActionResult> GetAnime([HttpTrigger(AuthorizationLevel.Function, "get", Route = "animes/{animeId}")] HttpRequest req, Guid animeId)
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
+            return new OkObjectResult(await _mediaService.GetAnimeById(animeId));
+        }
+
+        [Function("AddAnime")]
+        public async Task<IActionResult> PostAnime([HttpTrigger(AuthorizationLevel.Function, "post", Route = "animes")] HttpRequest req)
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
+            AnimeDto newAnime = await req.ReadFromJsonAsync<AnimeDto>();
+            if (newAnime != null)
+            {
+                await _mediaService.AddAnime(newAnime);
+                _logger.LogInformation($"New anime added: {newAnime.Title}");
+            }
+            return new OkObjectResult(newAnime);
+        }
+
+        [Function("UpdateAnime")]
+        public async Task<IActionResult> UpdateAnime([HttpTrigger(AuthorizationLevel.Function, "put", Route = "animes")] HttpRequest req)
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
+            AnimeDto updatedAnime = await req.ReadFromJsonAsync<AnimeDto>();
+            if (updatedAnime != null)
+            {
+                await _mediaService.UpdateAnime(updatedAnime);
+                _logger.LogInformation($"Anime updated: {updatedAnime.Title}");
+            }
+            return new OkObjectResult(updatedAnime);
+        }
+
+        [Function("DeleteAnime")]
+        public async Task<IActionResult> DeleteAnime([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "animes/{animeId}")] HttpRequest req, Guid animeId)
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
+            await _mediaService.DeleteItem(animeId);
+            _logger.LogInformation($"Anime deleted: {animeId}");
+            return new OkObjectResult($"Anime '{animeId}' deleted successfully.");
+        }
+
+        [Function("SearchAnime")]
+        public async Task<IActionResult> SearchAnime([HttpTrigger(AuthorizationLevel.Function, "get", Route = "animes/search/{animeName}")] HttpRequest req, string animeName)
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
+            return new OkObjectResult(await _jikanService.SearchAnimeAsync(animeName));
+        }
+
+        #endregion
     }
 }

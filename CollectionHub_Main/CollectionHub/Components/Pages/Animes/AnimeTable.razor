@@ -1,4 +1,6 @@
-﻿<table class="table">
+﻿@using CollectionHub.Shared.Dtos.Anime
+
+<table class="table">
     <tr style="font-weight:bold;">
         <td>Title</td>
         <td>Status</td>
@@ -7,21 +9,82 @@
     </tr>
     @foreach (var anime in animes)
     {
-        <tr>
-            <td>@anime.Title</td>
-            <td>@anime.Status</td>
-            <td>@anime.Rating</td>
-            <td>@anime.Notes</td>
-            <button class="btn btn-danger" @onclick="@(() => OnDelete.InvokeAsync(anime))">Delete</button>
-        </tr>
+        if (isEditing && anime.Id == editingAnimeId)
+        {
+            <AnimeEditRow isEditing="true" OnCancel="StopEditing" Anime="anime" OnSubmit="SubmitAnime" />
+        }
+        else if (anime.Id == deleteAnimeId)
+        {
+            <tr>
+                <td colspan="4">
+                    <div class="alert alert-danger" role="alert">
+                        Are you sure you want to delete <strong>@anime.Title</strong>?
+                        <button class="btn btn-danger" @onclick="@(() => DeleteAnime(anime))">Yes</button>
+                        <button class="btn btn-secondary" @onclick="@(() => deleteAnimeId = Guid.Empty)">No</button>
+                    </div>
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td>@anime.Title</td>
+                <td>@anime.Status</td>
+                <td>@anime.Rating</td>
+                <td>@anime.Notes</td>
+                <button class="btn btn-danger" @onclick="@(() => FlagAnimeForDeletion(anime))">Delete</button>
+                <button class="btn btn-primary" @onclick="@(() => StartEditing(anime))">Edit</button>
+            </tr>
+        }
     }
 </table>
 
 @code {
 
-    [Parameter]
-    public IReadOnlyList<Anime> animes { get; set; } = [];
+    private bool isEditing = false;
+    private Guid editingAnimeId;
+    private Guid deleteAnimeId;
 
     [Parameter]
-    public EventCallback<Anime> OnDelete { get; set; }
+    public IReadOnlyList<AnimeDto> animes { get; set; } = [];
+
+    [Parameter]
+    public EventCallback<AnimeDto> OnDelete { get; set; }
+
+    [Parameter]
+    public EventCallback<AnimeDto> OnEdit { get; set; }
+
+    [Parameter]
+    public EventCallback<AnimeDto> OnSubmit { get; set; }
+
+    private void FlagAnimeForDeletion(AnimeDto anime)
+    {
+        isEditing = false;
+        editingAnimeId = Guid.Empty;
+        deleteAnimeId = anime.Id;
+    }
+
+    private void StartEditing(AnimeDto anime)
+    {
+        deleteAnimeId = Guid.Empty;
+        isEditing = true;
+        editingAnimeId = anime.Id;
+    }
+
+    private void StopEditing()
+    {
+        isEditing = false;
+        editingAnimeId = Guid.Empty;
+    }
+
+    private async Task SubmitAnime(AnimeDto anime)
+    {
+        await OnSubmit.InvokeAsync(anime);
+        StopEditing();
+    }
+
+    private async Task DeleteAnime(AnimeDto anime)
+    {
+        await OnDelete.InvokeAsync(anime);
+    }
 }

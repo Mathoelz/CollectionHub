@@ -1,0 +1,81 @@
+﻿@using CollectionHub.Shared.Dtos.Anime
+
+<tr>
+    <td>
+        <!-- Cover image placeholder -->
+    </td>
+    <td>
+        <InputText class="form-control" @bind-Value="Anime.Title" />
+    </td>
+    <td>
+        <InputSelect class="form-select" @bind-Value="Anime.Status">
+            @foreach (var status in Enum.GetValues<CollectionStatus>())
+            {
+                <option value="@status">@status</option>
+            }
+        </InputSelect>
+    </td>
+    <td>
+        <InputSelect class="form-select" @bind-Value="Anime.Rating">
+            @for (int i = 1; i <= 10; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </InputSelect>
+    </td>
+    <td>
+        <InputText class="form-control" @bind-Value="Anime.Notes" />
+    </td>
+    @if (isEditing)
+    {
+        <td>
+            <button class="btn btn-primary" @onclick="OnCancel">Cancel</button>
+            <button class="btn btn-primary" @onclick="SubmitAnime">Update</button>
+        </td>
+    }
+    else
+    {
+        <td>
+            <button class="btn btn-primary" @onclick="SubmitAnime">Add</button>
+        </td>
+    }
+</tr>
+
+@code {
+
+    [Parameter]
+    public bool isEditing { get; set; } = false;
+
+    [Parameter]
+    public EventCallback<AnimeDto> OnSubmit { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public AnimeDto Anime { get; set; } = default!;
+
+    private async Task AddAnime()
+    {
+        Anime.Id = Guid.NewGuid();
+
+        await OnSubmit.InvokeAsync(Anime);
+        Anime = new AnimeDto
+        {
+            Status = CollectionStatus.Backlog,
+            Rating = 1
+        };
+    }
+
+    private async Task SubmitAnime()
+    {
+        if(Anime.Id != Guid.Empty)
+        {
+            await OnSubmit.InvokeAsync(Anime);
+        }
+        else
+        {
+            await AddAnime();
+        }
+    }
+}

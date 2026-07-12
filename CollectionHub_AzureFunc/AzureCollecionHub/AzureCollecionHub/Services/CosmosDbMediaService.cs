@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CollectionHub.Shared.Dtos.Anime;
 using CollectionHub.Shared.Dtos.Game;
 using Microsoft.Azure.Cosmos;
 
 namespace CollectionHub.Functions.Services
 {
-    public class CosmosDbGameService : IGameService
+    public class CosmosDbMediaService : IMediaService
     {
         private string _endpoint = Environment.GetEnvironmentVariable("CosmosEndpoint")!; 
         private string _key = Environment.GetEnvironmentVariable("CosmosKey")!;
@@ -18,7 +19,7 @@ namespace CollectionHub.Functions.Services
         private CosmosClient _client { get; set; }
         private Container _container { get; set; }
 
-        public CosmosDbGameService()
+        public CosmosDbMediaService()
         {
             _client = new CosmosClient(_endpoint, _key, new CosmosClientOptions
             {
@@ -33,9 +34,9 @@ namespace CollectionHub.Functions.Services
 
         #region Games
 
-        public async Task<List<GameDto>> GetAll()
+        public async Task<List<GameDto>> GetAllGames()
         {
-            QueryDefinition query = new QueryDefinition("SELECT * FROM c WHERE c.mediaType = \"game\"");
+            QueryDefinition query = new QueryDefinition("SELECT * FROM c WHERE c.mediaType = 0");
 
             FeedIterator<GameDto> resultSet = _container.GetItemQueryIterator<GameDto>(query);
 
@@ -50,18 +51,18 @@ namespace CollectionHub.Functions.Services
             return games;
         }
 
-        public async Task<GameDto> GetById(Guid id)
+        public async Task<GameDto> GetGameById(Guid id)
         {
             GameDto game = await _container.ReadItemAsync<GameDto>(id.ToString(), new PartitionKey(id.ToString()));
             return game;
         }
 
-        public async Task Update(GameDto game)
+        public async Task UpdateGame(GameDto game)
         {
             await _container.ReplaceItemAsync(game, game.Id.ToString(), new PartitionKey(game.Id.ToString()));
         }
 
-        public async Task<GameDto> Edit(GameDto game)
+        public async Task<GameDto> EditGame(GameDto game)
         {
             GameDto editGame = new()
             {
@@ -73,14 +74,9 @@ namespace CollectionHub.Functions.Services
             };
 
             return editGame;
-        }
+        }       
 
-        public async Task Delete(Guid id)
-        {
-            await _container.DeleteItemAsync<GameDto>(id.ToString(), new PartitionKey(id.ToString()));
-        }
-
-        public async Task Add(GameDto game)
+        public async Task AddGame(GameDto game)
         {
             await _container.CreateItemAsync(game, new PartitionKey(game.Id.ToString()));
         }
@@ -163,5 +159,61 @@ namespace CollectionHub.Functions.Services
     ];
 
         #endregion
+
+        #region Anime
+
+        public async Task<List<AnimeDto>> GetAllAnimes()
+        {
+            QueryDefinition query = new QueryDefinition("SELECT * FROM c WHERE c.mediaType = 1");
+
+            FeedIterator<AnimeDto> resultSet = _container.GetItemQueryIterator<AnimeDto>(query);
+
+            List<AnimeDto> animes = [];
+
+            while (resultSet.HasMoreResults)
+            {
+                FeedResponse<AnimeDto> response = await resultSet.ReadNextAsync();
+                animes.AddRange(response);
+            }
+
+            return animes;
+        }
+
+        public async Task<AnimeDto> GetAnimeById(Guid id)
+        {
+            AnimeDto anime = await _container.ReadItemAsync<AnimeDto>(id.ToString(), new PartitionKey(id.ToString()));
+            return anime;
+        }
+
+        public async Task AddAnime(AnimeDto anime)
+        {
+            await _container.CreateItemAsync(anime, new PartitionKey(anime.Id.ToString()));
+        }
+
+        public async Task UpdateAnime(AnimeDto anime)
+        {
+            await _container.ReplaceItemAsync(anime, anime.Id.ToString(), new PartitionKey(anime.Id.ToString()));
+        }
+
+        public async Task<AnimeDto> EditAnime(AnimeDto anime)
+        {
+            AnimeDto editAnime = new()
+            {
+                Id = anime.Id,
+                Title = anime.Title,
+                Status = anime.Status,
+                Rating = anime.Rating,
+                Notes = anime.Notes
+            };
+            return editAnime;
+        }
+
+        #endregion
+
+        // Delete function for both games and anime, since they share the same container and partition key
+        public async Task DeleteItem(Guid id)
+        {
+            await _container.DeleteItemAsync<GameDto>(id.ToString(), new PartitionKey(id.ToString()));
+        }
     }
 }

@@ -22,6 +22,9 @@
 
 @code {
 
+    [Inject]
+    public IGameApiService gameApiService { get; set; } = default!;
+
     private string _searchText = "";
     private List<IgdbGameDto> _searchGames = new();
     private List<GameDto> games = [];
@@ -30,9 +33,6 @@
     {
         games = await gameApiService.GetGamesAsync();
     }
-
-    [Inject]
-    public IGameApiService gameApiService { get; set; } = default!;
 
     private async Task DeleteGame(GameDto game)
     {

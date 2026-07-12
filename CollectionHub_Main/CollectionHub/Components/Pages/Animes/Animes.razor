@@ -1,24 +1,70 @@
-﻿@using CollectionHub.Components.Services
+﻿@using CollectionHub.Components.Services;
+@using CollectionHub.Shared.Dtos.Anime;
 @page "/anime"
 
 <h3>Animes</h3>
 
-<AnimeTable Animes="animeService.GetAll()" OnDelete="DeleteAnime" />
+<input type="text" class="form-control search-input" placeholder="Search..." @bind-value="_searchText" @bind-value:event="oninput" />
 
-<AnimeForm OnAdd="AddAnime" />
+<button class="btn btn-primary" @onclick="@(() => SearchAnimes(_searchText))">Search</button>
+
+
+<AnimeTable Animes="animes" OnDelete="DeleteAnime" OnEdit="GetAnime" OnSubmit="SubmitAnime"/>
+
+<AnimeForm OnAdd="AddAnime" Anime="new()" />
 
 @code {
 
-    [Inject]
-    public IAnimeService animeService { get; set; } = default!;
+    private string _searchText = "";
+    private List<JikanAnimeDto> _searchAnimes = new();
+    private List<AnimeDto> animes = [];
 
-    private void DeleteAnime(Anime anime)
+    [Inject]
+    public IAnimeService animeApiService { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
     {
-        animeService.Delete(anime);
+        animes = await animeApiService.GetAnimesAsync();
     }
 
-    private void AddAnime(Anime anime)
+    private async Task DeleteAnime(AnimeDto anime)
     {
-        animeService.Add(anime);
+        await animeApiService.DeleteAnimeAsync(anime);
+        animes = await animeApiService.GetAnimesAsync();
+    }
+
+    private async Task AddJikanAnime(AnimeDto anime)
+    {
+        await AddAnime(anime);
+        _searchAnimes.Clear();
+        _searchText = "";
+    }
+
+    private async Task AddAnime(AnimeDto anime)
+    {
+        await animeApiService.PostAnimeAsync(anime);
+        animes = await animeApiService.GetAnimesAsync();
+    }
+
+    private async Task GetAnime(AnimeDto anime)
+    {
+        await animeApiService.GetAnimeAsync(anime);
+        animes = await animeApiService.GetAnimesAsync();
+    }
+
+    private async Task SubmitAnime(AnimeDto anime)
+    {
+        await animeApiService.UpdateAnimeAsync(anime);
+        animes = await animeApiService.GetAnimesAsync();
+    }
+
+    private async Task SearchAnimes(string searchText)
+    {
+        if (_searchAnimes.Count > 0)
+        {
+            _searchAnimes.Clear();
+        }
+        _searchAnimes = await animeApiService.SearchAnimesAsync(searchText);
+        await InvokeAsync(StateHasChanged);
     }
 }

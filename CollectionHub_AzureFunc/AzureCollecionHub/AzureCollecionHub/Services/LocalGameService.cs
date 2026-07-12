@@ -2,7 +2,7 @@
 
 namespace CollectionHub.Functions.Services
 {
-    public class LocalGameService : IGameService
+    public class LocalGameService
     {
         private List<GameDto> _games =
         [
@@ -70,17 +70,17 @@ namespace CollectionHub.Functions.Services
                 }
     ];
 
-        public async Task<List<GameDto>> GetAll()
+        public async Task<List<GameDto>> GetAllGames()
         {
             return _games;
         }
 
-        public async Task<GameDto> GetById(Guid id)
+        public async Task<GameDto> GetGameById(Guid id)
         {
             return _games.FirstOrDefault(g => g.Id == id) ?? new GameDto();
         }
 
-        public async Task Update(GameDto game)
+        public async Task UpdateGame(GameDto game)
         {
             var existingGame = _games.FirstOrDefault(g => g.Id == game.Id);
             if (existingGame != null)
@@ -92,7 +92,7 @@ namespace CollectionHub.Functions.Services
             }
         }
 
-        public async Task<GameDto> Edit(GameDto game)
+        public async Task<GameDto> EditGame(GameDto game)
         {
             GameDto editGame = new()
             {
@@ -106,7 +106,7 @@ namespace CollectionHub.Functions.Services
             return editGame;
         }
 
-        public async Task Delete(Guid id)
+        public async Task DeleteItem(Guid id)
         {
             var delete = _games.FirstOrDefault(g => g.Id == id);
 
@@ -114,7 +114,7 @@ namespace CollectionHub.Functions.Services
                 _games.Remove(delete);
         }
 
-        public async Task Add(GameDto game)
+        public async Task AddGame(GameDto game)
         {
             _games.Add(game);
         }

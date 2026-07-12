@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<IGameService, CosmosDbGameService>();
+builder.Services.AddSingleton<IMediaService, CosmosDbMediaService>();
 builder.Services.AddHttpClient<IGdbService>();
 builder.Services.AddHttpClient<JikanService>();
 builder.ConfigureFunctionsWebApplication();
