@@ -7,72 +7,94 @@ namespace CollectionHub.Components.Services
     public class GameApiService: IGameApiService
     {
         private readonly HttpClient _httpClient;
-
+        private readonly ApiRetryHandler _retryHandler;
         private readonly List<GameDto> _games = [];
 
-        public GameApiService(HttpClient httpClient)
+        public GameApiService(HttpClient httpClient, ApiRetryHandler apiRetryHandler)
         {
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("http://localhost:7029/");
 
-            _games = new List<GameDto>();
+            _retryHandler = apiRetryHandler;
 
         }
 
         public async Task<List<GameDto>> GetGamesAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<GameDto>>("api/games")
+            return await _retryHandler.ExecuteAsync(async () =>
+            {
+                return await _httpClient.GetFromJsonAsync<List<GameDto>>("api/games")
                    ?? [];
+            });
+
         }
 
         public async Task<GameDto> PostGameAsync(GameDto game)
         {
-            return await _httpClient.PostAsJsonAsync("api/games", game)
+            return await _retryHandler.ExecuteAsync(async () =>
+            {
+                return await _httpClient.PostAsJsonAsync("api/games", game)
                 .ContinueWith(async responseTask =>
                 {
                     var response = await responseTask;
                     response.EnsureSuccessStatusCode();
                     return await response.Content.ReadFromJsonAsync<GameDto>();
                 }).Unwrap() ?? new GameDto();
+            });  
         }
 
         public async Task<HttpStatusCode> DeleteGameAsync(GameDto game)
         {
-            return await _httpClient.DeleteAsync($"api/games/{game.Id}")
+            return await _retryHandler.ExecuteAsync(async () =>
+            {
+                return await _httpClient.DeleteAsync($"api/games/{game.Id}")
                 .ContinueWith(async responseTask =>
                 {
                     var response = await responseTask;
                     return response.StatusCode;
                 }).Unwrap();
+            });        
         }
 
         public async Task<GameDto> UpdateGameAsync(GameDto game)
         {
-            return await _httpClient.PutAsJsonAsync("api/games", game)
+            return await _retryHandler.ExecuteAsync(async () =>
+            {
+                return await _httpClient.PutAsJsonAsync("api/games", game)
                 .ContinueWith(async responseTask =>
                 {
                     var response = await responseTask;
                     response.EnsureSuccessStatusCode();
                     return await response.Content.ReadFromJsonAsync<GameDto>();
                 }).Unwrap() ?? new GameDto();
+            });            
         }
 
         public async Task<GameDto> GetGameAsync(GameDto game)
         {
-            return await _httpClient.GetFromJsonAsync<GameDto>($"api/games/{game.Id}")
+            return await _retryHandler.ExecuteAsync(async () =>
+            {
+                return await _httpClient.GetFromJsonAsync<GameDto>($"api/games/{game.Id}")
                    ?? new GameDto();
+            });            
         }
 
         public async Task<List<IgdbGameDto>> SearchGames(string gameName)
         {
-            return await _httpClient.GetFromJsonAsync<List<IgdbGameDto>>($"api/games/search/{gameName}")
+            return await _retryHandler.ExecuteAsync(async () =>
+            {
+                return await _httpClient.GetFromJsonAsync<List<IgdbGameDto>>($"api/games/search/{gameName}")
                    ?? [];
+            });            
         }
 
-        public async Task<IgdbCoverDto> SearchCover(int id)
+        public async Task<string> SearchCover(int id)
         {
-            return await _httpClient.GetFromJsonAsync<IgdbCoverDto>($"api/games/covers/{id}")
-                   ?? new IgdbCoverDto();
+            return await _retryHandler.ExecuteAsync(async () =>
+            {
+                return await _httpClient.GetStringAsync($"api/games/covers/{id}")
+                                   ?? "";
+            });            
         }
     }
 }

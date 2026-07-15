@@ -1,6 +1,7 @@
 ﻿using Azure.Security.KeyVault.Secrets;
 using CollectionHub.Functions.Services.Anime;
 using CollectionHub.Functions.Services.Cosmos;
+using CollectionHub.Functions.Services.Covers;
 using CollectionHub.Functions.Services.Igdb;
 using CollectionHub.Shared.Dtos.Anime;
 using CollectionHub.Shared.Dtos.Game;
@@ -20,13 +21,15 @@ namespace CollectionHub.Functions.Functions
         private readonly IMediaService _mediaService;
         private readonly IGdbService _igdbService;
         private readonly JikanService _jikanService;
+        private readonly ICoverService _coverService;
 
-        public MediaFunctions(ILogger<MediaFunctions> logger, IMediaService mediaService, IGdbService igdbService, JikanService jikanService)
+        public MediaFunctions(ILogger<MediaFunctions> logger, IMediaService mediaService, IGdbService igdbService, JikanService jikanService, ICoverService coverService)
         {
             _logger = logger;
             _mediaService = mediaService;
             _igdbService = igdbService;
             _jikanService = jikanService;
+            _coverService = coverService;
         }
 
         #region Games
@@ -105,7 +108,7 @@ namespace CollectionHub.Functions.Functions
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            return new OkObjectResult(await _igdbService.GetCoverAsync(gameId));
+            return new OkObjectResult(await _coverService.GetCover(gameId));
         }
 
         #endregion

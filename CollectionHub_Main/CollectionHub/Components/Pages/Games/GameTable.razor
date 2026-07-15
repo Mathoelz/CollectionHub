@@ -31,7 +31,7 @@
         else
         {
             <tr>
-                <td><img src="@(string.IsNullOrEmpty(game.Cover.Url) ? "" : "https:" + game.Cover.Url)" alt="@game.Title" style="width: 150px; height: auto;" /></td>
+                <td><img src="@(string.IsNullOrEmpty(game.Cover) ? "" : game.Cover)" alt="@game.Title" style="width: 150px; height: auto;" /></td>
                 <td>@game.Title</td>
                 <td>@game.Status</td>
                 <td>@game.Rating</td>

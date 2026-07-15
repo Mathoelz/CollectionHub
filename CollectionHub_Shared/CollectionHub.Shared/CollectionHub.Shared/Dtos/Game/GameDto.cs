@@ -20,7 +20,7 @@ namespace CollectionHub.Shared.Dtos.Game
 
         public string? Notes { get; set; }
         public string? FirstReleaseDate { get; set; }
-        public IgdbCoverDto? Cover { get; set; } = new();
+        public string? Cover { get; set; }
         public MediaType MediaType { get; set; } = MediaType.Game;
     }
 }

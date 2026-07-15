@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient<HelloApiService>();
 builder.Services.AddHttpClient<IGameApiService, GameApiService>();
 builder.Services.AddHttpClient<IAnimeService, AnimeApiService>();
+builder.Services.AddSingleton<ApiRetryHandler>();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
