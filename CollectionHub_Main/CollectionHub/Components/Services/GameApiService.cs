@@ -13,8 +13,6 @@ namespace CollectionHub.Components.Services
         public GameApiService(HttpClient httpClient, ApiRetryHandler apiRetryHandler)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:7029/");
-
             _retryHandler = apiRetryHandler;
 
         }

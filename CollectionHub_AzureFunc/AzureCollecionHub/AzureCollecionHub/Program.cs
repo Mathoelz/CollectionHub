@@ -44,9 +44,17 @@ builder.ConfigureFunctionsWebApplication();
 
 var host = builder.Build();
 
-var secretProvider = host.Services.GetRequiredService<ISecretProvider>();
+try
+{
+    var secretProvider = host.Services.GetRequiredService<ISecretProvider>();
 
-await secretProvider.InitializeAsync();
+    await secretProvider.InitializeAsync();
+}
+catch(Exception ex)
+{
+    Console.WriteLine(ex);
+}
+
 
 // Application Insights isn't enabled by default. See https://aka.ms/AAt8mw4.
 // builder.Services

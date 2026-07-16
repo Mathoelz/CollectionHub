@@ -3,10 +3,21 @@ using CollectionHub.Components.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var apiBaseUrl = builder.Configuration["ApiBaseUrl"]
+    ?? throw new InvalidOperationException("ApiBaseUrl is missing.");
+
 // Add services to the container.
+builder.Services.AddHttpClient<IGameApiService, GameApiService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+});
+
+builder.Services.AddHttpClient<IAnimeService, AnimeApiService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+});
+
 builder.Services.AddHttpClient<HelloApiService>();
-builder.Services.AddHttpClient<IGameApiService, GameApiService>();
-builder.Services.AddHttpClient<IAnimeService, AnimeApiService>();
 builder.Services.AddSingleton<ApiRetryHandler>();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();

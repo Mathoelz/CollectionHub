@@ -3,30 +3,34 @@
   "WorkspaceRootPath": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EA9DF1A3-6C6A-6A08-3835-A75E5D1DA113}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\services\\covers\\coverservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{00D72A15-F378-B5E9-53C5-CD10D55D3BC4}|CollectionHub\\CollectionHub.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_main\\collectionhub\\components\\services\\gameapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{00D72A15-F378-B5E9-53C5-CD10D55D3BC4}|CollectionHub\\CollectionHub.csproj|solutionrelative:collectionhub\\components\\services\\gameapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{EA9DF1A3-6C6A-6A08-3835-A75E5D1DA113}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EA9DF1A3-6C6A-6A08-3835-A75E5D1DA113}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\services\\covers\\icoverservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EA9DF1A3-6C6A-6A08-3835-A75E5D1DA113}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\functions\\mediafunctions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EA9DF1A3-6C6A-6A08-3835-A75E5D1DA113}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\services\\igdb\\igdbservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{00D72A15-F378-B5E9-53C5-CD10D55D3BC4}|CollectionHub\\CollectionHub.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_main\\collectionhub\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00D72A15-F378-B5E9-53C5-CD10D55D3BC4}|CollectionHub\\CollectionHub.csproj|solutionrelative:collectionhub\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{00D72A15-F378-B5E9-53C5-CD10D55D3BC4}|CollectionHub\\CollectionHub.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_main\\collectionhub\\components\\services\\animeapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{00D72A15-F378-B5E9-53C5-CD10D55D3BC4}|CollectionHub\\CollectionHub.csproj|solutionrelative:collectionhub\\components\\services\\animeapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{00D72A15-F378-B5E9-53C5-CD10D55D3BC4}|CollectionHub\\CollectionHub.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_main\\collectionhub\\components\\services\\gameapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00D72A15-F378-B5E9-53C5-CD10D55D3BC4}|CollectionHub\\CollectionHub.csproj|solutionrelative:collectionhub\\components\\services\\gameapiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{EA9DF1A3-6C6A-6A08-3835-A75E5D1DA113}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\services\\anime\\jikanservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EA9DF1A3-6C6A-6A08-3835-A75E5D1DA113}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\functions\\mediafunctions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EA9DF1A3-6C6A-6A08-3835-A75E5D1DA113}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\services\\covers\\coverservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EA9DF1A3-6C6A-6A08-3835-A75E5D1DA113}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\services\\covers\\icoverservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EA9DF1A3-6C6A-6A08-3835-A75E5D1DA113}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\services\\igdb\\igdbservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EA9DF1A3-6C6A-6A08-3835-A75E5D1DA113}|..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\CollectionHub.Functions.csproj|c:\\users\\tiz\\documents\\github\\collectionhub\\collectionhub_azurefunc\\azurecollecionhub\\azurecollecionhub\\services\\cosmos\\cosmosdbmediaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
@@ -71,11 +75,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "GameTable.razor",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Components\\Pages\\Games\\GameTable.razor",
               "RelativeDocumentMoniker": "CollectionHub\\Components\\Pages\\Games\\GameTable.razor",
@@ -87,7 +91,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "IGameApiService.cs",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Components\\Services\\IGameApiService.cs",
               "RelativeDocumentMoniker": "CollectionHub\\Components\\Services\\IGameApiService.cs",
@@ -99,7 +103,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "SearchResultList.razor",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Components\\Pages\\Games\\SearchResultList.razor",
               "RelativeDocumentMoniker": "CollectionHub\\Components\\Pages\\Games\\SearchResultList.razor",
@@ -107,11 +111,12 @@
               "RelativeToolTip": "CollectionHub\\Components\\Pages\\Games\\SearchResultList.razor",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-07-13T19:26:17.236Z"
+              "WhenOpened": "2026-07-13T19:26:17.236Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 8,
               "Title": "IGdbService.cs",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\Igdb\\IGdbService.cs",
               "RelativeDocumentMoniker": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\Igdb\\IGdbService.cs",
@@ -123,19 +128,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 1,
               "Title": "MediaFunctions.cs",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Functions\\MediaFunctions.cs",
               "RelativeDocumentMoniker": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Functions\\MediaFunctions.cs",
               "ToolTip": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Functions\\MediaFunctions.cs",
               "RelativeToolTip": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Functions\\MediaFunctions.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGMAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAQwBYAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-07T20:33:47.478Z"
+              "WhenOpened": "2026-07-07T20:33:47.478Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "CosmosDbMediaService.cs",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\Cosmos\\CosmosDbMediaService.cs",
               "RelativeDocumentMoniker": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\Cosmos\\CosmosDbMediaService.cs",
@@ -147,20 +153,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "GameApiService.cs",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Components\\Services\\GameApiService.cs",
               "RelativeDocumentMoniker": "CollectionHub\\Components\\Services\\GameApiService.cs",
               "ToolTip": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Components\\Services\\GameApiService.cs",
               "RelativeToolTip": "CollectionHub\\Components\\Services\\GameApiService.cs",
-              "ViewState": "AgIAAEQAAAAAAAAAAIAwwF8AAAApAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-09T18:37:27.036Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "Games.razor",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Components\\Pages\\Games\\Games.razor",
               "RelativeDocumentMoniker": "CollectionHub\\Components\\Pages\\Games\\Games.razor",
@@ -174,37 +180,50 @@
         },
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Program.cs",
               "RelativeDocumentMoniker": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Program.cs",
               "ToolTip": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Program.cs",
               "RelativeToolTip": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADYAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-13T23:51:03.639Z",
+              "WhenOpened": "2026-07-16T20:16:05.905Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Program.cs",
+              "RelativeDocumentMoniker": "CollectionHub\\Program.cs",
+              "ToolTip": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Program.cs",
+              "RelativeToolTip": "CollectionHub\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-16T18:27:59.21Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "CoverService.cs",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\Covers\\CoverService.cs",
               "RelativeDocumentMoniker": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\Covers\\CoverService.cs",
               "ToolTip": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\Covers\\CoverService.cs",
               "RelativeToolTip": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\Covers\\CoverService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-13T17:17:51.129Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 7,
               "Title": "ICoverService.cs",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\Covers\\ICoverService.cs",
               "RelativeDocumentMoniker": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\Covers\\ICoverService.cs",
@@ -216,7 +235,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 5,
               "Title": "JikanService.cs",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\Anime\\JikanService.cs",
               "RelativeDocumentMoniker": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\Anime\\JikanService.cs",
@@ -224,11 +243,12 @@
               "RelativeToolTip": "..\\CollectionHub_AzureFunc\\AzureCollecionHub\\AzureCollecionHub\\Services\\Anime\\JikanService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAABIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-12T19:21:19.784Z"
+              "WhenOpened": "2026-07-12T19:21:19.784Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "AnimeForm.razor",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Components\\Pages\\Animes\\AnimeForm.razor",
               "RelativeDocumentMoniker": "CollectionHub\\Components\\Pages\\Animes\\AnimeForm.razor",
@@ -240,7 +260,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "AnimeTable.razor",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Components\\Pages\\Animes\\AnimeTable.razor",
               "RelativeDocumentMoniker": "CollectionHub\\Components\\Pages\\Animes\\AnimeTable.razor",
@@ -252,7 +272,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "Animes.razor",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Components\\Pages\\Animes\\Animes.razor",
               "RelativeDocumentMoniker": "CollectionHub\\Components\\Pages\\Animes\\Animes.razor",
@@ -264,7 +284,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "IAnimeService.cs",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Components\\Services\\IAnimeService.cs",
               "RelativeDocumentMoniker": "CollectionHub\\Components\\Services\\IAnimeService.cs",
@@ -276,15 +296,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 3,
               "Title": "AnimeApiService.cs",
               "DocumentMoniker": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Components\\Services\\AnimeApiService.cs",
               "RelativeDocumentMoniker": "CollectionHub\\Components\\Services\\AnimeApiService.cs",
               "ToolTip": "C:\\Users\\Tiz\\Documents\\GitHub\\CollectionHub\\CollectionHub_Main\\CollectionHub\\Components\\Services\\AnimeApiService.cs",
               "RelativeToolTip": "CollectionHub\\Components\\Services\\AnimeApiService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADgAAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADoAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-12T02:21:02.687Z"
+              "WhenOpened": "2026-07-12T02:21:02.687Z",
+              "EditorCaption": ""
             }
           ]
         }

@@ -14,8 +14,6 @@ namespace CollectionHub.Components.Services
         public AnimeApiService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:7029/");
-
             _retryHandler = new ApiRetryHandler();
 
             _animes = new List<Anime>

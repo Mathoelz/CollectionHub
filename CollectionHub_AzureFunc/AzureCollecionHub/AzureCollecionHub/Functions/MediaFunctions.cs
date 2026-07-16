@@ -35,7 +35,7 @@ namespace CollectionHub.Functions.Functions
         #region Games
 
         [Function("GetGames")]
-        public async Task<IActionResult> GetGames([HttpTrigger(AuthorizationLevel.Function, "get", Route = "games")] HttpRequest req)
+        public async Task<IActionResult> GetGames([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "games")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -43,7 +43,7 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("GetGame")]
-        public async Task<IActionResult> GetGame([HttpTrigger(AuthorizationLevel.Function, "get", Route = "games/{gameId}")] HttpRequest req, Guid gameId)
+        public async Task<IActionResult> GetGame([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "games/{gameId}")] HttpRequest req, Guid gameId)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             // Here you would typically retrieve the game from a database or in-memory collection using the gameId.
@@ -52,7 +52,7 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("PostGames")]
-        public async Task<IActionResult> PostGame([HttpTrigger(AuthorizationLevel.Function, "post", Route = "games")] HttpRequest req)
+        public async Task<IActionResult> PostGame([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "games")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             GameDto newGame = await req.ReadFromJsonAsync<GameDto>();
@@ -68,7 +68,7 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("UpdateGames")]
-        public async Task<IActionResult> UpdateGame([HttpTrigger(AuthorizationLevel.Function, "put", Route = "games")] HttpRequest req)
+        public async Task<IActionResult> UpdateGame([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "games")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             GameDto updatedGame = await req.ReadFromJsonAsync<GameDto>();
@@ -83,7 +83,7 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("DeleteGames")]
-        public async Task<IActionResult> DeleteGame([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "games/{gameId}")] HttpRequest req, Guid gameId)
+        public async Task<IActionResult> DeleteGame([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "games/{gameId}")] HttpRequest req, Guid gameId)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             // Here you would typically delete the game from a database or in-memory collection.
@@ -96,7 +96,7 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("SearchGames")]
-        public async Task<IActionResult> SearchGame([HttpTrigger(AuthorizationLevel.Function, "get", Route = "games/search/{gameName}")] HttpRequest req, string gameName)
+        public async Task<IActionResult> SearchGame([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "games/search/{gameName}")] HttpRequest req, string gameName)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
           
@@ -104,7 +104,7 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("SearchCovers")]
-        public async Task<IActionResult> SearchCovers([HttpTrigger(AuthorizationLevel.Function, "get", Route = "games/covers/{gameId}")] HttpRequest req, int gameId)
+        public async Task<IActionResult> SearchCovers([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "games/covers/{gameId}")] HttpRequest req, int gameId)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -116,21 +116,21 @@ namespace CollectionHub.Functions.Functions
         #region Anime
 
         [Function("GetAnimes")]
-        public async Task<IActionResult> GetAnimes([HttpTrigger(AuthorizationLevel.Function, "get", Route = "animes")] HttpRequest req)
+        public async Task<IActionResult> GetAnimes([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "animes")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             return new OkObjectResult(await _mediaService.GetAllAnimes());
         }
 
         [Function("GetAnime")]
-        public async Task<IActionResult> GetAnime([HttpTrigger(AuthorizationLevel.Function, "get", Route = "animes/{animeId}")] HttpRequest req, Guid animeId)
+        public async Task<IActionResult> GetAnime([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "animes/{animeId}")] HttpRequest req, Guid animeId)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             return new OkObjectResult(await _mediaService.GetAnimeById(animeId));
         }
 
         [Function("AddAnime")]
-        public async Task<IActionResult> PostAnime([HttpTrigger(AuthorizationLevel.Function, "post", Route = "animes")] HttpRequest req)
+        public async Task<IActionResult> PostAnime([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "animes")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             AnimeDto newAnime = await req.ReadFromJsonAsync<AnimeDto>();
@@ -143,7 +143,7 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("UpdateAnime")]
-        public async Task<IActionResult> UpdateAnime([HttpTrigger(AuthorizationLevel.Function, "put", Route = "animes")] HttpRequest req)
+        public async Task<IActionResult> UpdateAnime([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "animes")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             AnimeDto updatedAnime = await req.ReadFromJsonAsync<AnimeDto>();
@@ -156,7 +156,7 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("DeleteAnime")]
-        public async Task<IActionResult> DeleteAnime([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "animes/{animeId}")] HttpRequest req, Guid animeId)
+        public async Task<IActionResult> DeleteAnime([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "animes/{animeId}")] HttpRequest req, Guid animeId)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             await _mediaService.DeleteItem(animeId);
@@ -165,7 +165,7 @@ namespace CollectionHub.Functions.Functions
         }
 
         [Function("SearchAnime")]
-        public async Task<IActionResult> SearchAnime([HttpTrigger(AuthorizationLevel.Function, "get", Route = "animes/search/{animeName}")] HttpRequest req, string animeName)
+        public async Task<IActionResult> SearchAnime([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "animes/search/{animeName}")] HttpRequest req, string animeName)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             return new OkObjectResult(await _jikanService.SearchAnimeAsync(animeName));
