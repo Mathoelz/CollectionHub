@@ -16,3 +16,26 @@ A cloud-native ASP.NET Core application for managing gaming backlogs and anime c
 - Azure Blob Storage
 - Azure Key Vault
 - Application Insights
+
+- ## Azure Architecture
+
+Frontend:
+- Azure App Service (Linux)
+- Blazor Server
+
+Backend:
+- Azure Functions (.NET Isolated)
+- HTTP Triggers
+
+Storage:
+- Cosmos DB
+- Blob Storage
+
+Security:
+- Azure Key Vault
+- Managed Identity
+- RBAC
+
+External APIs:
+- IGDB
+- AniList
