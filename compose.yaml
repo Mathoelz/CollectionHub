@@ -1,0 +1,44 @@
+services:
+  collectionhub-web:
+    build:
+      context: .
+      dockerfile: CollectionHub_Main/CollectionHub/Dockerfile
+
+    container_name: collectionhub-web
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      ApiBaseUrl: "http://collectionhub-functions:80/"
+
+    depends_on:
+      - collectionhub-functions
+
+  collectionhub-functions:
+    build:
+      context: .
+      dockerfile: CollectionHub_AzureFunc/AzureCollecionHub/AzureCollecionHub/Dockerfile
+
+    container_name: collectionhub-functions
+
+    environment:
+      FUNCTIONS_WORKER_RUNTIME: "dotnet-isolated"
+      AzureWebJobsStorage: ""
+
+      AZURE_TENANT_ID: "${AZURE_TENANT_ID}"
+      AZURE_CLIENT_ID: "${AZURE_CLIENT_ID}"
+      AZURE_CLIENT_SECRET: "${AZURE_CLIENT_SECRET}"
+
+      AzureKeyVaultUri: "${AZURE_KEY_VAULT_URI}"
+      AzureBlobStorageUri: "${AZURE_BLOB_STORAGE_URI}"
+      CollectionHubCoversBlob: "${COLLECTION_HUB_COVERS_BLOB}"
+
+      CosmosEndpoint: "${COSMOS_ENDPOINT}"
+      CosmosDatabase: "${COSMOS_DATABASE}"
+      CosmosContainer: "${COSMOS_CONTAINER}"
+
+      TwitchDeveloperGrantType: "${TWITCH_DEVELOPER_GRANT_TYPE}"
+
+    ports:
+      - "7071:80"
