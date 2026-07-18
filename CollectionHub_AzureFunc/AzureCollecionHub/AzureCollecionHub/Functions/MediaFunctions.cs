@@ -12,6 +12,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using System.Runtime.InteropServices;
 using System.Text.Json;
+using Microsoft.Identity.Web;
 
 namespace CollectionHub.Functions.Functions
 {

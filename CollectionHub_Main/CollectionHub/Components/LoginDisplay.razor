@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+
+<AuthorizeView>
+    <Authorized>
+        <span style="color: white; font-size: 0.85rem;">
+            @context.User.Identity?.Name
+        </span>
+
+        <a href="/MicrosoftIdentity/Account/SignOut"
+           data-enhance-nav="false"
+           style="color: white; font-size: 0.85rem;">
+            Log out
+        </a>
+    </Authorized>
+
+    <NotAuthorized>
+        <a href="/MicrosoftIdentity/Account/SignIn"
+           data-enhance-nav="false"
+           style="color: white;">
+            Log in
+        </a>
+    </NotAuthorized>
+</AuthorizeView>

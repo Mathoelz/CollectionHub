@@ -1,4 +1,5 @@
 ﻿@using CollectionHub.Shared.Dtos.Game
+@using Microsoft.AspNetCore.Components.Authorization
 
 <table class="table">
     <tr style="font-weight:bold;">
@@ -8,6 +9,7 @@
         <td>Rating</td>
         <td>First release date</td>
         <td>Notes</td>
+        <td>Actions</td>
     </tr>
     @foreach (var game in Games)
     {
@@ -18,7 +20,7 @@
         else if(game.Id == deleteGameId)
         {
             <tr>
-                <td colspan="5">
+                <td colspan="7">
                     <div class="alert alert-danger" role="alert">
                         Are you sure you want to delete <strong>@game.Title</strong>?
                         <button class="btn btn-danger" @onclick="@(() => DeleteGame(game))">Yes</button>
@@ -37,8 +39,21 @@
                 <td>@game.Rating</td>
                 <td>@game.FirstReleaseDate</td>
                 <td>@game.Notes</td>
-                <button class="btn btn-danger" @onclick="@(() => FlagGameForDeletion(game))">Delete</button>
-                <button class="btn btn-primary" @onclick="@(() => StartEditing(game))">Edit</button>
+                <td>
+                    <AuthorizeView>
+                        <Authorized>
+                            <button class="btn btn-danger"
+                                    @onclick="@(() => FlagGameForDeletion(game))">
+                                Delete
+                            </button>
+                
+                            <button class="btn btn-primary"
+                                    @onclick="@(() => StartEditing(game))">
+                                Edit
+                            </button>
+                        </Authorized>
+                    </AuthorizeView>
+                </td>
             </tr>
         }      
     }

@@ -1,4 +1,5 @@
 ﻿@using CollectionHub.Shared.Dtos.Anime
+@using Microsoft.AspNetCore.Components.Authorization
 
 <table class="table">
     <tr style="font-weight:bold;">
@@ -32,8 +33,21 @@
                 <td>@anime.Status</td>
                 <td>@anime.Rating</td>
                 <td>@anime.Notes</td>
-                <button class="btn btn-danger" @onclick="@(() => FlagAnimeForDeletion(anime))">Delete</button>
-                <button class="btn btn-primary" @onclick="@(() => StartEditing(anime))">Edit</button>
+                <td>
+                    <AuthorizeView>
+                        <Authorized>
+                            <button class="btn btn-danger"
+                                    @onclick="@(() => FlagAnimeForDeletion(anime))">
+                                Delete
+                            </button>
+                
+                            <button class="btn btn-primary"
+                                    @onclick="@(() => StartEditing(anime))">
+                                Edit
+                            </button>
+                        </Authorized>
+                    </AuthorizeView>
+                </td>
             </tr>
         }
     }

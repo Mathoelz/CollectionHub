@@ -1,59 +1,85 @@
 ﻿@using CollectionHub.Shared.Dtos.Game
+@using Microsoft.AspNetCore.Components.Authorization
 
-<EditForm Model="Game" OnValidSubmit="SubmitGame">
+<AuthorizeView>
+    <Authorized Context="authState">
+        <EditForm Model="Game" OnValidSubmit="SubmitGame">
+            <DataAnnotationsValidator />
 
-    <DataAnnotationsValidator />
+            <table class="table">
+                <tr style="font-weight:bold">
+                    <td>Title</td>
+                    <td>Status</td>
+                    <td>Rating</td>
+                    <td>Notes</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <InputText class="form-control"
+                                   @bind-Value="Game.Title" />
+                        <ValidationMessage For="@(() => Game.Title)" />
+                    </td>
+                    <td>
+                        <InputSelect class="form-select"
+                                     @bind-Value="Game.Status">
+                            @foreach (var status in Enum.GetValues<CollectionStatus>())
+                            {
+                                <option value="@status">@status</option>
+                            }
+                        </InputSelect>
+                    </td>
+                    <td>
+                        <InputSelect class="form-select"
+                                     @bind-Value="Game.Rating">
+                            @for (int i = 1; i <= 10; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </InputSelect>
+                    </td>
+                    <td>
+                        <InputText class="form-control"
+                                   @bind-Value="Game.Notes" />
+                        <ValidationMessage For="@(() => Game.Notes)" />
+                    </td>
 
-    <table class="table">
-        <tr style="font-weight:bold">
-            <td>Title</td>
-            <td>Status</td>
-            <td>Rating</td>
-            <td>Notes</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                <InputText class="form-control" @bind-Value="Game.Title" />
-                <ValidationMessage For="@(() => Game.Title)" />
-            </td>
-            <td>
-                <InputSelect class="form-select" @bind-Value="Game.Status">
-                    @foreach (var status in Enum.GetValues<CollectionStatus>())
+                    @if (isEditing)
                     {
-                        <option value="@status">@status</option>
-                    }
-                </InputSelect>
-            </td>
-            <td>
-                <InputSelect class="form-select" @bind-Value="Game.Rating">
-                    @for (int i = 1; i <= 10; i++)
-                    {
-                        <option value="@i">@i</option>
-                    }
-                </InputSelect>
-            </td>
-            <td>
-                <InputText class="form-control" @bind-Value="Game.Notes" />
-                <ValidationMessage For="@(() => Game.Notes)" />
-            </td>
-            @if (isEditing)
-            {
-                <td>
-                    <button class="btn btn-primary" @onclick="OnCancel">Cancel</button>
-                    <button class="btn btn-primary" type="submit">Update</button>
-                </td>
-            }
-            else
-            {
-                <td>
-                    <button class="btn btn-primary" type="submit">Add</button>
-                </td>
-            }
-        </tr>
-    </table>
+                        <td>
+                            <button class="btn btn-primary"
+                                    type="button"
+                                    @onclick="OnCancel">
+                                Cancel
+                            </button>
 
-</EditForm>
+                            <button class="btn btn-primary"
+                                    type="submit">
+                                Update
+                            </button>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <button class="btn btn-primary"
+                                    type="submit">
+                                Add
+                            </button>
+                        </td>
+                    }
+                </tr>
+            </table>
+        </EditForm>
+    </Authorized>
+
+    <NotAuthorized>
+        <p class="text-muted">
+            Log in to add games to the collection.
+        </p>
+    </NotAuthorized>
+</AuthorizeView>
+
 
 @code {
 

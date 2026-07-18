@@ -14,7 +14,14 @@
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
   
     <RequiresAspNetWebAssets>true</RequiresAspNetWebAssets>
+  
+    <UserSecretsId>8e383d89-8c83-4436-870b-432afb52f075</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Identity.Web" Version="4.13.2" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="4.13.2" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\CollectionHub_Shared\CollectionHub.Shared\CollectionHub.Shared\CollectionHub.Shared.csproj" />

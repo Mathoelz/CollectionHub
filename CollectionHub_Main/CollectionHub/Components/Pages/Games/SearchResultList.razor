@@ -1,9 +1,10 @@
 ﻿@using CollectionHub.Shared.Dtos.Game;
 @using CollectionHub.Components.Services;
+@using Microsoft.AspNetCore.Components.Authorization
 
 <table class="table">
     <tr style="font-weight:bold;">
-        <td></td>
+        <td>Cover</td>
         <td>Title</td>
         <td>Rating</td>
         <td>First release date</td>
@@ -17,7 +18,16 @@
             <td>@game.Rating</td>
             <td>@game.FirstReleaseDate</td>
             <td>@game.Notes</td>
-            <td><button class="btn btn-primary" @onclick="@(() => OnAdd.InvokeAsync(game))">Add Game</button></td>
+            <td>
+                <AuthorizeView>
+                    <Authorized>
+                        <button class="btn btn-primary"
+                                @onclick="@(() => OnAdd.InvokeAsync(game))">
+                            Add Game
+                        </button>
+                    </Authorized>
+                </AuthorizeView>
+            </td>
         </tr>
     }
 </table>
