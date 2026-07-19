@@ -9,11 +9,17 @@ var builder = WebApplication.CreateBuilder(args);
 var apiBaseUrl = builder.Configuration["ApiBaseUrl"]
     ?? throw new InvalidOperationException("ApiBaseUrl is missing.");
 
+var functionsApiScope =
+    builder.Configuration["FunctionsApi:Scope"]
+    ?? throw new InvalidOperationException(
+        "FunctionsApi:Scope is missing.");
+
 builder.Services
     .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(
         builder.Configuration.GetSection("AzureAd"))
-    .EnableTokenAcquisitionToCallDownstreamApi()
+    .EnableTokenAcquisitionToCallDownstreamApi(
+        [functionsApiScope])
     .AddInMemoryTokenCaches();
 
 builder.Services.AddAuthorization();

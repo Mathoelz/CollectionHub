@@ -6,11 +6,11 @@ using CollectionHub.Functions.Services.Cosmos;
 using CollectionHub.Functions.Services.Covers;
 using CollectionHub.Functions.Services.Igdb;
 using CollectionHub.Functions.Services.Secrets;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 
 var builder = FunctionsApplication.CreateBuilder(args);

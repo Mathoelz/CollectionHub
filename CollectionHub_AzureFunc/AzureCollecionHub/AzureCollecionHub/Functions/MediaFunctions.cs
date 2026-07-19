@@ -10,9 +10,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.Resource;
 using System.Runtime.InteropServices;
 using System.Text.Json;
-using Microsoft.Identity.Web;
 
 namespace CollectionHub.Functions.Functions
 {
@@ -47,23 +48,44 @@ namespace CollectionHub.Functions.Functions
         public async Task<IActionResult> GetGame([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "games/{gameId}")] HttpRequest req, Guid gameId)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
-            // Here you would typically retrieve the game from a database or in-memory collection using the gameId.
-            // For this example, we'll just create a dummy game and return it.
+
+
             return new OkObjectResult(await _mediaService.GetGameById(gameId));
         }
 
         [Function("PostGames")]
-        public async Task<IActionResult> PostGame([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "games")] HttpRequest req)
+        public async Task<IActionResult> PostGame(
+            [HttpTrigger(
+                AuthorizationLevel.Anonymous,
+                "post",
+                Route = "games")]
+            HttpRequest req)
         {
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
-            GameDto newGame = await req.ReadFromJsonAsync<GameDto>();
-            // Here you would typically save the new game to a database or in-memory collection.
-            // For this example, we'll just log the new game and return it.
-            if(newGame != null)
+            var authorizationFailure =
+                await AuthorizeWriteRequestAsync(req);
+
+            if (authorizationFailure is not null)
             {
-                await _mediaService.AddGame(newGame);
-                _logger.LogInformation($"New game added: {newGame.Title}");
+                return authorizationFailure;
             }
+
+            _logger.LogInformation(
+                "Authenticated user is adding a game.");
+
+            GameDto? newGame =
+                await req.ReadFromJsonAsync<GameDto>();
+
+            if (newGame is null)
+            {
+                return new BadRequestObjectResult(
+                    "A valid game is required.");
+            }
+
+            await _mediaService.AddGame(newGame);
+
+            _logger.LogInformation(
+                "New game added: {GameTitle}",
+                newGame.Title);
 
             return new OkObjectResult(newGame);
         }
@@ -71,10 +93,17 @@ namespace CollectionHub.Functions.Functions
         [Function("UpdateGames")]
         public async Task<IActionResult> UpdateGame([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "games")] HttpRequest req)
         {
+            var authorizationFailure =
+                await AuthorizeWriteRequestAsync(req);
+
+            if (authorizationFailure is not null)
+            {
+                return authorizationFailure;
+            }
+
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             GameDto updatedGame = await req.ReadFromJsonAsync<GameDto>();
-            // Here you would typically update the game in a database or in-memory collection.
-            // For this example, we'll just log the updated game and return it.
+
             if(updatedGame != null)
             {
                 await _mediaService.UpdateGame(updatedGame);
@@ -86,9 +115,15 @@ namespace CollectionHub.Functions.Functions
         [Function("DeleteGames")]
         public async Task<IActionResult> DeleteGame([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "games/{gameId}")] HttpRequest req, Guid gameId)
         {
+            var authorizationFailure =
+                await AuthorizeWriteRequestAsync(req);
+
+            if (authorizationFailure is not null)
+            {
+                return authorizationFailure;
+            }
+
             _logger.LogInformation("C# HTTP trigger function processed a request.");
-            // Here you would typically delete the game from a database or in-memory collection.
-            // For this example, we'll just log the deleted game and return a success message.
 
             await _mediaService.DeleteItem(gameId);
             _logger.LogInformation($"Game deleted: {gameId}");
@@ -133,6 +168,14 @@ namespace CollectionHub.Functions.Functions
         [Function("AddAnime")]
         public async Task<IActionResult> PostAnime([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "animes")] HttpRequest req)
         {
+            var authorizationFailure =
+                await AuthorizeWriteRequestAsync(req);
+
+            if (authorizationFailure is not null)
+            {
+                return authorizationFailure;
+            }
+
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             AnimeDto newAnime = await req.ReadFromJsonAsync<AnimeDto>();
             if (newAnime != null)
@@ -146,6 +189,14 @@ namespace CollectionHub.Functions.Functions
         [Function("UpdateAnime")]
         public async Task<IActionResult> UpdateAnime([HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "animes")] HttpRequest req)
         {
+            var authorizationFailure =
+                await AuthorizeWriteRequestAsync(req);
+
+            if (authorizationFailure is not null)
+            {
+                return authorizationFailure;
+            }
+
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             AnimeDto updatedAnime = await req.ReadFromJsonAsync<AnimeDto>();
             if (updatedAnime != null)
@@ -159,6 +210,14 @@ namespace CollectionHub.Functions.Functions
         [Function("DeleteAnime")]
         public async Task<IActionResult> DeleteAnime([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "animes/{animeId}")] HttpRequest req, Guid animeId)
         {
+            var authorizationFailure =
+                await AuthorizeWriteRequestAsync(req);
+
+            if (authorizationFailure is not null)
+            {
+                return authorizationFailure;
+            }
+
             _logger.LogInformation("C# HTTP trigger function processed a request.");
             await _mediaService.DeleteItem(animeId);
             _logger.LogInformation($"Anime deleted: {animeId}");
@@ -173,5 +232,34 @@ namespace CollectionHub.Functions.Functions
         }
 
         #endregion
+
+        private async Task<IActionResult?> AuthorizeWriteRequestAsync(
+            HttpRequest req)
+        {
+            var (isAuthenticated, authenticationResponse) =
+                await req.HttpContext.AuthenticateAzureFunctionAsync();
+
+            if (!isAuthenticated)
+            {
+                return authenticationResponse
+                    ?? new UnauthorizedResult();
+            }
+
+            try
+            {
+                req.HttpContext.VerifyUserHasAnyAcceptedScope(
+                    "access_as_user");
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogWarning(
+                    ex,
+                    "Authenticated user does not have the required scope.");
+
+                return new ForbidResult();
+            }
+
+            return null;
+        }
     }
 }

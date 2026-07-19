@@ -1,7 +1,9 @@
-﻿using CollectionHub.Components.Pages.Games;
-using CollectionHub.Shared.Dtos.Anime;
-using CollectionHub.Shared.Dtos.Game;
+﻿using CollectionHub.Shared.Dtos.Anime;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Identity.Web;
 using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace CollectionHub.Components.Services
 {
@@ -9,110 +11,155 @@ namespace CollectionHub.Components.Services
     {
         private readonly HttpClient _httpClient;
         private readonly ApiRetryHandler _retryHandler;
-        private readonly List<Anime> _animes = new List<Anime>();
+        private readonly ITokenAcquisition _tokenAcquisition;
+        private readonly AuthenticationStateProvider
+            _authenticationStateProvider;
+        private readonly string _functionsApiScope;
 
-        public AnimeApiService(HttpClient httpClient)
+        public AnimeApiService(
+            HttpClient httpClient,
+            ApiRetryHandler retryHandler,
+            ITokenAcquisition tokenAcquisition,
+            AuthenticationStateProvider authenticationStateProvider,
+            IConfiguration configuration)
         {
             _httpClient = httpClient;
-            _retryHandler = new ApiRetryHandler();
+            _retryHandler = retryHandler;
+            _tokenAcquisition = tokenAcquisition;
+            _authenticationStateProvider = authenticationStateProvider;
 
-            _animes = new List<Anime>
+            _functionsApiScope =
+                configuration["FunctionsApi:Scope"]
+                ?? throw new InvalidOperationException(
+                    "FunctionsApi:Scope is missing.");
+        }
+
+        private async Task<HttpRequestMessage>
+            CreateAuthenticatedRequestAsync(
+                HttpMethod method,
+                string requestUri,
+                HttpContent? content = null)
+        {
+            var authenticationState =
+                await _authenticationStateProvider
+                    .GetAuthenticationStateAsync();
+
+            if (authenticationState.User.Identity?.IsAuthenticated
+                != true)
             {
-                new()
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "Frieren: Beyond Journey's End",
-                    Status = CollectionStatus.Completed,
-                    Rating = 10,
-                    Notes = "Beautiful storytelling."
-                },
+                throw new InvalidOperationException(
+                    "The user must be authenticated.");
+            }
 
-                new()
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "Vinland Saga",
-                    Status = CollectionStatus.Playing,
-                    Rating = 9,
-                    Notes = "Currently watching Season 2."
-                },
+            var accessToken =
+                await _tokenAcquisition.GetAccessTokenForUserAsync(
+                    [_functionsApiScope],
+                    user: authenticationState.User);
 
-                new()
-                {
-                    Id = Guid.NewGuid(),
-                    Title = "Steins;Gate",
-                    Status = CollectionStatus.Backlog,
-                    Rating = null,
-                    Notes = "Everyone recommends it."
-                }
+            var request = new HttpRequestMessage(
+                method,
+                requestUri)
+            {
+                Content = content
             };
+
+            request.Headers.Authorization =
+                new AuthenticationHeaderValue(
+                    "Bearer",
+                    accessToken);
+
+            return request;
         }
 
         public async Task<List<AnimeDto>> GetAnimesAsync()
         {
             return await _retryHandler.ExecuteAsync(async () =>
             {
-                return await _httpClient.GetFromJsonAsync<List<AnimeDto>>("api/animes")
-                                   ?? new List<AnimeDto>();
-            });            
+                return await _httpClient
+                    .GetFromJsonAsync<List<AnimeDto>>(
+                        "api/animes")
+                    ?? [];
+            });
         }
 
         public async Task<AnimeDto> GetAnimeAsync(AnimeDto anime)
         {
             return await _retryHandler.ExecuteAsync(async () =>
             {
-                return await _httpClient.GetFromJsonAsync<AnimeDto>($"api/animes/{anime.Id}")
-                                   ?? new AnimeDto();
-            });            
+                return await _httpClient
+                    .GetFromJsonAsync<AnimeDto>(
+                        $"api/animes/{anime.Id}")
+                    ?? new AnimeDto();
+            });
         }
 
         public async Task<AnimeDto> PostAnimeAsync(AnimeDto anime)
         {
             return await _retryHandler.ExecuteAsync(async () =>
             {
-                return await _httpClient.PostAsJsonAsync("api/animes", anime)
-                .ContinueWith(async responseTask =>
-                {
-                    var response = await responseTask;
-                    response.EnsureSuccessStatusCode();
-                    return await response.Content.ReadFromJsonAsync<AnimeDto>();
-                }).Unwrap() ?? new AnimeDto();
-            });            
+                using var request =
+                    await CreateAuthenticatedRequestAsync(
+                        HttpMethod.Post,
+                        "api/animes",
+                        JsonContent.Create(anime));
+
+                using var response =
+                    await _httpClient.SendAsync(request);
+
+                response.EnsureSuccessStatusCode();
+
+                return await response.Content
+                    .ReadFromJsonAsync<AnimeDto>()
+                    ?? new AnimeDto();
+            });
         }
 
         public async Task<HttpStatusCode> DeleteAnimeAsync(AnimeDto anime)
         {
             return await _retryHandler.ExecuteAsync(async () =>
             {
-                return await _httpClient.DeleteAsync($"api/animes/{anime.Id}")
-                                .ContinueWith(async responseTask =>
-                                {
-                                    var response = await responseTask;
-                                    return response.StatusCode;
-                                }).Unwrap();
-            });         
+                using var request =
+                    await CreateAuthenticatedRequestAsync(
+                        HttpMethod.Delete,
+                        $"api/animes/{anime.Id}");
+
+                using var response =
+                    await _httpClient.SendAsync(request);
+
+                return response.StatusCode;
+            });
         }
 
         public async Task<AnimeDto> UpdateAnimeAsync(AnimeDto anime)
         {
             return await _retryHandler.ExecuteAsync(async () =>
             {
-                return await _httpClient.PutAsJsonAsync("api/animes", anime)
-                .ContinueWith(async responseTask =>
-                {
-                    var response = await responseTask;
-                    response.EnsureSuccessStatusCode();
-                    return await response.Content.ReadFromJsonAsync<AnimeDto>();
-                }).Unwrap() ?? new AnimeDto();
-            });            
+                using var request =
+                    await CreateAuthenticatedRequestAsync(
+                        HttpMethod.Put,
+                        "api/animes",
+                        JsonContent.Create(anime));
+
+                using var response =
+                    await _httpClient.SendAsync(request);
+
+                response.EnsureSuccessStatusCode();
+
+                return await response.Content
+                    .ReadFromJsonAsync<AnimeDto>()
+                    ?? new AnimeDto();
+            });
         }
 
-        public async Task<List<JikanAnimeDto>> SearchAnimesAsync(string name)
+        public async Task<List<JikanAnimeDto>>SearchAnimesAsync(string name)
         {
             return await _retryHandler.ExecuteAsync(async () =>
             {
-                return await _httpClient.GetFromJsonAsync<List<JikanAnimeDto>>($"api/animes/search/{name}")
-                   ?? [];
-            });            
+                return await _httpClient
+                    .GetFromJsonAsync<List<JikanAnimeDto>>(
+                        $"api/animes/search/{name}")
+                    ?? [];
+            });
         }
     }
 }
