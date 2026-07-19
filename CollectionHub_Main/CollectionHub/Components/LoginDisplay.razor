@@ -2,15 +2,15 @@
 
 <AuthorizeView>
     <Authorized>
-        <span style="color: white; font-size: 0.85rem;">
-            @context.User.Identity?.Name
-        </span>
-
         <a href="/MicrosoftIdentity/Account/SignOut"
            data-enhance-nav="false"
            style="color: white; font-size: 0.85rem;">
             Log out
         </a>
+
+        <span style="color: white; font-size: 0.85rem;">
+            @context.User.Identity?.Name
+        </span>
     </Authorized>
 
     <NotAuthorized>

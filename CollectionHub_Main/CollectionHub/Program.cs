@@ -22,6 +22,19 @@ builder.Services
         [functionsApiScope])
     .AddInMemoryTokenCaches();
 
+builder.Services.Configure<OpenIdConnectOptions>(
+    OpenIdConnectDefaults.AuthenticationScheme,
+    options =>
+    {
+        options.Events.OnSignedOutCallbackRedirect = context =>
+        {
+            context.Response.Redirect("/");
+            context.HandleResponse();
+
+            return Task.CompletedTask;
+        };
+    });
+
 builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
 
