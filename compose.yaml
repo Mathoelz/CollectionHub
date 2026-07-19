@@ -11,6 +11,14 @@ services:
 
     environment:
       ApiBaseUrl: "http://collectionhub-functions:80/"
+      
+      AzureAd__Instance: "https://login.microsoftonline.com/"
+      AzureAd__TenantId: "${AZURE_TENANT_ID}"
+      AzureAd__ClientId: "${COLLECTIONHUB_WEB_CLIENT_ID}"
+      AzureAd__ClientSecret: "${COLLECTIONHUB_WEB_CLIENT_SECRET}"
+      AzureAd__CallbackPath: "/signin-oidc"
+
+      FunctionsApi__Scope: "${COLLECTIONHUB_FUNCTIONS_API_SCOPE}"
 
     depends_on:
       - collectionhub-functions
@@ -26,9 +34,16 @@ services:
       FUNCTIONS_WORKER_RUNTIME: "dotnet-isolated"
       AzureWebJobsStorage: ""
 
+      # Service Principal für Azure-Ressourcen
       AZURE_TENANT_ID: "${AZURE_TENANT_ID}"
       AZURE_CLIENT_ID: "${AZURE_CLIENT_ID}"
       AZURE_CLIENT_SECRET: "${AZURE_CLIENT_SECRET}"
+
+      # Bearer-Token-Validierung
+      AzureAd__Instance: "https://login.microsoftonline.com/"
+      AzureAd__TenantId: "${AZURE_TENANT_ID}"
+      AzureAd__ClientId: "${COLLECTIONHUB_FUNCTIONS_CLIENT_ID}"
+      AzureAd__Audience: "api://${COLLECTIONHUB_FUNCTIONS_CLIENT_ID}"
 
       AzureKeyVaultUri: "${AZURE_KEY_VAULT_URI}"
       AzureBlobStorageUri: "${AZURE_BLOB_STORAGE_URI}"
