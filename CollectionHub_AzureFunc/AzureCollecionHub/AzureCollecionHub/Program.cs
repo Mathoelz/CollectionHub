@@ -11,7 +11,9 @@ using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
+using Microsoft.Azure.Functions.Worker;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
@@ -51,6 +53,27 @@ builder.Services.AddSingleton<BlobServiceClient>(ServiceProvider =>
 });
 builder.ConfigureFunctionsWebApplication();
 
+// Application Insights isn't enabled by default. See https://aka.ms/AAt8mw4.
+builder.Services
+     .AddApplicationInsightsTelemetryWorkerService()
+     .ConfigureFunctionsApplicationInsights();
+
+builder.Logging.Services.Configure<LoggerFilterOptions>(options =>
+{
+    var defaultRule = options.Rules.FirstOrDefault(rule =>
+        rule.ProviderName ==
+        "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider");
+
+    if (defaultRule is not null)
+    {
+        options.Rules.Remove(defaultRule);
+    }
+});
+
+builder.Logging.AddFilter("Microsoft", LogLevel.Warning);
+builder.Logging.AddFilter("System", LogLevel.Warning);
+builder.Logging.AddFilter("CollectionHub", LogLevel.Information);
+
 var host = builder.Build();
 
 try
@@ -63,11 +86,5 @@ catch(Exception ex)
 {
     Console.WriteLine(ex);
 }
-
-
-// Application Insights isn't enabled by default. See https://aka.ms/AAt8mw4.
-// builder.Services
-//     .AddApplicationInsightsTelemetryWorkerService()
-//     .ConfigureFunctionsApplicationInsights();
 
 host.Run();

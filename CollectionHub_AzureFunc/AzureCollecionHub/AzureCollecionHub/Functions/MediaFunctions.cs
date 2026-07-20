@@ -39,9 +39,18 @@ namespace CollectionHub.Functions.Functions
         [Function("GetGames")]
         public async Task<IActionResult> GetGames([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "games")] HttpRequest req)
         {
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
+            _logger.LogInformation(
+                "Retrieving media collection. MediaType: {MediaType}",
+                "Game");
 
-            return new OkObjectResult(await _mediaService.GetAllGames());
+            var games = await _mediaService.GetAllGames();
+
+            _logger.LogInformation(
+                "Media collection retrieved. MediaType: {MediaType}, ItemCount: {games.Count}",
+                "Game",
+                games.Count());
+
+            return new OkObjectResult(games);
         }
 
         [Function("GetGame")]
@@ -69,14 +78,15 @@ namespace CollectionHub.Functions.Functions
                 return authorizationFailure;
             }
 
-            _logger.LogInformation(
-                "Authenticated user is adding a game.");
-
             GameDto? newGame =
                 await req.ReadFromJsonAsync<GameDto>();
 
             if (newGame is null)
             {
+                _logger.LogWarning(
+                    "Game creation rejected. Reason: {Reason}",
+                    "Missing or invalid request body");
+
                 return new BadRequestObjectResult(
                     "A valid game is required.");
             }
@@ -84,8 +94,9 @@ namespace CollectionHub.Functions.Functions
             await _mediaService.AddGame(newGame);
 
             _logger.LogInformation(
-                "New game added: {GameTitle}",
-                newGame.Title);
+                "Game created. MediaType: {MediaType}, MediaId: {MediaId}",
+                "Game",
+                newGame.Id);
 
             return new OkObjectResult(newGame);
         }
@@ -101,14 +112,26 @@ namespace CollectionHub.Functions.Functions
                 return authorizationFailure;
             }
 
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
-            GameDto updatedGame = await req.ReadFromJsonAsync<GameDto>();
+            GameDto? updatedGame =
+                await req.ReadFromJsonAsync<GameDto>();
 
-            if(updatedGame != null)
+            if (updatedGame is null)
             {
-                await _mediaService.UpdateGame(updatedGame);
-                _logger.LogInformation($"Game updated: {updatedGame.Title}");
+                _logger.LogWarning(
+                    "Game update rejected. Reason: {Reason}",
+                    "Missing or invalid request body");
+
+                return new BadRequestObjectResult(
+                    "A valid game is required.");
             }
+
+            await _mediaService.UpdateGame(updatedGame);
+
+            _logger.LogInformation(
+                "Game updated. MediaType: {MediaType}, MediaId: {MediaId}",
+                "Game",
+                updatedGame.Id);
+
             return new OkObjectResult(updatedGame);
         }
 
@@ -123,12 +146,15 @@ namespace CollectionHub.Functions.Functions
                 return authorizationFailure;
             }
 
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
-
             await _mediaService.DeleteItem(gameId);
-            _logger.LogInformation($"Game deleted: {gameId}");
-            
-            return new OkObjectResult($"Game '{gameId}' deleted successfully.");
+
+            _logger.LogInformation(
+                "Game deleted. MediaType: {MediaType}, MediaId: {MediaId}",
+                "Game",
+                gameId);
+
+            return new OkObjectResult(
+                $"Game '{gameId}' deleted successfully.");
         }
 
         [Function("SearchGames")]
