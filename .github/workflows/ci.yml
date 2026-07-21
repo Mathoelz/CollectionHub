@@ -49,3 +49,26 @@ jobs:
           CollectionHub_AzureFunc/AzureCollecionHub/AzureCollecionHub/CollectionHub.Functions.csproj
           --configuration Release
           --no-restore
+
+  docker:
+    name: Build Docker images
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Blazor Docker image
+        run: >
+          docker build
+          --file CollectionHub_Main/CollectionHub/Dockerfile
+          --tag collectionhub-web:ci
+          .
+
+      - name: Build Functions Docker image
+        run: >
+          docker build
+          --file CollectionHub_AzureFunc/AzureCollecionHub/AzureCollecionHub/Dockerfile
+          --tag collectionhub-functions:ci
+          .
