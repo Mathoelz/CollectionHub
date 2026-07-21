@@ -1,0 +1,51 @@
+name: CollectionHub CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build .NET projects
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore Blazor web app
+        run: >
+          dotnet restore
+          CollectionHub_Main/CollectionHub/CollectionHub.csproj
+
+      - name: Restore Azure Functions
+        run: >
+          dotnet restore
+          CollectionHub_AzureFunc/AzureCollecionHub/AzureCollecionHub/CollectionHub.Functions.csproj
+
+      - name: Build Blazor web app
+        run: >
+          dotnet build
+          CollectionHub_Main/CollectionHub/CollectionHub.csproj
+          --configuration Release
+          --no-restore
+
+      - name: Build Azure Functions
+        run: >
+          dotnet build
+          CollectionHub_AzureFunc/AzureCollecionHub/AzureCollecionHub/CollectionHub.Functions.csproj
+          --configuration Release
+          --no-restore
