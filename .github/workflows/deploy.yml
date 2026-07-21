@@ -9,13 +9,52 @@ permissions:
 
 env:
   AZURE_WEB_APP_NAME: collectionHub
+  AZURE_FUNCTION_APP_NAME: CollectionHubFunctions20260715222721
+
   WEB_PROJECT_PATH: CollectionHub_Main/CollectionHub/CollectionHub.csproj
   WEB_PUBLISH_PATH: ./publish/web
 
+  FUNCTION_PROJECT_PATH: CollectionHub_AzureFunc/AzureCollecionHub/AzureCollecionHub/CollectionHub.Functions.csproj
+  FUNCTION_PUBLISH_PATH: ./publish/functions
+
 jobs:
+  deploy-functions:
+    name: Deploy Azure Functions
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Publish Azure Functions
+        run: >
+          dotnet publish
+          ${{ env.FUNCTION_PROJECT_PATH }}
+          --configuration Release
+          --output ${{ env.FUNCTION_PUBLISH_PATH }}
+
+      - name: Log in to Azure with OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy Azure Functions
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ env.AZURE_FUNCTION_APP_NAME }}
+          package: ${{ env.FUNCTION_PUBLISH_PATH }}
+
   deploy-web:
     name: Deploy Blazor web app
     runs-on: ubuntu-latest
+    needs: deploy-functions
 
     steps:
       - name: Checkout repository
