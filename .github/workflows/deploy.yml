@@ -9,16 +9,29 @@ permissions:
 
 env:
   AZURE_WEB_APP_NAME: collectionHub
-  AZURE_FUNCTION_APP_NAME: CollectionHubFunctions20260715222721
+  WEB_PROJECT_PATH: CollectionHub_Main/CollectionHub/CollectionHub.csproj
+  WEB_PUBLISH_PATH: ./publish/web
 
 jobs:
-  verify-azure-login:
-    name: Verify Azure OIDC login
+  deploy-web:
+    name: Deploy Blazor web app
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Publish Blazor web app
+        run: >
+          dotnet publish
+          ${{ env.WEB_PROJECT_PATH }}
+          --configuration Release
+          --output ${{ env.WEB_PUBLISH_PATH }}
 
       - name: Log in to Azure with OIDC
         uses: azure/login@v2
@@ -27,5 +40,8 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Verify Azure connection
-        run: az account show --query name --output tsv
+      - name: Deploy Blazor web app
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEB_APP_NAME }}
+          package: ${{ env.WEB_PUBLISH_PATH }}
