@@ -1,0 +1,31 @@
+name: CollectionHub CD
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AZURE_WEB_APP_NAME: collectionHub
+  AZURE_FUNCTION_APP_NAME: CollectionHubFunctions20260715222721
+
+jobs:
+  verify-azure-login:
+    name: Verify Azure OIDC login
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Azure with OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Verify Azure connection
+        run: az account show --query name --output tsv
