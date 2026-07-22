@@ -17,19 +17,19 @@ namespace CollectionHub.Functions.Services.Covers
         private readonly BlobServiceClient _blobServiceClient;
         private readonly BlobContainerClient _blobContainerClient;
         private readonly HttpClient _httpClient;
-        private readonly IGdbService _igdbService;
+        private readonly IGameSearchService _gameSearchService;
 
-        public CoverService(BlobServiceClient blobServiceClient, HttpClient httpClient, IGdbService igdbService, ILogger<CoverService> logger) 
+        public CoverService(BlobServiceClient blobServiceClient, HttpClient httpClient, IGameSearchService gameSearchService, ILogger<CoverService> logger) 
         {
             _blobServiceClient = blobServiceClient;
             _httpClient = httpClient;
-            _igdbService = igdbService;
+            _gameSearchService = gameSearchService;
             _logger = logger;
 
             _blobContainerClient = _blobServiceClient.GetBlobContainerClient(Environment.GetEnvironmentVariable("CollectionHubCoversBlob"));
         }
 
-        public async Task<string> GetCover(int coverId)
+        public async Task<string> GetGameCover(int coverId)
         {
             var blobClient =
                 _blobContainerClient.GetBlobClient(
@@ -37,7 +37,7 @@ namespace CollectionHub.Functions.Services.Covers
 
             var exists = await blobClient.ExistsAsync();
 
-            if (exists)
+            if (exists.Value)
             {
                 _logger.LogInformation(
                     "Cover cache lookup completed. CoverId: {CoverId}, CacheResult: {CacheResult}",
@@ -53,7 +53,7 @@ namespace CollectionHub.Functions.Services.Covers
                 "Miss");
 
             var cover =
-                await _igdbService.GetCoverAsync(coverId);
+                await _gameSearchService.GetCoverAsync(coverId);
 
             await using var stream =
                 await _httpClient.GetStreamAsync(
@@ -72,6 +72,86 @@ namespace CollectionHub.Functions.Services.Covers
             _logger.LogInformation(
                 "Cover cached. CoverId: {CoverId}",
                 coverId);
+
+            return blobClient.Uri.ToString();
+        }
+
+        public async Task<string?> GetAnimeCover(int animeId, string? sourceUrl)
+        {
+            if (string.IsNullOrWhiteSpace(sourceUrl))
+            {
+                _logger.LogWarning(
+                    "Anime has no cover URL. AnimeId: {AnimeId}",
+                    animeId);
+
+                return null;
+            }
+
+            if (!Uri.TryCreate(sourceUrl, UriKind.Absolute, out Uri? coverUri) ||
+                coverUri.Scheme != Uri.UriSchemeHttps)
+            {
+                _logger.LogWarning(
+                    "Anime cover URL is invalid. AnimeId: {AnimeId}",
+                    animeId);
+
+                return null;
+            }
+
+            bool isAniListHost =
+                coverUri.Host.Equals(
+                    "anilist.co",
+                    StringComparison.OrdinalIgnoreCase) ||
+                coverUri.Host.EndsWith(
+                    ".anilist.co",
+                    StringComparison.OrdinalIgnoreCase);
+
+            if (!isAniListHost)
+            {
+                _logger.LogWarning(
+                    "Anime cover URL uses an unsupported host. AnimeId: {AnimeId}, Host: {Host}",
+                    animeId,
+                    coverUri.Host);
+
+                return null;
+            }
+
+            var blobClient =
+                _blobContainerClient.GetBlobClient(
+                    $"anime-{animeId}.jpg");
+
+            var exists = await blobClient.ExistsAsync();
+
+            if (exists.Value)
+            {
+                _logger.LogInformation(
+                    "Anime cover cache lookup completed. AnimeId: {AnimeId}, CacheResult: {CacheResult}",
+                    animeId,
+                    "Hit");
+
+                return blobClient.Uri.ToString();
+            }
+
+            _logger.LogInformation(
+                "Anime cover cache lookup completed. AnimeId: {AnimeId}, CacheResult: {CacheResult}",
+                animeId,
+                "Miss");
+
+            await using var stream =
+                await _httpClient.GetStreamAsync(coverUri);
+
+            await blobClient.UploadAsync(
+                stream,
+                new BlobUploadOptions
+                {
+                    HttpHeaders = new BlobHttpHeaders
+                    {
+                        ContentType = "image/jpeg"
+                    }
+                });
+
+            _logger.LogInformation(
+                "Anime cover cached. AnimeId: {AnimeId}",
+                animeId);
 
             return blobClient.Uri.ToString();
         }

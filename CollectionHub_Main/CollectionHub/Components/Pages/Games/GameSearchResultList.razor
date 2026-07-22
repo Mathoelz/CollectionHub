@@ -1,0 +1,128 @@
+﻿@using CollectionHub.Shared.Dtos.Game
+@using CollectionHub.Shared.Enums
+@using CollectionHub.Components.Services
+@using Microsoft.AspNetCore.Components.Authorization
+
+@if (_isLoadingCovers)
+{
+    <div class="d-flex align-items-center gap-2 my-3">
+        <span class="spinner-border spinner-border-sm"
+        aria-hidden="true"></span>
+        <span>Loading game covers...</span>
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Cover</th>
+                <th>Title</th>
+                <th>Rating</th>
+                <th>First release date</th>
+                <th>Notes</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var game in _games)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrWhiteSpace(game.Cover))
+                        {
+                            <img src="@game.Cover"
+                            alt="@game.Title"
+                            style="width: 150px; height: auto;" />
+                        }
+                    </td>
+                    <td>@game.Title</td>
+                    <td>@game.Rating</td>
+                    <td>@game.FirstReleaseDate</td>
+                    <td>@game.Notes</td>
+                    <td>
+                        <AuthorizeView>
+                            <Authorized>
+                                <button class="btn btn-primary"
+                                disabled="@_isAdding"
+                                @onclick="() => AddGameAsync(game)">
+                                    Add Game
+                                </button>
+                            </Authorized>
+                        </AuthorizeView>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Inject]
+    public IGameApiService GameApiService { get; set; } = default!;
+
+    [Parameter]
+    public IReadOnlyList<IgdbGameDto> SearchGames { get; set; } = [];
+
+    [Parameter]
+    public EventCallback<GameDto> OnAdd { get; set; }
+
+    private readonly List<GameDto> _games = [];
+    private bool _isAdding;
+
+    private bool _isLoadingCovers = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            foreach (IgdbGameDto game in SearchGames)
+            {
+                _games.Add(await MapToGameDtoAsync(game));
+            }
+        }
+        finally
+        {
+            _isLoadingCovers = false;
+        }
+    }
+
+    private async Task AddGameAsync(GameDto game)
+    {
+        if (_isAdding)
+        {
+            return;
+        }
+
+        _isAdding = true;
+
+        try
+        {
+            await OnAdd.InvokeAsync(game);
+        }
+        finally
+        {
+            _isAdding = false;
+        }
+    }
+
+    private async Task<GameDto> MapToGameDtoAsync(
+        IgdbGameDto dto)
+    {
+        return new GameDto
+        {
+            Id = Guid.NewGuid(),
+            Title = dto.Name ?? "",
+            Status = CollectionStatus.Backlog,
+            Rating = (int)Math.Round(dto.Rating),
+            Notes = dto.Summary,
+            FirstReleaseDate =
+                DateTimeOffset
+                    .FromUnixTimeSeconds(dto.FirstReleaseDate)
+                    .ToString("dd.MM.yyyy"),
+            Cover =
+                await GameApiService.GetGameCoverAsync(
+                    dto.CoverId)
+        };
+    }
+}

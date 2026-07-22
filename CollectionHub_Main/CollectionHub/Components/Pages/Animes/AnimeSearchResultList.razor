@@ -1,0 +1,93 @@
+﻿@using CollectionHub.Shared.Dtos.Anime
+@using CollectionHub.Shared.Enums
+@using CollectionHub.Components.Services
+@using Microsoft.AspNetCore.Components.Authorization
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Cover</th>
+            <th>Title</th>
+            <th>Score</th>
+            <th>Synopsis</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var anime in SearchAnimes)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrWhiteSpace(anime.CoverImage?.Large))
+                    {
+                        <img src="@anime.CoverImage.Large"
+                             alt="@anime.Title?.DisplayTitle"
+                             style="width: 150px; height: auto;" />
+                    }
+                </td>
+                <td>@anime.Title?.DisplayTitle</td>
+                <td>@anime.AverageScore</td>
+                <td>@anime.Synopsis</td>
+                <td>
+                    <AuthorizeView>
+                        <Authorized>
+                            <button class="btn btn-primary"
+                                    disabled="@_isAdding"
+                                    @onclick="() => AddAnimeAsync(anime)">
+                                Add Anime
+                            </button>
+                        </Authorized>
+                    </AuthorizeView>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Inject]
+    public IAnimeService AnimeApiService { get; set; } = default!;
+
+    [Parameter]
+    public IReadOnlyList<AniListAnimeDto> SearchAnimes { get; set; } = [];
+
+    [Parameter]
+    public EventCallback<AnimeDto> OnAdd { get; set; }
+
+    private bool _isAdding;
+
+    private async Task AddAnimeAsync(AniListAnimeDto searchResult)
+    {
+        if (_isAdding)
+        {
+            return;
+        }
+
+        _isAdding = true;
+
+        try
+        {
+            string? coverUrl =
+                await AnimeApiService.GetAnimeCoverAsync(
+                    searchResult.Id,
+                    searchResult.CoverImage?.Large);
+
+            var anime = new AnimeDto
+            {
+                Id = Guid.NewGuid(),
+                Title = searchResult.Title?.DisplayTitle ?? "",
+                Status = CollectionStatus.Backlog,
+                Rating = searchResult.AverageScore,
+                Notes = searchResult.Synopsis,
+                Cover = coverUrl,
+                MediaType = MediaType.Anime
+            };
+
+            await OnAdd.InvokeAsync(anime);
+        }
+        finally
+        {
+            _isAdding = false;
+        }
+    }
+}

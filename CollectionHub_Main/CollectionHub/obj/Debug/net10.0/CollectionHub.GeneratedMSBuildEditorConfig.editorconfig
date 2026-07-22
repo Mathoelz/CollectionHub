@@ -43,6 +43,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBbmltZXNcQW5pbWVzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Tiz/Documents/GitHub/CollectionHub/CollectionHub_Main/CollectionHub/Components/Pages/Animes/AnimeSearchResultList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBbmltZXNcQW5pbWVTZWFyY2hSZXN1bHRMaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Tiz/Documents/GitHub/CollectionHub/CollectionHub_Main/CollectionHub/Components/Pages/Animes/AnimeTable.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBbmltZXNcQW5pbWVUYWJsZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -67,12 +71,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xHYW1lc1xHYW1lcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Tiz/Documents/GitHub/CollectionHub/CollectionHub_Main/CollectionHub/Components/Pages/Games/GameTable.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xHYW1lc1xHYW1lVGFibGUucmF6b3I=
+[C:/Users/Tiz/Documents/GitHub/CollectionHub/CollectionHub_Main/CollectionHub/Components/Pages/Games/GameSearchResultList.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xHYW1lc1xHYW1lU2VhcmNoUmVzdWx0TGlzdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Tiz/Documents/GitHub/CollectionHub/CollectionHub_Main/CollectionHub/Components/Pages/Games/SearchResultList.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xHYW1lc1xTZWFyY2hSZXN1bHRMaXN0LnJhem9y
+[C:/Users/Tiz/Documents/GitHub/CollectionHub/CollectionHub_Main/CollectionHub/Components/Pages/Games/GameTable.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xHYW1lc1xHYW1lVGFibGUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Tiz/Documents/GitHub/CollectionHub/CollectionHub_Main/CollectionHub/Components/Pages/Home.razor]

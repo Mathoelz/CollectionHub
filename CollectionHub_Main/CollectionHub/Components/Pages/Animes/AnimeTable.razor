@@ -3,6 +3,7 @@
 
 <table class="table">
     <tr style="font-weight:bold;">
+        <td>Image</td>
         <td>Title</td>
         <td>Status</td>
         <td>Rating</td>
@@ -30,6 +31,7 @@
         else
         {
             <tr>
+                <td><img src="@(string.IsNullOrEmpty(anime.Cover) ? "" : anime.Cover)" alt="@anime.Title" style="width: 150px; height: auto;" /></td>
                 <td>@anime.Title</td>
                 <td>@anime.Status</td>
                 <td>@anime.Rating</td>

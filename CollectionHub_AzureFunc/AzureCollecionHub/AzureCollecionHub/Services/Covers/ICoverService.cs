@@ -9,6 +9,7 @@ namespace CollectionHub.Functions.Services.Covers
 {
     public interface ICoverService
     {
-        public Task<string> GetCover(int gameId);
+        public Task<string> GetGameCover(int gameId);
+        Task<string?> GetAnimeCover(int animeId, string? sourceUrl);
     }
 }

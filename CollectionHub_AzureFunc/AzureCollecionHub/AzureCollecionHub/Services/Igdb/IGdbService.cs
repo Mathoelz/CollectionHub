@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CollectionHub.Functions.Services.Igdb
 {
-    public class IGdbService
+    public class IGdbService : IGameSearchService
     {
         private readonly HttpClient _httpClient;
         private readonly ISecretProvider _secretClient;

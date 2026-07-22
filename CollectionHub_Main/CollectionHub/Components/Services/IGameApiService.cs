@@ -10,7 +10,7 @@ namespace CollectionHub.Components.Services
         Task<GameDto> PostGameAsync(GameDto game);
         Task<GameDto> UpdateGameAsync(GameDto game);
         Task<HttpStatusCode> DeleteGameAsync(GameDto game);
-        Task<List<IgdbGameDto>> SearchGames(string gameName);
-        Task<string> SearchCover(int id);
+        Task<List<IgdbGameDto>> SearchGamesAsync(string gameName);
+        Task<string?> GetGameCoverAsync(int id);
     }
 }

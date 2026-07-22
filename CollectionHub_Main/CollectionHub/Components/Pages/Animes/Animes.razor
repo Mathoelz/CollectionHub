@@ -1,70 +1,142 @@
-﻿@using CollectionHub.Components.Services;
-@using CollectionHub.Shared.Dtos.Anime;
+﻿@using CollectionHub.Components.Services
+@using CollectionHub.Shared.Dtos.Anime
 @page "/anime"
 
 <h3>Animes</h3>
 
-<input type="text" class="form-control search-input" placeholder="Search..." @bind-value="_searchText" @bind-value:event="oninput" />
+<div class="d-flex gap-2 mb-3">
+    <input type="text"
+           class="form-control search-input"
+           placeholder="Search..."
+           @bind-value="_searchText"
+           @bind-value:event="oninput"
+           disabled="@_isSearching" />
 
-<button class="btn btn-primary" @onclick="@(() => SearchAnimes(_searchText))">Search</button>
+    <button class="btn btn-primary"
+            disabled="@(_isSearching || string.IsNullOrWhiteSpace(_searchText))"
+            @onclick="SearchAnimesAsync">
+        @if (_isSearching)
+        {
+            <span class="spinner-border spinner-border-sm me-2"
+                  aria-hidden="true"></span>
+            <span>Searching...</span>
+        }
+        else
+        {
+            <span>Search</span>
+        }
+    </button>
+</div>
 
+@if (!string.IsNullOrWhiteSpace(_searchError))
+{
+    <div class="alert alert-danger" role="alert">
+        @_searchError
+    </div>
+}
 
-<AnimeTable Animes="animes" OnDelete="DeleteAnime" OnEdit="GetAnime" OnSubmit="SubmitAnime"/>
+@if (_isSearching)
+{
+    <p>Searching AniList for anime...</p>
+}
+else if (_searchAnimes.Count > 0)
+{
+    <AnimeSearchResultList SearchAnimes="_searchAnimes"
+                           OnAdd="AddAniListAnime" />
+}
+else if (_hasSearched)
+{
+    <div class="alert alert-info" role="status">
+        No anime were found for this search.
+    </div>
+}
 
-<AnimeForm OnAdd="AddAnime" Anime="new()" />
+<AnimeTable Animes="animes"
+            OnDelete="DeleteAnime"
+            OnEdit="GetAnime"
+            OnSubmit="SubmitAnime" />
+
+<AnimeForm OnAdd="AddAnime"
+           Anime="new()" />
 
 @code {
+    [Inject]
+    public IAnimeService AnimeApiService { get; set; } = default!;
 
     private string _searchText = "";
-    private List<JikanAnimeDto> _searchAnimes = new();
-    private List<AnimeDto> animes = [];
+    private string? _searchError;
+    private bool _isSearching;
+    private bool _hasSearched;
 
-    [Inject]
-    public IAnimeService animeApiService { get; set; } = default!;
+    private List<AniListAnimeDto> _searchAnimes = [];
+    private List<AnimeDto> animes = [];
 
     protected override async Task OnInitializedAsync()
     {
-        animes = await animeApiService.GetAnimesAsync();
+        animes = await AnimeApiService.GetAnimesAsync();
     }
 
     private async Task DeleteAnime(AnimeDto anime)
     {
-        await animeApiService.DeleteAnimeAsync(anime);
-        animes = await animeApiService.GetAnimesAsync();
+        await AnimeApiService.DeleteAnimeAsync(anime);
+        animes = await AnimeApiService.GetAnimesAsync();
     }
 
-    private async Task AddJikanAnime(AnimeDto anime)
+    private async Task AddAniListAnime(AnimeDto anime)
     {
         await AddAnime(anime);
+
         _searchAnimes.Clear();
         _searchText = "";
+        _hasSearched = false;
     }
 
     private async Task AddAnime(AnimeDto anime)
     {
-        await animeApiService.PostAnimeAsync(anime);
-        animes = await animeApiService.GetAnimesAsync();
+        await AnimeApiService.PostAnimeAsync(anime);
+        animes = await AnimeApiService.GetAnimesAsync();
     }
 
     private async Task GetAnime(AnimeDto anime)
     {
-        await animeApiService.GetAnimeAsync(anime);
-        animes = await animeApiService.GetAnimesAsync();
+        await AnimeApiService.GetAnimeAsync(anime);
+        animes = await AnimeApiService.GetAnimesAsync();
     }
 
     private async Task SubmitAnime(AnimeDto anime)
     {
-        await animeApiService.UpdateAnimeAsync(anime);
-        animes = await animeApiService.GetAnimesAsync();
+        await AnimeApiService.UpdateAnimeAsync(anime);
+        animes = await AnimeApiService.GetAnimesAsync();
     }
 
-    private async Task SearchAnimes(string searchText)
+    private async Task SearchAnimesAsync()
     {
-        if (_searchAnimes.Count > 0)
+        if (_isSearching ||
+            string.IsNullOrWhiteSpace(_searchText))
         {
-            _searchAnimes.Clear();
+            return;
         }
-        _searchAnimes = await animeApiService.SearchAnimesAsync(searchText);
-        await InvokeAsync(StateHasChanged);
+
+        _isSearching = true;
+        _hasSearched = false;
+        _searchError = null;
+        _searchAnimes.Clear();
+
+        try
+        {
+            _searchAnimes =
+                await AnimeApiService.SearchAnimesAsync(
+                    _searchText);
+        }
+        catch (Exception)
+        {
+            _searchError =
+                "The anime search is currently unavailable. Please try again.";
+        }
+        finally
+        {
+            _isSearching = false;
+            _hasSearched = true;
+        }
     }
 }

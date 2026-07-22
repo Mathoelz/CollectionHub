@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Identity.Web;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using CollectionHub.Shared.Dtos;
 
 namespace CollectionHub.Components.Services
 {
@@ -110,7 +111,7 @@ namespace CollectionHub.Components.Services
             });            
         }
 
-        public async Task<List<IgdbGameDto>> SearchGames(string gameName)
+        public async Task<List<IgdbGameDto>> SearchGamesAsync(string gameName)
         {
             return await _retryHandler.ExecuteAsync(async () =>
             {
@@ -119,13 +120,26 @@ namespace CollectionHub.Components.Services
             });            
         }
 
-        public async Task<string> SearchCover(int id)
+        public async Task<string?> GetGameCoverAsync(int id)
         {
             return await _retryHandler.ExecuteAsync(async () =>
             {
-                return await _httpClient.GetStringAsync($"api/games/covers/{id}")
-                                   ?? "";
-            });            
+                using var request =
+                    await CreateAuthenticatedRequestAsync(
+                        HttpMethod.Get,
+                        $"api/games/covers/{id}");
+
+                using var response =
+                    await _httpClient.SendAsync(request);
+
+                response.EnsureSuccessStatusCode();
+
+                CoverResponseDto? result =
+                    await response.Content
+                        .ReadFromJsonAsync<CoverResponseDto>();
+
+                return result?.Url;
+            });
         }
 
         private async Task<HttpRequestMessage> CreateAuthenticatedRequestAsync(

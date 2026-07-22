@@ -1,9 +1,9 @@
-﻿using CollectionHub.Shared.Dtos.Anime;
+﻿using CollectionHub.Shared.Dtos;
+using CollectionHub.Shared.Dtos.Anime;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Identity.Web;
 using System.Net;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 
 namespace CollectionHub.Components.Services
 {
@@ -151,14 +151,50 @@ namespace CollectionHub.Components.Services
             });
         }
 
-        public async Task<List<JikanAnimeDto>>SearchAnimesAsync(string name)
+        public async Task<List<AniListAnimeDto>>SearchAnimesAsync(string name)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return [];
+            }
+
+            string encodedName = Uri.EscapeDataString(name.Trim());
+
             return await _retryHandler.ExecuteAsync(async () =>
             {
                 return await _httpClient
-                    .GetFromJsonAsync<List<JikanAnimeDto>>(
-                        $"api/animes/search/{name}")
+                    .GetFromJsonAsync<List<AniListAnimeDto>>(
+                        $"api/animes/search/{encodedName}")
                     ?? [];
+            });
+        }
+
+        public async Task<string?> GetAnimeCoverAsync(int animeId, string? sourceUrl)
+        {
+            var coverRequest = new AnimeCoverRequestDto
+            {
+                AnimeId = animeId,
+                SourceUrl = sourceUrl
+            };
+
+            return await _retryHandler.ExecuteAsync(async () =>
+            {
+                using var request =
+                    await CreateAuthenticatedRequestAsync(
+                        HttpMethod.Post,
+                        "api/animes/covers",
+                        JsonContent.Create(coverRequest));
+
+                using var response =
+                    await _httpClient.SendAsync(request);
+
+                response.EnsureSuccessStatusCode();
+
+                CoverResponseDto? result =
+                    await response.Content
+                        .ReadFromJsonAsync<CoverResponseDto>();
+
+                return result?.Url;
             });
         }
     }

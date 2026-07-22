@@ -10,6 +10,7 @@ namespace CollectionHub.Components.Services
         Task<List<AnimeDto>> GetAnimesAsync();
         Task<AnimeDto> GetAnimeAsync(AnimeDto anime);
         Task<HttpStatusCode> DeleteAnimeAsync(AnimeDto anime);
-        Task<List<JikanAnimeDto>> SearchAnimesAsync(string name);
+        Task<List<AniListAnimeDto>> SearchAnimesAsync(string name);
+        Task<string?> GetAnimeCoverAsync(int animeId, string? sourceUrl);
     }
 }

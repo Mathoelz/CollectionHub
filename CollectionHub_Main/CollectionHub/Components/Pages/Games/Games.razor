@@ -2,16 +2,54 @@
 @using CollectionHub.Shared.Dtos.Game;
 @page "/"
 
+<h3>Animes</h3>
 
-<h3>Games</h3>
+<div class="d-flex gap-2 mb-3">
+    <input type="text"
+           class="form-control search-input"
+           placeholder="Search..."
+           @bind-value="_searchText"
+           @bind-value:event="oninput"
+           disabled="@_isSearching" />
 
-<input type="text" class="form-control search-input" placeholder="Search..." @bind-value="_searchText" @bind-value:event="oninput" />
+    <button class="btn btn-primary"
+            disabled="@(_isSearching || string.IsNullOrWhiteSpace(_searchText))"
+            @onclick="SearchGamesAsync">
+        @if (_isSearching)
+        {
+            <span class="spinner-border spinner-border-sm me-2"
+                  aria-hidden="true"></span>
+            <span>Searching...</span>
+        }
+        else
+        {
+            <span>Search</span>
+        }
+    </button>
+</div>
 
-<button class="btn btn-primary" @onclick="@(() => SearchGames(_searchText))">Search</button>
-
-@if (_searchGames != null && _searchGames.Count > 0)
+@if (!string.IsNullOrWhiteSpace(_searchError))
 {
-    <SearchResultList SearchGames="_searchGames" OnAdd="AddTwitchGame" />
+    <div class="alert alert-danger" role="alert">
+        @_searchError
+    </div>
+}
+
+@if (_isSearching)
+{
+    <p>Searching IGDB and loading covers...</p>
+}
+else if (_searchGames.Count > 0)
+{
+    <GameSearchResultList @key="_searchGames"
+                          SearchGames="_searchGames"
+                          OnAdd="AddTwitchGame" />
+}
+else if (_hasSearched)
+{
+    <div class="alert alert-info" role="status">
+        No games were found for this search.
+    </div>
 }
 
 
@@ -23,7 +61,11 @@
 @code {
 
     [Inject]
-    public IGameApiService gameApiService { get; set; } = default!;
+    public IGameApiService GameApiService { get; set; } = default!;
+
+    private string? _searchError;
+    private bool _isSearching;
+    private bool _hasSearched;
 
     private string _searchText = "";
     private List<IgdbGameDto> _searchGames = new();
@@ -31,13 +73,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        games = await gameApiService.GetGamesAsync();
+        games = await GameApiService.GetGamesAsync();
     }
 
     private async Task DeleteGame(GameDto game)
     {
-        await gameApiService.DeleteGameAsync(game);
-        games = await gameApiService.GetGamesAsync();
+        await GameApiService.DeleteGameAsync(game);
+        games = await GameApiService.GetGamesAsync();
     }
 
     private async Task AddTwitchGame(GameDto game)
@@ -49,29 +91,50 @@
 
     private async Task AddGame(GameDto game)
     {
-        await gameApiService.PostGameAsync(game);
-        games = await gameApiService.GetGamesAsync();
+        await GameApiService.PostGameAsync(game);
+        games = await GameApiService.GetGamesAsync();
     }
 
     private async Task GetGame(GameDto game)
     {
-        await gameApiService.GetGameAsync(game);
-        games = await gameApiService.GetGamesAsync();
+        await GameApiService.GetGameAsync(game);
+        games = await GameApiService.GetGamesAsync();
     }
 
     private async Task SubmitGame(GameDto game)
     {
-        await gameApiService.UpdateGameAsync(game);
-        games = await gameApiService.GetGamesAsync();
+        await GameApiService.UpdateGameAsync(game);
+        games = await GameApiService.GetGamesAsync();
     }
 
-    private async Task SearchGames(string gameName)
+    private async Task SearchGamesAsync()
     {
-        if(_searchGames.Count > 0)
+        if (_isSearching ||
+            string.IsNullOrWhiteSpace(_searchText))
         {
-            _searchGames.Clear();
+            return;
         }
-        _searchGames = await gameApiService.SearchGames(gameName);
-        await InvokeAsync(StateHasChanged);
+
+        _isSearching = true;
+        _hasSearched = false;
+        _searchError = null;
+        _searchGames.Clear();
+
+        try
+        {
+                _searchGames =
+                await GameApiService.SearchGamesAsync(
+                    _searchText);
+        }
+        catch (Exception)
+        {
+            _searchError =
+                "The game search is currently unavailable. Please try again.";
+        }
+        finally
+        {
+            _isSearching = false;
+            _hasSearched = true;
+        }
     }
 }

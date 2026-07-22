@@ -26,8 +26,8 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddSingleton<IMediaService, CosmosDbMediaService>();
 builder.Services.AddSingleton<ISecretProvider, KeyVaultSecretProvider>();
-builder.Services.AddHttpClient<IGdbService>();
-builder.Services.AddHttpClient<JikanService>();
+builder.Services.AddHttpClient<IGameSearchService, IGdbService>();
+builder.Services.AddHttpClient<IAnimeSearchService, AniListService>();
 builder.Services.AddHttpClient<ICoverService, CoverService>();
 builder.Services.AddSingleton<SecretClient>(serviceProvider =>
 {
