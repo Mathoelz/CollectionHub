@@ -23,12 +23,12 @@ namespace CollectionHub.Functions.Functions
         private readonly IAnimeSearchService _animeSearchService;
         private readonly ICoverService _coverService;
 
-        public MediaFunctions(ILogger<MediaFunctions> logger, IMediaService mediaService, IGameSearchService igdbService, IAnimeSearchService jikanService, ICoverService coverService)
+        public MediaFunctions(ILogger<MediaFunctions> logger, IMediaService mediaService, IGameSearchService igdbService, IAnimeSearchService animeService, ICoverService coverService)
         {
             _logger = logger;
             _mediaService = mediaService;
             _gameSearchService = igdbService;
-            _animeSearchService = jikanService;
+            _animeSearchService = animeService;
             _coverService = coverService;
         }
 
