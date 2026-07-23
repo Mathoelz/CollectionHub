@@ -53,7 +53,6 @@ builder.Services.AddHttpClient<IAnimeService, AnimeApiService>(client =>
     client.BaseAddress = new Uri(apiBaseUrl);
 });
 
-builder.Services.AddHttpClient<HelloApiService>();
 builder.Services.AddSingleton<ApiRetryHandler>();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
