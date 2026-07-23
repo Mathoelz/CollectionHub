@@ -6,6 +6,17 @@ and anime collections, built with Blazor and Azure.
 [![CollectionHub CI](https://github.com/Mathoelz/CollectionHub/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Mathoelz/CollectionHub/actions/workflows/ci.yml)
 [![CollectionHub CD](https://github.com/Mathoelz/CollectionHub/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/Mathoelz/CollectionHub/actions/workflows/deploy.yml)
 
+## Data Attribution
+
+Game metadata and cover images are provided by
+[IGDB](https://www.igdb.com/), operated by Twitch.
+
+Anime metadata and cover images are provided by
+[AniList](https://anilist.co/).
+
+CollectionHub is an unofficial, non-commercial educational project
+and is not affiliated with or endorsed by IGDB, Twitch or AniList.
+
 ## Overview
 
 CollectionHub is a portfolio and learning project focused on practical
