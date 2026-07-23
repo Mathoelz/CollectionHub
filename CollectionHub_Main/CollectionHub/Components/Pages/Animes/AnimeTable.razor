@@ -1,96 +1,178 @@
 ﻿@using CollectionHub.Shared.Dtos.Anime
 @using Microsoft.AspNetCore.Components.Authorization
 
-<table class="table">
-    <tr style="font-weight:bold;">
-        <td>Image</td>
-        <td>Title</td>
-        <td>Status</td>
-        <td>Rating</td>
-        <td>Notes</td>
-        <td>Actions</td>
-    </tr>
-    @foreach (var anime in animes)
-    {
-        if (isEditing && anime.Id == editingAnimeId)
-        {
-            <AnimeEditRow isEditing="true" OnCancel="StopEditing" Anime="anime" OnSubmit="SubmitAnime" />
-        }
-        else if (anime.Id == deleteAnimeId)
+<div class="table-responsive">
+    <table class="table align-middle">
+        <tr style="font-weight:bold;">
+            <td>Image</td>
+            <td>Title</td>
+            <td>Status</td>
+            <td>Rating</td>
+            <td>Notes</td>
+            <td>Actions</td>
+        </tr>
+
+        @if (Animes.Count == 0)
         {
             <tr>
-                <td colspan="4">
-                    <div class="alert alert-danger" role="alert">
-                        Are you sure you want to delete <strong>@anime.Title</strong>?
-                        <button class="btn btn-danger" @onclick="@(() => DeleteAnime(anime))">Yes</button>
-                        <button class="btn btn-secondary" @onclick="@(() => deleteAnimeId = Guid.Empty)">No</button>
+                <td colspan="6">
+                    <div class="alert alert-info mb-0" role="status">
+                        Your anime collection is empty. Search for an anime above
+                        or add one manually.
                     </div>
                 </td>
             </tr>
         }
         else
         {
-            <tr>
-                <td><img src="@(string.IsNullOrEmpty(anime.Cover) ? "" : anime.Cover)" alt="@anime.Title" style="width: 150px; height: auto;" /></td>
-                <td>@anime.Title</td>
-                <td>@anime.Status</td>
-                <td>@anime.Rating</td>
-                <td>@anime.Notes</td>
-                <td>
-                    <AuthorizeView>
-                        <Authorized>
-                            <button class="btn btn-danger"
-                                    @onclick="@(() => FlagAnimeForDeletion(anime))">
-                                Delete
-                            </button>
-                
-                            <button class="btn btn-primary"
-                                    @onclick="@(() => StartEditing(anime))">
-                                Edit
-                            </button>
-                        </Authorized>
-                    </AuthorizeView>
-                </td>
-            </tr>
+            @foreach (var anime in Animes)
+            {
+                if (_isEditing && anime.Id == editingAnimeId)
+                {
+                    <AnimeEditRow OnCancel="StopEditing"
+                                  Anime="anime"
+                                  OnSubmit="SubmitAnime" />
+                }
+                else if (anime.Id == deleteAnimeId)
+                {
+                    <tr>
+                        <td colspan="6">
+                            <div class="alert alert-danger d-flex flex-wrap
+                                align-items-center justify-content-between
+                                gap-3 mb-0"
+                                 role="alert">
+
+                                <span>
+                                    Are you sure you want to delete
+                                    <strong>@anime.Title</strong>?
+                                </span>
+
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-danger"
+                                            disabled="@_isDeleting"
+                                            @onclick="@(() => DeleteAnime(anime))">
+                                        @if (_isDeleting)
+                                        {
+                                            <span class="spinner-border spinner-border-sm me-1"
+                                                  aria-hidden="true"></span>
+                                            <span>Deleting...</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Yes, delete</span>
+                                        }
+                                    </button>
+
+                                    <button class="btn btn-sm btn-secondary"
+                                            disabled="@_isDeleting"
+                                            @onclick="CancelDeletion">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrWhiteSpace(anime.Cover))
+                            {
+                                <img class="anime-cover"
+                                     src="@anime.Cover"
+                                     alt="Cover of @anime.Title" />
+                            }
+                            else
+                            {
+                                <div class="anime-cover-placeholder">
+                                    No cover
+                                </div>
+                            }
+                        </td>
+                        <td>@anime.Title</td>
+                        <td>@anime.Status</td>
+                        <td>@anime.Rating</td>
+                        <td>@anime.Notes</td>
+                        <td>
+                            <AuthorizeView>
+                                <Authorized>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <button class="btn btn-sm btn-primary"
+                                                @onclick="@(() => StartEditing(anime))">
+                                            Edit
+                                        </button>
+
+                                        <button class="btn btn-sm btn-outline-danger"
+                                                @onclick="@(() => FlagAnimeForDeletion(anime))">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </Authorized>
+
+                                <NotAuthorized>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <button class="btn btn-sm btn-primary"
+                                                disabled
+                                                title="Log in to edit this anime">
+                                            Edit
+                                        </button>
+
+                                        <button class="btn btn-sm btn-outline-danger"
+                                                disabled
+                                                title="Log in to delete this anime">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </NotAuthorized>
+                            </AuthorizeView>
+                        </td>
+                    </tr>
+                }
+            }
         }
-    }
-</table>
+    </table>
+</div>
 
 @code {
-
-    private bool isEditing = false;
+    private bool _isEditing;
+    private bool _isDeleting;
     private Guid editingAnimeId;
     private Guid deleteAnimeId;
 
     [Parameter]
-    public IReadOnlyList<AnimeDto> animes { get; set; } = [];
+    public IReadOnlyList<AnimeDto> Animes { get; set; } = [];
 
     [Parameter]
     public EventCallback<AnimeDto> OnDelete { get; set; }
 
     [Parameter]
-    public EventCallback<AnimeDto> OnEdit { get; set; }
-
-    [Parameter]
     public EventCallback<AnimeDto> OnSubmit { get; set; }
+
+    private void CancelDeletion()
+    {
+        deleteAnimeId = Guid.Empty;
+    }
 
     private void FlagAnimeForDeletion(AnimeDto anime)
     {
-        isEditing = false;
+        _isEditing = false;
         editingAnimeId = Guid.Empty;
+
         deleteAnimeId = anime.Id;
     }
 
     private void StartEditing(AnimeDto anime)
     {
         deleteAnimeId = Guid.Empty;
-        isEditing = true;
+
+        _isEditing = true;
         editingAnimeId = anime.Id;
     }
 
     private void StopEditing()
     {
-        isEditing = false;
+        _isEditing = false;
         editingAnimeId = Guid.Empty;
     }
 
@@ -102,6 +184,21 @@
 
     private async Task DeleteAnime(AnimeDto anime)
     {
-        await OnDelete.InvokeAsync(anime);
+        if (_isDeleting)
+        {
+            return;
+        }
+
+        _isDeleting = true;
+
+        try
+        {
+            await OnDelete.InvokeAsync(anime);
+            deleteAnimeId = Guid.Empty;
+        }
+        finally
+        {
+            _isDeleting = false;
+        }
     }
 }

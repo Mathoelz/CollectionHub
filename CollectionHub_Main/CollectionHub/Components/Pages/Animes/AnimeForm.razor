@@ -3,106 +3,142 @@
 
 <AuthorizeView>
     <Authorized Context="authState">
-        <EditForm Model="Anime" OnValidSubmit="SubmitAnime">
-        
-            <DataAnnotationsValidator />
-        
-            <table class="table">
-                <tr style="font-weight:bold">
-                    <td>Title</td>
-                    <td>Status</td>
-                    <td>Rating</td>
-                    <td>Notes</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>
-                        <InputText class="form-control" @bind-Value="Anime.Title" />
-                        <ValidationMessage For="@(() => Anime.Title)" />
-                    </td>
-                    <td>
-                        <InputSelect class="form-select" @bind-Value="Anime.Status">
-                            @foreach (var status in Enum.GetValues<CollectionStatus>())
-                            {
-                                <option value="@status">@status</option>
-                            }
-                        </InputSelect>
-                    </td>
-                    <td>
-                        <InputSelect class="form-select" @bind-Value="Anime.Rating">
-                            @for (int i = 1; i <= 10; i++)
-                            {
-                                <option value="@i">@i</option>
-                            }
-                        </InputSelect>
-                    </td>
-                    <td>
-                        <InputText class="form-control" @bind-Value="Anime.Notes" />
-                        <ValidationMessage For="@(() => Anime.Notes)" />
-                    </td>
-                    @if (isEditing)
-                    {
-                        <td>
-                            <button class="btn btn-primary" @onclick="OnCancel">Cancel</button>
-                            <button class="btn btn-primary" type="submit">Update</button>
-                        </td>
-                    }
-                    else
-                    {
-                        <td>
-                            <button class="btn btn-primary" type="submit">Add</button>
-                        </td>
-                    }
-                </tr>
-            </table>
-        </EditForm>
+        <section class="mt-4">
+            <h2 class="h4">Add an anime manually</h2>
+
+            <EditForm Model="_newAnime"
+                      OnValidSubmit="AddAnime">
+                <DataAnnotationsValidator />
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label"
+                                       for="anime-title">
+                                    Title
+                                </label>
+
+                                <InputText id="anime-title"
+                                           class="form-control"
+                                           @bind-Value="_newAnime.Title" />
+
+                                <ValidationMessage For="@(() => _newAnime.Title)" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label"
+                                       for="anime-status">
+                                    Status
+                                </label>
+
+                                <InputSelect id="anime-status"
+                                             class="form-select"
+                                             @bind-Value="_newAnime.Status">
+                                    @foreach (var status in Enum.GetValues<CollectionStatus>())
+                                    {
+                                        <option value="@status">@status</option>
+                                    }
+                                </InputSelect>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label"
+                                       for="anime-rating">
+                                    Rating
+                                </label>
+
+                                <InputSelect id="anime-rating"
+                                             class="form-select"
+                                             @bind-Value="_newAnime.Rating">
+                                    @for (int rating = 1; rating <= 10; rating++)
+                                    {
+                                        <option value="@rating">@rating</option>
+                                    }
+                                </InputSelect>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label"
+                                       for="anime-notes">
+                                    Notes
+                                </label>
+
+                                <InputTextArea id="anime-notes"
+                                               class="form-control"
+                                               rows="3"
+                                               @bind-Value="_newAnime.Notes" />
+
+                                <ValidationMessage For="@(() => _newAnime.Notes)" />
+                            </div>
+
+                            <div class="col-12">
+                                <button class="btn btn-primary"
+                                        type="submit"
+                                        disabled="@_isSubmitting">
+                                    @if (_isSubmitting)
+                                    {
+                                        <span class="spinner-border spinner-border-sm me-2"
+                                              aria-hidden="true"></span>
+                                        <span>Adding...</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Add anime</span>
+                                    }
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </EditForm>
+        </section>
     </Authorized>
 
     <NotAuthorized>
-        <p class="text-muted">
-            Log in to add animes to the collection.
-        </p>
+        <div class="alert alert-secondary mt-4" role="status">
+            Log in to add anime to the collection.
+        </div>
     </NotAuthorized>
 </AuthorizeView>
 
 @code {
-
-    [Parameter]
-    public bool isEditing { get; set; }
-
     [Parameter]
     public EventCallback<AnimeDto> OnSubmit { get; set; }
 
-    [Parameter]
-    public EventCallback<AnimeDto> OnAdd { get; set; }
+    private bool _isSubmitting;
 
-    [Parameter]
-    public EventCallback OnCancel { get; set; }
+    private AnimeDto _newAnime = CreateNewAnime();
 
-    [Parameter]
-    public AnimeDto Anime { get; set; } = default!;
-
-    private async Task AddAnime()
+    private static AnimeDto CreateNewAnime()
     {
-        Anime.Id = Guid.NewGuid();
-
-        await OnAdd.InvokeAsync(Anime);
-        Anime = new AnimeDto
+        return new AnimeDto
         {
             Status = CollectionStatus.Backlog,
             Rating = 1
         };
     }
 
-    private async Task SubmitAnime()
+    private async Task AddAnime()
     {
-        if(Anime.Id != Guid.Empty)
+        if (_isSubmitting)
         {
-            await OnSubmit.InvokeAsync(Anime);
+            return;
         }
-        else
+
+        _isSubmitting = true;
+
+        try
         {
-            await AddAnime();
+            _newAnime.Id = Guid.NewGuid();
+
+            await OnSubmit.InvokeAsync(_newAnime);
+
+            _newAnime = CreateNewAnime();
+        }
+        finally
+        {
+            _isSubmitting = false;
         }
     }
 }

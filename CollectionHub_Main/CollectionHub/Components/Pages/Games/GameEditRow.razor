@@ -2,13 +2,24 @@
 
 <tr>
     <td>
-        <!-- Cover image placeholder -->
+        @if (!string.IsNullOrWhiteSpace(_editedGame.Cover))
+        {
+            <img class="edit-cover"
+                 src="@_editedGame.Cover"
+                 alt="Cover of @_editedGame.Title" />
+        }
+        else
+        {
+            <div class="edit-cover-placeholder">
+                No cover
+            </div>
+        }
     </td>
     <td>
-        <InputText class="form-control" @bind-Value="Game.Title" />
+        <InputText class="form-control" @bind-Value="_editedGame.Title" />
     </td>
     <td>
-        <InputSelect class="form-select" @bind-Value="Game.Status">
+        <InputSelect class="form-select" @bind-Value="_editedGame.Status">
             @foreach (var status in Enum.GetValues<CollectionStatus>())
             {
                 <option value="@status">@status</option>
@@ -16,7 +27,7 @@
         </InputSelect>
     </td>
     <td>
-        <InputSelect class="form-select" @bind-Value="Game.Rating">
+        <InputSelect class="form-select" @bind-Value="_editedGame.Rating">
             @for (int i = 1; i <= 10; i++)
             {
                 <option value="@i">@i</option>
@@ -24,31 +35,28 @@
         </InputSelect>
     </td>
     <td>
-        <InputText class="form-control" @bind-Value="Game.FirstReleaseDate" />
+        <InputText class="form-control" @bind-Value="_editedGame.FirstReleaseDate" />
     </td>
     <td>
-        <InputText class="form-control" @bind-Value="Game.Notes" />
+        <InputText class="form-control" @bind-Value="_editedGame.Notes" />
     </td>
-    @if (isEditing)
-    {
-        <td>
-            <button class="btn btn-primary" @onclick="OnCancel">Cancel</button>
-            <button class="btn btn-primary" @onclick="SubmitGame">Update</button>
-        </td>
-    }
-    else
-    {
-        <td>
-            <button class="btn btn-primary" @onclick="SubmitGame">Add</button>
-        </td>
-    }
+    <td>
+        <div class="d-flex flex-wrap gap-2">
+            <button class="btn btn-sm btn-primary"
+                    @onclick="SubmitGame">
+                Update
+            </button>
+
+            <button class="btn btn-sm btn-secondary"
+                    @onclick="OnCancel">
+                Cancel
+            </button>
+        </div>
+    </td>
 </tr>
 
 
 @code {
-
-    [Parameter]
-    public bool isEditing { get; set; } = false;
 
     [Parameter]
     public EventCallback<GameDto> OnSubmit { get; set; }
@@ -59,28 +67,26 @@
     [Parameter]
     public GameDto Game { get; set; } = default!;
 
-    private async Task AddGame()
-    {
-        Game.Id = Guid.NewGuid();
+    private GameDto _editedGame = new();
 
-        await OnSubmit.InvokeAsync(Game);
-        Game = new GameDto
+    protected override void OnInitialized()
+    {
+        _editedGame = new GameDto
         {
-            Status = CollectionStatus.Backlog,
-            Rating = 1
+            Id = Game.Id,
+            Title = Game.Title,
+            Status = Game.Status,
+            Rating = Game.Rating,
+            FirstReleaseDate = Game.FirstReleaseDate,
+            Notes = Game.Notes,
+            Cover = Game.Cover,
+            MediaType = Game.MediaType
         };
     }
 
     private async Task SubmitGame()
     {
-        if (Game.Id != Guid.Empty)
-        {
-            await OnSubmit.InvokeAsync(Game);
-        }
-        else
-        {
-            await AddGame();
-        }
+        await OnSubmit.InvokeAsync(_editedGame);
     }
 
 }

@@ -1,7 +1,7 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid d-flex align-items-center">
         <div class="d-flex align-items-center gap-1">
-            <a class="navbar-brand me-0" href="">CollectionHub</a>
+            <a class="navbar-brand me-0" href="home">CollectionHub</a>
             <LoginDisplay />
         </div>
     </div>
@@ -9,35 +9,34 @@
 
 <input type="checkbox" title="Navigation menu" class="navbar-toggler" />
 
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+<div class="nav-scrollable"
+     onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="nav flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="home" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            <NavLink class="nav-link"
+                     href="home"
+                     Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu"
+                      aria-hidden="true"></span>
+                Home
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Games
+            <NavLink class="nav-link"
+                     href="games">
+                <span class="bi bi-gamepad-nav-menu"
+                      aria-hidden="true"></span>
+                Games
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="anime">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Anime
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+            <NavLink class="nav-link"
+                     href="anime">
+                <span class="bi bi-film-nav-menu"
+                      aria-hidden="true"></span>
+                Anime
             </NavLink>
         </div>
     </nav>

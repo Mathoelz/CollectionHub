@@ -1,24 +1,41 @@
-﻿namespace CollectionHub.Components.Services
+﻿using System.Net;
+
+namespace CollectionHub.Components.Services
 {
     public class ApiRetryHandler
     {
-        private readonly int _maxRetries = 3;
+        private const int MaxRetries = 3;
 
-    public async Task<T?> ExecuteAsync<T>(Func<Task<T>> action)
-    {
-        for (int attempt = 1; attempt <= _maxRetries; attempt++)
+        public async Task<T> ExecuteAsync<T>(Func<Task<T>> action)
         {
-            try
+            for (int attempt = 1; attempt < MaxRetries; attempt++)
             {
-                return await action();
+                try
+                {
+                    return await action();
+                }
+                catch (HttpRequestException exception)
+                    when (IsTransient(exception))
+                {
+                    await Task.Delay(1000 * attempt);
+                }
             }
-            catch (HttpRequestException) when (attempt < _maxRetries)
-            {
-                await Task.Delay(1000 * attempt);
-            }
+
+            return await action();
         }
 
-        throw new HttpRequestException("API request failed after retries.");
-    }
+        private static bool IsTransient(
+            HttpRequestException exception)
+        {
+            if (exception.StatusCode is null)
+            {
+                return true;
+            }
+
+            return exception.StatusCode is
+                       HttpStatusCode.RequestTimeout or
+                       HttpStatusCode.TooManyRequests
+                   || (int)exception.StatusCode >= 500;
+        }
     }
 }

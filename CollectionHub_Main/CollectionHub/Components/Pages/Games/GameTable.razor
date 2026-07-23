@@ -1,67 +1,142 @@
 ﻿@using CollectionHub.Shared.Dtos.Game
 @using Microsoft.AspNetCore.Components.Authorization
 
-<table class="table">
-    <tr style="font-weight:bold;">
-        <td>Image</td>
-        <td>Title</td>
-        <td>Status</td>
-        <td>Rating</td>
-        <td>First release date</td>
-        <td>Notes</td>
-        <td>Actions</td>
-    </tr>
-    @foreach (var game in Games)
-    {
-        if(isEditing && game.Id == editingGameId)
-        {
-            <GameEditRow isEditing="true" OnCancel="StopEditing" Game="game" OnSubmit="SubmitGame" />
-        }
-        else if(game.Id == deleteGameId)
+<div class="table-responsive">
+    <table class="table align-middle">
+        <tr style="font-weight:bold;">
+            <td>Image</td>
+            <td>Title</td>
+            <td>Status</td>
+            <td>Rating</td>
+            <td>First release date</td>
+            <td>Notes</td>
+            <td>Actions</td>
+        </tr>
+        @if (Games.Count == 0)
         {
             <tr>
                 <td colspan="7">
-                    <div class="alert alert-danger" role="alert">
-                        Are you sure you want to delete <strong>@game.Title</strong>?
-                        <button class="btn btn-danger" @onclick="@(() => DeleteGame(game))">Yes</button>
-                        <button class="btn btn-secondary" @onclick="@(() => deleteGameId = Guid.Empty)">No</button>
+                    <div class="alert alert-info mb-0" role="status">
+                        Your game collection is empty. Search for a game above
+                        or add one manually.
                     </div>
                 </td>
             </tr>
-            
         }
         else
         {
-            <tr>
-                <td><img src="@(string.IsNullOrEmpty(game.Cover) ? "" : game.Cover)" alt="@game.Title" style="width: 150px; height: auto;" /></td>
-                <td>@game.Title</td>
-                <td>@game.Status</td>
-                <td>@game.Rating</td>
-                <td>@game.FirstReleaseDate</td>
-                <td>@game.Notes</td>
-                <td>
-                    <AuthorizeView>
-                        <Authorized>
-                            <button class="btn btn-danger"
-                                    @onclick="@(() => FlagGameForDeletion(game))">
-                                Delete
-                            </button>
-                
-                            <button class="btn btn-primary"
-                                    @onclick="@(() => StartEditing(game))">
-                                Edit
-                            </button>
-                        </Authorized>
-                    </AuthorizeView>
-                </td>
-            </tr>
-        }      
-    }
-</table>
+            @foreach (var game in Games)
+            {
+                if (_isEditing && game.Id == editingGameId)
+                {
+                    <GameEditRow OnCancel="StopEditing" Game="game" OnSubmit="SubmitGame" />
+                }
+                else if (game.Id == deleteGameId)
+                {
+                    <tr>
+                        <td colspan="7">
+                            <div class="alert alert-danger d-flex flex-wrap
+                                align-items-center justify-content-between
+                                gap-3 mb-0"
+                                 role="alert">
+
+                                <span>
+                                    Are you sure you want to delete
+                                    <strong>@game.Title</strong>?
+                                </span>
+
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-danger"
+                                            disabled="@_isDeleting"
+                                            @onclick="@(() => DeleteGame(game))">
+                                        @if (_isDeleting)
+                                        {
+                                            <span class="spinner-border spinner-border-sm me-1"
+                                                  aria-hidden="true"></span>
+                                            <span>Deleting...</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Yes, delete</span>
+                                        }
+                                    </button>
+
+                                    <button class="btn btn-sm btn-secondary"
+                                            disabled="@_isDeleting"
+                                            @onclick="CancelDeletion">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrWhiteSpace(game.Cover))
+                            {
+                                <img class="game-cover"
+                                     src="@game.Cover"
+                                     alt="Cover of @game.Title" />
+                            }
+                            else
+                            {
+                                <div class="game-cover-placeholder">
+                                    No cover
+                                </div>
+                            }
+                        </td>
+                        <td>@game.Title</td>
+                        <td>@game.Status</td>
+                        <td>@game.Rating</td>
+                        <td>@game.FirstReleaseDate</td>
+                        <td>@game.Notes</td>
+                        <td>
+                            <AuthorizeView>
+                                <Authorized>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <button class="btn btn-sm btn-primary"
+                                        @onclick="@(() => StartEditing(game))">
+                                            Edit
+                                        </button>
+    
+                                        <button class="btn btn-sm btn-outline-danger"
+                                        @onclick="@(() => FlagGameForDeletion(game))">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </Authorized>
+    
+                                <NotAuthorized>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <button class="btn btn-sm btn-primary"
+                                        disabled
+                                        title="Log in to edit this game">
+                                            Edit
+                                        </button>
+    
+                                        <button class="btn btn-sm btn-outline-danger"
+                                        disabled
+                                        title="Log in to delete this game">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </NotAuthorized>
+                            </AuthorizeView>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </table>
+</div>
 
 @code {
 
-    private bool isEditing = false;
+    private bool _isEditing = false;
+    private bool _isDeleting;
     private Guid editingGameId;
     private Guid deleteGameId;
 
@@ -77,9 +152,14 @@
     [Parameter]
     public EventCallback<GameDto> OnSubmit { get; set; }
 
+    private void CancelDeletion()
+    {
+        deleteGameId = Guid.Empty;
+    }
+
     private void FlagGameForDeletion(GameDto game)
     {
-        isEditing = false;
+        _isEditing = false;
         editingGameId = Guid.Empty;
 
         deleteGameId = game.Id;
@@ -89,13 +169,13 @@
     {
         deleteGameId = Guid.Empty;
 
-        isEditing = true;
+        _isEditing = true;
         editingGameId = game.Id;
     }
 
     private void StopEditing()
     {
-        isEditing = false;
+        _isEditing = false;
         editingGameId = Guid.Empty;
     }
 
@@ -107,7 +187,21 @@
 
     private async Task DeleteGame(GameDto game)
     {
-        await OnDelete.InvokeAsync(game);
-        deleteGameId = Guid.Empty;
+        if (_isDeleting)
+        {
+            return;
+        }
+
+        _isDeleting = true;
+
+        try
+        {
+            await OnDelete.InvokeAsync(game);
+            deleteGameId = Guid.Empty;
+        }
+        finally
+        {
+            _isDeleting = false;
+        }
     }
 }

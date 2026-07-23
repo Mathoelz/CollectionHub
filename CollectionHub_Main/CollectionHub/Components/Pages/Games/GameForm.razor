@@ -3,80 +3,102 @@
 
 <AuthorizeView>
     <Authorized Context="authState">
-        <EditForm Model="Game" OnValidSubmit="SubmitGame">
-            <DataAnnotationsValidator />
+        <section class="mt-4">
+            <h2 class="h4">Add a game manually</h2>
 
-            <table class="table">
-                <tr style="font-weight:bold">
-                    <td>Title</td>
-                    <td>Status</td>
-                    <td>Rating</td>
-                    <td>Notes</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>
-                        <InputText class="form-control"
-                                   @bind-Value="Game.Title" />
-                        <ValidationMessage For="@(() => Game.Title)" />
-                    </td>
-                    <td>
-                        <InputSelect class="form-select"
-                                     @bind-Value="Game.Status">
-                            @foreach (var status in Enum.GetValues<CollectionStatus>())
-                            {
-                                <option value="@status">@status</option>
-                            }
-                        </InputSelect>
-                    </td>
-                    <td>
-                        <InputSelect class="form-select"
-                                     @bind-Value="Game.Rating">
-                            @for (int i = 1; i <= 10; i++)
-                            {
-                                <option value="@i">@i</option>
-                            }
-                        </InputSelect>
-                    </td>
-                    <td>
-                        <InputText class="form-control"
-                                   @bind-Value="Game.Notes" />
-                        <ValidationMessage For="@(() => Game.Notes)" />
-                    </td>
+            <EditForm Model="_newGame"
+                      OnValidSubmit="AddGame">
+                <DataAnnotationsValidator />
 
-                    @if (isEditing)
-                    {
-                        <td>
-                            <button class="btn btn-primary"
-                                    type="button"
-                                    @onclick="OnCancel">
-                                Cancel
-                            </button>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label"
+                                       for="game-title">
+                                    Title
+                                </label>
 
-                            <button class="btn btn-primary"
-                                    type="submit">
-                                Update
-                            </button>
-                        </td>
-                    }
-                    else
-                    {
-                        <td>
-                            <button class="btn btn-primary"
-                                    type="submit">
-                                Add
-                            </button>
-                        </td>
-                    }
-                </tr>
-            </table>
-        </EditForm>
+                                <InputText id="game-title"
+                                           class="form-control"
+                                           @bind-Value="_newGame.Title" />
+
+                                <ValidationMessage For="@(() => _newGame.Title)" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label"
+                                       for="game-status">
+                                    Status
+                                </label>
+
+                                <InputSelect id="game-status"
+                                             class="form-select"
+                                             @bind-Value="_newGame.Status">
+                                    @foreach (var status in Enum.GetValues<CollectionStatus>())
+                                    {
+                                        <option value="@status">@status</option>
+                                    }
+                                </InputSelect>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label"
+                                       for="game-rating">
+                                    Rating
+                                </label>
+
+                                <InputSelect id="game-rating"
+                                             class="form-select"
+                                             @bind-Value="_newGame.Rating">
+                                    @for (int rating = 1; rating <= 10; rating++)
+                                    {
+                                        <option value="@rating">@rating</option>
+                                    }
+                                </InputSelect>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label"
+                                       for="game-notes">
+                                    Notes
+                                </label>
+
+                                <InputTextArea id="game-notes"
+                                               class="form-control"
+                                               rows="3"
+                                               @bind-Value="_newGame.Notes" />
+
+                                <ValidationMessage For="@(() => _newGame.Notes)" />
+                            </div>
+
+                            <div class="col-12">
+                                <button class="btn btn-primary"
+                                        type="submit"
+                                        disabled="@_isSubmitting">
+                                    @if (_isSubmitting)
+                                    {
+                                        <span class="spinner-border spinner-border-sm me-2"
+                                              aria-hidden="true"></span>
+                                        <span>Adding...</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Add game</span>
+                                    }
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </EditForm>
+        </section>
     </Authorized>
 
     <NotAuthorized>
-        <p class="text-muted">
+        <div class="alert alert-secondary mt-4" role="status">
             Log in to add games to the collection.
-        </p>
+        </div>
     </NotAuthorized>
 </AuthorizeView>
 
@@ -84,38 +106,41 @@
 @code {
 
     [Parameter]
-    public bool isEditing { get; set; } = false;
-
-    [Parameter]
     public EventCallback<GameDto> OnSubmit { get; set; }
 
-    [Parameter]
-    public EventCallback OnCancel { get; set; }
+    private bool _isSubmitting;
 
-    [Parameter]
-    public GameDto Game { get; set; } = default!;
+    private GameDto _newGame = CreateNewGame();
 
-    private async Task AddGame()
+    private static GameDto CreateNewGame()
     {
-        Game.Id = Guid.NewGuid();
-
-        await OnSubmit.InvokeAsync(Game);
-        Game = new GameDto
+        return new GameDto
         {
             Status = CollectionStatus.Backlog,
             Rating = 1
         };
     }
 
-    private async Task SubmitGame()
+    private async Task AddGame()
     {
-        if (Game.Id != Guid.Empty)
+        if (_isSubmitting)
         {
-            await OnSubmit.InvokeAsync(Game);
+            return;
         }
-        else
+
+        _isSubmitting = true;
+
+        try
         {
-            await AddGame();
+            _newGame.Id = Guid.NewGuid();
+
+            await OnSubmit.InvokeAsync(_newGame);
+
+            _newGame = CreateNewGame();
+        }
+        finally
+        {
+            _isSubmitting = false;
         }
     }
 

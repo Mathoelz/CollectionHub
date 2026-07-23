@@ -2,21 +2,24 @@
 
 <AuthorizeView>
     <Authorized>
-        <a href="/MicrosoftIdentity/Account/SignOut"
-           data-enhance-nav="false"
-           style="color: white; font-size: 0.85rem;">
-            Log out
-        </a>
+        <div class="login-display">
+            <span class="user-name"
+                  title="@context.User.Identity?.Name">
+                @context.User.Identity?.Name
+            </span>
 
-        <span style="color: white; font-size: 0.85rem;">
-            @context.User.Identity?.Name
-        </span>
+            <a class="login-action"
+               href="/MicrosoftIdentity/Account/SignOut"
+               data-enhance-nav="false">
+                Log out
+            </a>
+        </div>
     </Authorized>
 
     <NotAuthorized>
-        <a href="/MicrosoftIdentity/Account/SignIn"
-           data-enhance-nav="false"
-           style="color: white;">
+        <a class="login-action"
+           href="/MicrosoftIdentity/Account/SignIn"
+           data-enhance-nav="false">
             Log in
         </a>
     </NotAuthorized>

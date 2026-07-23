@@ -1,0 +1,26 @@
+.login-display {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.2;
+}
+
+.user-name {
+    max-width: 7rem;
+    overflow: hidden;
+    color: white;
+    font-size: 0.75rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.login-action {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.8rem;
+    text-decoration: none;
+}
+
+    .login-action:hover {
+        color: white;
+        text-decoration: underline;
+    }

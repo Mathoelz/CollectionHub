@@ -1,5 +1,4 @@
 ﻿@using CollectionHub.Shared.Dtos.Game
-@using CollectionHub.Shared.Enums
 @using CollectionHub.Components.Services
 @using Microsoft.AspNetCore.Components.Authorization
 
@@ -13,48 +12,56 @@
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Cover</th>
-                <th>Title</th>
-                <th>Rating</th>
-                <th>First release date</th>
-                <th>Notes</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var game in _games)
-            {
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
                 <tr>
-                    <td>
-                        @if (!string.IsNullOrWhiteSpace(game.Cover))
-                        {
-                            <img src="@game.Cover"
-                            alt="@game.Title"
-                            style="width: 150px; height: auto;" />
-                        }
-                    </td>
-                    <td>@game.Title</td>
-                    <td>@game.Rating</td>
-                    <td>@game.FirstReleaseDate</td>
-                    <td>@game.Notes</td>
-                    <td>
-                        <AuthorizeView>
-                            <Authorized>
-                                <button class="btn btn-primary"
-                                disabled="@_isAdding"
-                                @onclick="() => AddGameAsync(game)">
-                                    Add Game
-                                </button>
-                            </Authorized>
-                        </AuthorizeView>
-                    </td>
+                    <th>Cover</th>
+                    <th>Title</th>
+                    <th>Rating</th>
+                    <th>First release date</th>
+                    <th>Notes</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var game in _games)
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrWhiteSpace(game.Cover))
+                            {
+                                <img class="search-cover"
+                                     src="@game.Cover"
+                                     alt="Cover of @game.Title" />
+                            }
+                            else
+                            {
+                                <div class="search-cover-placeholder">
+                                    No cover
+                                </div>
+                            }
+                        </td>
+                        <td>@game.Title</td>
+                        <td>@game.Rating</td>
+                        <td>@game.FirstReleaseDate</td>
+                        <td>@game.Notes</td>
+                        <td>
+                            <AuthorizeView>
+                                <Authorized>
+                                    <button class="btn btn-primary"
+                                    disabled="@_isAdding"
+                                    @onclick="() => AddGameAsync(game)">
+                                        Add Game
+                                    </button>
+                                </Authorized>
+                            </AuthorizeView>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 
 @code {
@@ -114,7 +121,7 @@ else
             Id = Guid.NewGuid(),
             Title = dto.Name ?? "",
             Status = CollectionStatus.Backlog,
-            Rating = (int)Math.Round(dto.Rating),
+            Rating = dto.Rating > 0 ? Math.Clamp((int)Math.Round(dto.Rating / 10.0), 1, 10) : null,
             Notes = dto.Summary,
             FirstReleaseDate =
                 DateTimeOffset

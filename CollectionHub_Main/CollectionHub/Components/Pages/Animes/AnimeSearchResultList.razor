@@ -3,46 +3,54 @@
 @using CollectionHub.Components.Services
 @using Microsoft.AspNetCore.Components.Authorization
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Cover</th>
-            <th>Title</th>
-            <th>Score</th>
-            <th>Synopsis</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var anime in SearchAnimes)
-        {
+<div class="table-responsive">
+    <table class="table align-middle">
+        <thead>
             <tr>
-                <td>
-                    @if (!string.IsNullOrWhiteSpace(anime.CoverImage?.Large))
-                    {
-                        <img src="@anime.CoverImage.Large"
-                             alt="@anime.Title?.DisplayTitle"
-                             style="width: 150px; height: auto;" />
-                    }
-                </td>
-                <td>@anime.Title?.DisplayTitle</td>
-                <td>@anime.AverageScore</td>
-                <td>@anime.Synopsis</td>
-                <td>
-                    <AuthorizeView>
-                        <Authorized>
-                            <button class="btn btn-primary"
-                                    disabled="@_isAdding"
-                                    @onclick="() => AddAnimeAsync(anime)">
-                                Add Anime
-                            </button>
-                        </Authorized>
-                    </AuthorizeView>
-                </td>
+                <th>Cover</th>
+                <th>Title</th>
+                <th>Score</th>
+                <th>Synopsis</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var anime in SearchAnimes)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrWhiteSpace(anime.CoverImage?.Large))
+                        {
+                            <img class="search-cover"
+                                 src="@anime.CoverImage.Large"
+                                 alt="Cover of @anime.Title?.DisplayTitle" />
+                        }
+                        else
+                        {
+                            <div class="search-cover-placeholder">
+                                No cover
+                            </div>
+                        }
+                    </td>
+                    <td>@anime.Title?.DisplayTitle</td>
+                    <td>@anime.AverageScore</td>
+                    <td>@anime.Synopsis</td>
+                    <td>
+                        <AuthorizeView>
+                            <Authorized>
+                                <button class="btn btn-primary"
+                                        disabled="@_isAdding"
+                                        @onclick="() => AddAnimeAsync(anime)">
+                                    Add Anime
+                                </button>
+                            </Authorized>
+                        </AuthorizeView>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 @code {
     [Inject]
@@ -77,7 +85,7 @@
                 Id = Guid.NewGuid(),
                 Title = searchResult.Title?.DisplayTitle ?? "",
                 Status = CollectionStatus.Backlog,
-                Rating = searchResult.AverageScore,
+                Rating = searchResult.AverageScore is int score ? Math.Clamp((int)Math.Round(score / 10.0), 1, 10) : null,
                 Notes = searchResult.Synopsis,
                 Cover = coverUrl,
                 MediaType = MediaType.Anime

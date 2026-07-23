@@ -2,13 +2,26 @@
 
 <tr>
     <td>
-        <!-- Cover image placeholder -->
+        @if (!string.IsNullOrWhiteSpace(_editedAnime.Cover))
+        {
+            <img class="edit-cover"
+                 src="@_editedAnime.Cover"
+                 alt="Cover of @_editedAnime.Title" />
+        }
+        else
+        {
+            <div class="edit-cover-placeholder">
+                No cover
+            </div>
+        }
     </td>
     <td>
-        <InputText class="form-control" @bind-Value="Anime.Title" />
+        <InputText class="form-control"
+                   @bind-Value="_editedAnime.Title" />
     </td>
     <td>
-        <InputSelect class="form-select" @bind-Value="Anime.Status">
+        <InputSelect class="form-select"
+                     @bind-Value="_editedAnime.Status">
             @foreach (var status in Enum.GetValues<CollectionStatus>())
             {
                 <option value="@status">@status</option>
@@ -16,7 +29,8 @@
         </InputSelect>
     </td>
     <td>
-        <InputSelect class="form-select" @bind-Value="Anime.Rating">
+        <InputSelect class="form-select"
+                     @bind-Value="_editedAnime.Rating">
             @for (int i = 1; i <= 10; i++)
             {
                 <option value="@i">@i</option>
@@ -24,28 +38,25 @@
         </InputSelect>
     </td>
     <td>
-        <InputText class="form-control" @bind-Value="Anime.Notes" />
+        <InputText class="form-control"
+                   @bind-Value="_editedAnime.Notes" />
     </td>
-    @if (isEditing)
-    {
-        <td>
-            <button class="btn btn-primary" @onclick="OnCancel">Cancel</button>
-            <button class="btn btn-primary" @onclick="SubmitAnime">Update</button>
-        </td>
-    }
-    else
-    {
-        <td>
-            <button class="btn btn-primary" @onclick="SubmitAnime">Add</button>
-        </td>
-    }
+    <td>
+        <div class="d-flex flex-wrap gap-2">
+            <button class="btn btn-sm btn-primary"
+                    @onclick="SubmitAnime">
+                Update
+            </button>
+
+            <button class="btn btn-sm btn-secondary"
+                    @onclick="OnCancel">
+                Cancel
+            </button>
+        </div>
+    </td>
 </tr>
 
 @code {
-
-    [Parameter]
-    public bool isEditing { get; set; } = false;
-
     [Parameter]
     public EventCallback<AnimeDto> OnSubmit { get; set; }
 
@@ -55,27 +66,24 @@
     [Parameter]
     public AnimeDto Anime { get; set; } = default!;
 
-    private async Task AddAnime()
-    {
-        Anime.Id = Guid.NewGuid();
+    private AnimeDto _editedAnime = new();
 
-        await OnSubmit.InvokeAsync(Anime);
-        Anime = new AnimeDto
+    protected override void OnInitialized()
+    {
+        _editedAnime = new AnimeDto
         {
-            Status = CollectionStatus.Backlog,
-            Rating = 1
+            Id = Anime.Id,
+            Title = Anime.Title,
+            Status = Anime.Status,
+            Rating = Anime.Rating,
+            Notes = Anime.Notes,
+            Cover = Anime.Cover,
+            MediaType = Anime.MediaType
         };
     }
 
     private async Task SubmitAnime()
     {
-        if(Anime.Id != Guid.Empty)
-        {
-            await OnSubmit.InvokeAsync(Anime);
-        }
-        else
-        {
-            await AddAnime();
-        }
+        await OnSubmit.InvokeAsync(_editedAnime);
     }
 }

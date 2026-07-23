@@ -1,61 +1,75 @@
 ﻿@using CollectionHub.Components.Services;
 @using CollectionHub.Shared.Dtos.Game;
-@page "/"
+@using Microsoft.AspNetCore.Components.Authorization
+@page "/games"
 
-<h3>Animes</h3>
+<PageTitle>Games | CollectionHub</PageTitle>
 
-<div class="d-flex gap-2 mb-3">
-    <input type="text"
-           class="form-control search-input"
-           placeholder="Search..."
-           @bind-value="_searchText"
-           @bind-value:event="oninput"
-           disabled="@_isSearching" />
+<h3>Games</h3>
 
-    <button class="btn btn-primary"
-            disabled="@(_isSearching || string.IsNullOrWhiteSpace(_searchText))"
-            @onclick="SearchGamesAsync">
+<AuthorizeView>
+    <Authorized>
+        <div class="d-flex gap-2 mb-3">
+            <input type="text"
+                   class="form-control search-input"
+                   placeholder="Search..."
+                   @bind-value="_searchText"
+                   @bind-value:event="oninput"
+                   disabled="@_isSearching" />
+
+            <button class="btn btn-primary"
+                    disabled="@(_isSearching ||
+                                string.IsNullOrWhiteSpace(_searchText))"
+                    @onclick="SearchGamesAsync">
+                @if (_isSearching)
+                {
+                    <span class="spinner-border spinner-border-sm me-2"
+                          aria-hidden="true"></span>
+                    <span>Searching...</span>
+                }
+                else
+                {
+                    <span>Search</span>
+                }
+            </button>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(_searchError))
+        {
+            <div class="alert alert-danger" role="alert">
+                @_searchError
+            </div>
+        }
+
         @if (_isSearching)
         {
-            <span class="spinner-border spinner-border-sm me-2"
-                  aria-hidden="true"></span>
-            <span>Searching...</span>
+            <p>Searching IGDB...</p>
         }
-        else
+        else if (_searchGames.Count > 0)
         {
-            <span>Search</span>
+            <GameSearchResultList @key="_searchGames"
+                                  SearchGames="_searchGames"
+                                  OnAdd="AddTwitchGame" />
         }
-    </button>
-</div>
+        else if (_hasSearched)
+        {
+            <div class="alert alert-info" role="status">
+                No games were found for this search.
+            </div>
+        }
+    </Authorized>
 
-@if (!string.IsNullOrWhiteSpace(_searchError))
-{
-    <div class="alert alert-danger" role="alert">
-        @_searchError
-    </div>
-}
-
-@if (_isSearching)
-{
-    <p>Searching IGDB and loading covers...</p>
-}
-else if (_searchGames.Count > 0)
-{
-    <GameSearchResultList @key="_searchGames"
-                          SearchGames="_searchGames"
-                          OnAdd="AddTwitchGame" />
-}
-else if (_hasSearched)
-{
-    <div class="alert alert-info" role="status">
-        No games were found for this search.
-    </div>
-}
+    <NotAuthorized>
+        <div class="alert alert-secondary mb-3" role="status">
+            Log in to search for games and add them to the collection.
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
 
 
 <GameTable Games="games" OnDelete="DeleteGame" OnEdit="GetGame" OnSubmit="SubmitGame"/>
 
-<GameForm OnSubmit="AddGame" Game="new()"/>
+<GameForm OnSubmit="AddGame" />
 
 
 @code {

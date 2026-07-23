@@ -1,11 +1,9 @@
-﻿using CollectionHub.Shared.Dtos.Game;
-using System.Net;
-using System.Text.Json;
+﻿using CollectionHub.Shared.Dtos;
+using CollectionHub.Shared.Dtos.Game;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Identity.Web;
+using System.Net;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using CollectionHub.Shared.Dtos;
 
 namespace CollectionHub.Components.Services
 {
@@ -13,7 +11,6 @@ namespace CollectionHub.Components.Services
     {
         private readonly HttpClient _httpClient;
         private readonly ApiRetryHandler _retryHandler;
-        private readonly List<GameDto> _games = [];
         private readonly ITokenAcquisition _tokenAcquisition;
         private readonly AuthenticationStateProvider _authenticationStateProvider;
         private readonly string _functionsApiScope;
@@ -48,22 +45,20 @@ namespace CollectionHub.Components.Services
 
         public async Task<GameDto> PostGameAsync(GameDto game)
         {
-            return await _retryHandler.ExecuteAsync(async () =>
-            {
-                using var request =
-                    await CreateAuthenticatedRequestAsync(
-                        HttpMethod.Post,
-                        "api/games",
-                        JsonContent.Create(game));
+            using var request =
+                await CreateAuthenticatedRequestAsync(
+                    HttpMethod.Post,
+                    "api/games",
+                    JsonContent.Create(game));
 
-                using var response =
-                    await _httpClient.SendAsync(request);
+            using var response =
+                await _httpClient.SendAsync(request);
 
-                response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
 
-                return await response.Content.ReadFromJsonAsync<GameDto>()
-                    ?? new GameDto();
-            });
+            return await response.Content.ReadFromJsonAsync<GameDto>()
+                ?? throw new InvalidOperationException(
+                    "The game API returned an empty response after creating a game.");
         }
 
         public async Task<HttpStatusCode> DeleteGameAsync(GameDto game)
@@ -77,6 +72,8 @@ namespace CollectionHub.Components.Services
 
                 using var response =
                     await _httpClient.SendAsync(request);
+
+                response.EnsureSuccessStatusCode();
 
                 return response.StatusCode;
             });

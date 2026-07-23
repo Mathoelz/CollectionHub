@@ -1,13 +1,8 @@
-﻿using Azure.Security.KeyVault.Secrets;
-using CollectionHub.Functions.Services.Secrets;
+﻿using CollectionHub.Functions.Services.Secrets;
 using CollectionHub.Shared.Dtos.Game;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace CollectionHub.Functions.Services.Igdb
 {
@@ -18,6 +13,7 @@ namespace CollectionHub.Functions.Services.Igdb
         private readonly string _twitchGrantType = Environment.GetEnvironmentVariable("TwitchDeveloperGrantType")!;
         private const string _twitchAuthUrl = "https://id.twitch.tv/oauth2/token";
         private TwitchAuthDto _twitchAuth = new();
+        private DateTimeOffset _tokenExpiresAtUtc = DateTimeOffset.MinValue;
 
         public IGdbService(HttpClient httpClient, ISecretProvider secretClient)
         {
@@ -41,7 +37,16 @@ namespace CollectionHub.Functions.Services.Igdb
 
             response.EnsureSuccessStatusCode();
 
-            _twitchAuth = await response.Content.ReadFromJsonAsync<TwitchAuthDto>();
+            _twitchAuth =
+                await response.Content.ReadFromJsonAsync<TwitchAuthDto>()
+                ?? throw new InvalidOperationException(
+                    "The Twitch authentication response was empty.");
+
+            var tokenLifetime =
+                Math.Max(0, _twitchAuth.ExpiresIn - 60);
+
+            _tokenExpiresAtUtc =
+                DateTimeOffset.UtcNow.AddSeconds(tokenLifetime);
 
             _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Add("Client-ID", twitchClientId);
@@ -51,7 +56,8 @@ namespace CollectionHub.Functions.Services.Igdb
 
         private async Task EnsureTokenAsync()
         {
-            if (string.IsNullOrWhiteSpace(_twitchAuth.AccessToken) || _twitchAuth.ExpiresIn <= 0)
+            if (string.IsNullOrWhiteSpace(_twitchAuth.AccessToken) ||
+                DateTimeOffset.UtcNow >= _tokenExpiresAtUtc)
             {
                 await RefreshTokenAsync();
             }
@@ -78,7 +84,7 @@ namespace CollectionHub.Functions.Services.Igdb
 
             response.EnsureSuccessStatusCode();
 
-            List<IgdbGameDto> games = await response.Content.ReadFromJsonAsync<List<IgdbGameDto>>();
+            List<IgdbGameDto> games = await response.Content.ReadFromJsonAsync<List<IgdbGameDto>>() ?? [];
 
             return games;
         }
@@ -103,9 +109,11 @@ namespace CollectionHub.Functions.Services.Igdb
 
             response.EnsureSuccessStatusCode();
 
-            List<IgdbCoverDto> covers = await response.Content.ReadFromJsonAsync<List<IgdbCoverDto>>();
+            List<IgdbCoverDto> covers = await response.Content.ReadFromJsonAsync<List<IgdbCoverDto>>() ?? [];
 
-            return covers.FirstOrDefault();
+            return covers.FirstOrDefault()
+                ?? throw new InvalidOperationException(
+                    $"IGDB returned no cover for ID {id}.");
         }  
 
     }

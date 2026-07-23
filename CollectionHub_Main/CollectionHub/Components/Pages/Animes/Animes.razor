@@ -2,7 +2,9 @@
 @using CollectionHub.Shared.Dtos.Anime
 @page "/anime"
 
-<h3>Animes</h3>
+<PageTitle>Anime | CollectionHub</PageTitle>
+
+<h3>Anime</h3>
 
 <div class="d-flex gap-2 mb-3">
     <input type="text"
@@ -41,7 +43,8 @@
 }
 else if (_searchAnimes.Count > 0)
 {
-    <AnimeSearchResultList SearchAnimes="_searchAnimes"
+    <AnimeSearchResultList @key="_searchAnimes"
+                           SearchAnimes="_searchAnimes"
                            OnAdd="AddAniListAnime" />
 }
 else if (_hasSearched)
@@ -53,11 +56,9 @@ else if (_hasSearched)
 
 <AnimeTable Animes="animes"
             OnDelete="DeleteAnime"
-            OnEdit="GetAnime"
             OnSubmit="SubmitAnime" />
 
-<AnimeForm OnAdd="AddAnime"
-           Anime="new()" />
+<AnimeForm OnSubmit="AddAnime" />
 
 @code {
     [Inject]
@@ -94,12 +95,6 @@ else if (_hasSearched)
     private async Task AddAnime(AnimeDto anime)
     {
         await AnimeApiService.PostAnimeAsync(anime);
-        animes = await AnimeApiService.GetAnimesAsync();
-    }
-
-    private async Task GetAnime(AnimeDto anime)
-    {
-        await AnimeApiService.GetAnimeAsync(anime);
         animes = await AnimeApiService.GetAnimesAsync();
     }
 

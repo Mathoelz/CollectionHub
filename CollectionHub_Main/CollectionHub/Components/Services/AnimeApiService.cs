@@ -12,8 +12,7 @@ namespace CollectionHub.Components.Services
         private readonly HttpClient _httpClient;
         private readonly ApiRetryHandler _retryHandler;
         private readonly ITokenAcquisition _tokenAcquisition;
-        private readonly AuthenticationStateProvider
-            _authenticationStateProvider;
+        private readonly AuthenticationStateProvider _authenticationStateProvider;
         private readonly string _functionsApiScope;
 
         public AnimeApiService(
@@ -110,7 +109,8 @@ namespace CollectionHub.Components.Services
 
                 return await response.Content
                     .ReadFromJsonAsync<AnimeDto>()
-                    ?? new AnimeDto();
+                    ?? throw new InvalidOperationException(
+                    "The anime API returned an empty response after creating an anime.");
             });
         }
 
@@ -125,6 +125,8 @@ namespace CollectionHub.Components.Services
 
                 using var response =
                     await _httpClient.SendAsync(request);
+
+                response.EnsureSuccessStatusCode();
 
                 return response.StatusCode;
             });

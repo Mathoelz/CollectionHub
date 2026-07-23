@@ -1,0 +1,25 @@
+.home-hero {
+    max-width: 55rem;
+    padding: 2.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 1rem;
+    background: #f8f9fa;
+}
+
+.project-label {
+    margin-bottom: 0.5rem;
+    color: #6c757d;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.home-hero h1 {
+    margin-bottom: 1rem;
+}
+
+.home-hero .lead {
+    max-width: 45rem;
+    margin-bottom: 1.5rem;
+}

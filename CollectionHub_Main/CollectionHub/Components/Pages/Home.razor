@@ -1,30 +1,40 @@
-﻿@using Services
-@using System.Text.Json
+﻿@page "/"
 @page "/home"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>CollectionHub</PageTitle>
 
-<h1>Hello, Docker world!</h1>
+<section class="home-hero">
+    <p class="project-label">Azure portfolio project</p>
 
-<button class="btn btn-primary" @onclick="ChangeText">API Test</button>
+    <h1>Welcome to CollectionHub</h1>
 
-@welcomeText
+    <p class="lead">
+        Manage your game and anime collection in a cloud-native
+        application built with Blazor and Azure.
+    </p>
 
-@code {
+    <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-primary" href="games">
+            Browse games
+        </a>
 
-    public string welcomeText = "Welcome to your new app.";
+        <a class="btn btn-outline-primary" href="anime">
+            Browse anime
+        </a>
+    </div>
+</section>
 
-    [Inject]
-    public HelloApiService helloApi { get; set; } = default!;
+<section class="mt-4">
+    <h2 class="h4">Built with</h2>
 
-    public async Task ChangeText()
-    {
-        var result = await helloApi.GetHelloMessageAsync();
-
-        var message = JsonSerializer.Deserialize<Dictionary<String,String>>(result);
-
-        if(message != null) 
-            welcomeText = message["message"];
-    }
-
-}
+    <div class="d-flex flex-wrap gap-2">
+        <span class="badge text-bg-secondary">Blazor</span>
+        <span class="badge text-bg-secondary">Azure Functions</span>
+        <span class="badge text-bg-secondary">Cosmos DB</span>
+        <span class="badge text-bg-secondary">Blob Storage</span>
+        <span class="badge text-bg-secondary">Key Vault</span>
+        <span class="badge text-bg-secondary">Microsoft Entra ID</span>
+        <span class="badge text-bg-secondary">Application Insights</span>
+        <span class="badge text-bg-secondary">Docker</span>
+    </div>
+</section>
